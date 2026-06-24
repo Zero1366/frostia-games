@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+
+{% block title %}Accueil - Frostia Games{% endblock %}
+
+{% block content %}
+<section class="home-hero">
+  <h1>
+    Bienvenue sur
+    <span>Frostia Games</span>
+  </h1>
+
+  <p>
+    Frostia Games est un portfolio personnel conçu pour présenter mes projets de
+    jeux vidéo, leur évolution et les contenus jouables qui pourront être ajoutés
+    plus tard.
+  </p>
+</section>
+
+<section class="home-cards">
+  <article class="home-card">
+    <div class="home-card__visual">
+      <span class="home-card__icon">✦</span>
+    </div>
+
+    <div class="home-card__content">
+      <h2>Mes créations</h2>
+      <p>
+        Une section prévue pour présenter mes futurs projets, leurs idées, leurs
+        univers et leur état d’avancement.
+      </p>
+    </div>
+  </article>
+
+  <article class="home-card">
+    <div class="home-card__visual">
+      <span class="home-card__icon">⚙</span>
+    </div>
+
+    <div class="home-card__content">
+      <h2>Suivi du développement</h2>
+      <p>
+        Une trace claire des choix réalisés, des étapes validées et des
+        évolutions prévues pour le site.
+      </p>
+    </div>
+  </article>
+
+  <article class="home-card">
+    <div class="home-card__visual">
+      <span class="home-card__icon">🎮</span>
+    </div>
+
+    <div class="home-card__content">
+      <h2>Projets jouables</h2>
+      <p>
+        Un espace préparé pour de futures vidéos, démonstrations ou prototypes,
+        selon l’évolution réelle des projets.
+      </p>
+    </div>
+  </article>
+</section>
+
+<section class="home-news">
+  <div class="home-news__label">Actualité du projet</div>
+
+  <div class="home-news__content">
+    <h2>Stabilisation de la V1</h2>
+
+    <p>
+      La première version de Frostia Games est en cours de stabilisation. Elle
+      met en place les pages principales du portfolio, la navigation, la
+      structure Django et une base visuelle cohérente.
+    </p>
+
+    <p>
+      Cet espace servira progressivement à présenter les nouveautés du projet :
+      nouvelles pages, visuels préparatoires, futures fiches de créations,
+      évolutions techniques et étapes importantes du développement.
+    </p>
+  </div>
+</section>
+
+<section class="about-card">
+  <div class="about-card__icon">!</div>
+
+  <div class="about-card__content">
+    <h2>À propos du site</h2>
+
+    <p>
+      Cette première version sert de base stable pour présenter Frostia Games
+      sans ajouter trop tôt de fonctionnalités complexes.
+    </p>
+
+    <p>
+      Les fiches projets, l’administration, l’upload réel de fichiers et les
+      éventuelles démonstrations jouables seront ajoutés progressivement, lorsque
+      leur intégration sera suffisamment claire.
+    </p>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <p>Frostia Games 2026 — Projet Studi</p>
+</footer>
+{% endblock %}

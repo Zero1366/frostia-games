@@ -1,0 +1,190 @@
+{% extends "base.html" %}
+
+{% block title %}Projets jouables - Frostia Games{% endblock %}
+
+{% block content %}
+<section class="playable-page">
+  <header class="playable-hero">
+    <h1>Projets jouables</h1>
+
+    <p>
+      Cette page est prévue pour accueillir, plus tard, des projets jouables,
+      des prototypes ou des vidéos de présentation directement depuis le site.
+    </p>
+  </header>
+
+  <section
+    class="playable-player"
+    aria-label="Zone de présentation des futurs projets jouables"
+  >
+    <div class="playable-player__screen">
+      <div class="playable-player__placeholder">
+        <span class="playable-player__icon">▶</span>
+
+        <h2>Fonctionnalité bientôt disponible</h2>
+
+        <p>
+          Cette zone prépare l’intégration future d’un teaser, d’une vidéo de
+          gameplay ou d’un prototype jouable directement depuis le navigateur.
+        </p>
+      </div>
+    </div>
+
+    <div class="playable-player__controls">
+      <button
+        id="playable-video-button"
+        class="playable-player__button playable-player__button--inactive"
+        type="button"
+      >
+        ▶ Lecture
+      </button>
+
+      <button
+        id="playable-file-button"
+        class="playable-player__button playable-player__button--active"
+        type="button"
+      >
+        ⬆ Choisir un fichier
+      </button>
+
+      <input
+        id="playable-file-input"
+        class="playable-player__file-input"
+        type="file"
+        accept="video/*,.zip,.rar,.7z,.exe"
+      >
+
+      <span
+        id="playable-file-status"
+        class="playable-player__notice"
+        aria-live="polite"
+      >
+        Upload non implémenté dans cette version
+      </span>
+    </div>
+  </section>
+
+  <section class="playable-database-section">
+    <h2>Projets jouables enregistrés en base</h2>
+
+    {% if playable_projects %}
+      <div class="playable-database-grid">
+        {% for project in playable_projects %}
+          <article class="playable-database-card">
+            <div class="playable-database-card__status">
+              {% if project.is_available %}
+                Disponible
+              {% else %}
+                Non disponible
+              {% endif %}
+            </div>
+
+            <div class="playable-database-card__content">
+              <h3>{{ project.title }}</h3>
+
+              <p class="playable-database-card__meta">
+                Statut : {{ project.status }}
+              </p>
+
+              <p class="playable-database-card__meta">
+                Type prévu : {{ project.content_type }}
+              </p>
+
+              <p>
+                {{ project.short_description }}
+              </p>
+
+              <p class="playable-database-card__notice">
+                {{ project.availability_message }}
+              </p>
+            </div>
+          </article>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p>
+        Aucun projet jouable n’est encore enregistré dans la base de données.
+      </p>
+    {% endif %}
+  </section>
+
+  <section class="playable-status-card">
+    <h2>Aucune version jouable disponible</h2>
+
+    <p>
+      Aucun projet jouable n’est encore publié dans cette première version du
+      site.
+    </p>
+
+    <p>
+      Ce choix est volontaire : l’intégration de démos jouables demande une
+      réflexion technique plus avancée afin d’éviter une structure trop complexe
+      ou difficile à maintenir.
+    </p>
+
+    <p>
+      La page prépare donc l’emplacement et le principe visuel du futur lecteur,
+      sans annoncer de fonctionnalité qui n’est pas encore développée.
+    </p>
+  </section>
+
+  <section class="playable-progress-card">
+    <h2>Évolutions prévues</h2>
+
+    <p>
+      KryonCore pourra être référencé plus tard comme futur projet de
+      démonstration jouable, lorsque la méthode d’intégration sera suffisamment
+      claire et stable.
+    </p>
+
+    <p>
+      Les prochaines évolutions pourront inclure une image d’aperçu, une vidéo
+      de gameplay, un teaser ou un prototype intégré directement dans le
+      navigateur.
+    </p>
+
+    <p>
+      Aucune date de publication n’est annoncée tant qu’une solution fiable n’a
+      pas été validée.
+    </p>
+  </section>
+
+  <footer class="site-footer">
+    <p>© 2026 Frostia Games</p>
+  </footer>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  const playableFileInput = document.querySelector("#playable-file-input");
+  const playableFileButton = document.querySelector("#playable-file-button");
+  const playableFileStatus = document.querySelector("#playable-file-status");
+  const playableVideoButton = document.querySelector("#playable-video-button");
+
+  if (playableVideoButton && playableFileStatus) {
+    playableVideoButton.addEventListener("click", () => {
+      playableFileStatus.textContent =
+        "Fonction vidéo non disponible pour le moment";
+    });
+  }
+
+  if (playableFileButton && playableFileInput && playableFileStatus) {
+    playableFileButton.addEventListener("click", () => {
+      playableFileInput.click();
+    });
+
+    playableFileInput.addEventListener("change", () => {
+      const selectedFile = playableFileInput.files[0];
+
+      if (!selectedFile) {
+        playableFileStatus.textContent = "Aucun fichier sélectionné";
+        return;
+      }
+
+      playableFileStatus.textContent =
+        `${selectedFile.name} sélectionné — upload non implémenté dans cette version`;
+    });
+  }
+</script>
+{% endblock %}

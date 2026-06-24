@@ -1,0 +1,189 @@
+{% extends "base.html" %}
+
+{% block title %}Mes créations - Frostia Games{% endblock %}
+
+{% block content %}
+<section class="creations-page">
+  <header class="creations-hero">
+    <h1>Mes créations</h1>
+
+    <nav class="alphabet-index" aria-label="Lexique alphabétique des créations">
+      <span class="alphabet-letter is-empty" aria-disabled="true">A</span>
+      <span class="alphabet-letter is-empty" aria-disabled="true">B</span>
+      <span class="alphabet-letter is-empty" aria-disabled="true">C</span>
+      <span class="alphabet-letter is-empty" aria-disabled="true">D</span>
+      <span class="alphabet-letter is-empty" aria-disabled="true">E</span>
+      <span class="alphabet-letter is-empty" aria-disabled="true">F</span>
+      <span class="alphabet-letter is-empty" aria-disabled="true">G</span>
+      <span class="alphabet-letter is-empty" aria-disabled="true">H</span>
+      <span class="alphabet-letter is-empty" aria-disabled="true">I</span>
+      <span class="alphabet-letter is-empty" aria-disabled="true">J</span>
+      <a class="alphabet-letter is-available" href="#lettre-k">K</a>
+      <span class="alphabet-letter is-empty" aria-disabled="true">L</span>
+      <span class="alphabet-letter is-empty" aria-disabled="true">M</span>
+      <span class="alphabet-letter is-empty" aria-disabled="true">N</span>
+      <span class="alphabet-letter is-empty" aria-disabled="true">O</span>
+      <span class="alphabet-letter is-empty" aria-disabled="true">P</span>
+      <span class="alphabet-letter is-empty" aria-disabled="true">Q</span>
+      <span class="alphabet-letter is-empty" aria-disabled="true">R</span>
+      <span class="alphabet-letter is-empty" aria-disabled="true">S</span>
+      <span class="alphabet-letter is-empty" aria-disabled="true">T</span>
+      <span class="alphabet-letter is-empty" aria-disabled="true">U</span>
+      <span class="alphabet-letter is-empty" aria-disabled="true">V</span>
+      <span class="alphabet-letter is-empty" aria-disabled="true">W</span>
+      <span class="alphabet-letter is-empty" aria-disabled="true">X</span>
+      <span class="alphabet-letter is-empty" aria-disabled="true">Y</span>
+      <span class="alphabet-letter is-empty" aria-disabled="true">Z</span>
+    </nav>
+
+    <div class="creations-intro">
+      <p>
+        Cette page est prévue pour présenter les créations et futurs projets de
+        jeux vidéo liés à Frostia Games.
+      </p>
+
+      <p>
+        Les projets sont organisés sous forme de lexique alphabétique, à partir
+        de leur nom officiel ou de leur nom de code lorsqu’ils ne sont pas encore
+        publiés.
+      </p>
+
+      <p>
+        À terme, chaque projet pourra être sélectionné depuis le lexique afin
+        d’ouvrir une fiche détaillée présentant son affiche, son univers, son
+        gameplay, son état de développement et sa disponibilité future.
+      </p>
+
+      <p>
+        Cette organisation est préparée dès la V1 afin de faciliter les futures
+        évolutions du site sans devoir modifier toute la structure.
+      </p>
+    </div>
+  </header>
+
+  <section class="database-content-section">
+    <h2>Créations enregistrées en base</h2>
+
+    <p class="database-content-help">
+      Sélectionnez une lettre disponible dans le lexique pour afficher les
+      créations enregistrées dans la base de données.
+    </p>
+
+    {% if creations %}
+      <div class="database-letter-group" id="lettre-k">
+        <h3>Lettre K</h3>
+
+        <div class="database-content-grid">
+          {% for creation in creations %}
+            <article class="database-content-card">
+              <span class="database-content-card__letter">
+                {{ creation.alphabet_letter|upper }}
+              </span>
+
+              <div class="database-content-card__body">
+                <h4>{{ creation.title }}</h4>
+
+                {% if creation.code_name %}
+                  <p class="database-content-card__meta">
+                    Nom de code : {{ creation.code_name }}
+                  </p>
+                {% endif %}
+
+                <p class="database-content-card__meta">
+                  Type : {{ creation.project_type }}
+                </p>
+
+                <p class="database-content-card__meta">
+                  Statut : {{ creation.status }}
+                </p>
+
+                <p>
+                  {{ creation.short_description }}
+                </p>
+
+                <p class="database-content-card__note">
+                  Fiche détaillée prévue dans une future mise à jour.
+                </p>
+              </div>
+            </article>
+          {% endfor %}
+        </div>
+      </div>
+    {% else %}
+      <p>
+        Aucune création n’est encore enregistrée dans la base de données.
+      </p>
+    {% endif %}
+  </section>
+
+  <section class="section-status-card">
+    <h2>Section en préparation</h2>
+
+    <p>
+      Les fiches détaillées des créations ne sont pas encore disponibles dans
+      cette première version.
+    </p>
+
+    <p>
+      Ce choix est volontaire : les futures fiches seront ajoutées uniquement
+      lorsque leur contenu, leurs visuels et leur structure seront suffisamment
+      clairs.
+    </p>
+
+    <p>
+      Cette page prépare la structure du futur lexique tout en affichant déjà les
+      premières données enregistrées dans la base SQL.
+    </p>
+  </section>
+
+  <section class="future-content-section">
+    <h2>Contenus prévus pour les futures fiches</h2>
+
+    <div class="future-content-grid">
+      <article class="future-content-card">
+        <span class="future-content-card__icon">▣</span>
+
+        <h3>Affiche du projet</h3>
+
+        <p>
+          Chaque création pourra disposer d’un visuel principal, comme une
+          affiche, une illustration ou une image de présentation.
+        </p>
+      </article>
+
+      <article class="future-content-card">
+        <span class="future-content-card__icon">≡</span>
+
+        <h3>Manuel ou fiche de présentation</h3>
+
+        <p>
+          Une fiche pourra présenter le résumé du jeu, ses intentions, son
+          univers, son gameplay et les informations utiles au visiteur.
+        </p>
+      </article>
+
+      <article class="future-content-card">
+        <span class="future-content-card__icon">⚙</span>
+
+        <h3>Informations techniques</h3>
+
+        <p>
+          Les fiches pourront indiquer le moteur utilisé, la plateforme visée,
+          le statut du projet et les évolutions prévues.
+        </p>
+      </article>
+    </div>
+
+    <p class="future-content-note">
+      Les démonstrations jouables restent une possibilité future. Leur
+      intégration dépendra de l’évolution réelle des jeux, de leur stabilité
+      technique et de la méthode choisie pour les rendre accessibles depuis le
+      navigateur.
+    </p>
+  </section>
+
+  <footer class="site-footer">
+    <p>© 2026 Frostia Games</p>
+  </footer>
+</section>
+{% endblock %}
