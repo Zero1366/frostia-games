@@ -14,7 +14,7 @@ Ce document sert de base pour présenter le projet de manière claire, structur�
 
 * Site en ligne : https://frostia-games.onrender.com
 * Dépôt GitHub : https://github.com/Zero1366/frostia-games
-* Preuves de fonctionnement : `preuve de fonctionnement.md`
+* Preuves de fonctionnement : `PREUVES-FONCTIONNEMENT.md`
 
 ---
 
@@ -228,7 +228,7 @@ Le projet contient un dossier de preuves de fonctionnement.
 Document principal :
 
 ```txt
-preuve de fonctionnement.md
+PREUVES-FONCTIONNEMENT.md
 ```
 
 Dossier de captures :
