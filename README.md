@@ -4,9 +4,17 @@
 
 Ce document présente le projet **Frostia Games** comme proposition de second projet.
 
-L'objectif est d'expliquer clairement la nature du projet, son périmètre, les choix techniques réalisés, les fonctionnalités présentes dans la V1, ainsi que les limites volontairement assumées.
+L'objectif est d'expliquer clairement la nature du projet, son périmètre, les choix techniques réalisés, les fonctionnalités présentes dans la V1, les preuves de fonctionnement disponibles, ainsi que les limites volontairement assumées.
 
 Ce document sert de base pour présenter le projet de manière claire, structurée et défendable.
+
+---
+
+## Liens du projet
+
+* Site en ligne : https://frostia-games.onrender.com
+* Dépôt GitHub : https://github.com/Zero1366/frostia-games
+* Preuves de fonctionnement : `preuve de fonctionnement.md`
 
 ---
 
@@ -24,7 +32,8 @@ Il ne s'agit pas d'un simple site statique. Le projet repose sur une structure D
 * des modèles de données ;
 * un affichage dynamique ;
 * un déploiement en ligne ;
-* une documentation technique complète.
+* une documentation technique complète ;
+* des preuves de fonctionnement organisées.
 
 ---
 
@@ -42,9 +51,11 @@ Le projet met en avant :
 * l'utilisation de l'administration Django ;
 * la documentation technique ;
 * le déploiement en ligne avec Render ;
+* le suivi de version avec GitHub ;
+* la création de preuves de fonctionnement ;
 * la réflexion sur les limites et les évolutions.
 
-Ce projet permet donc de montrer une autre facette du développement web, plus orientée backend Django et mise en production.
+Ce projet permet donc de montrer une autre facette du développement web, plus orientée backend Django, documentation et mise en production.
 
 ---
 
@@ -59,6 +70,8 @@ L'objectif est de produire une première version :
 * documentée ;
 * déployée ;
 * consultable en ligne ;
+* versionnée sur GitHub ;
+* accompagnée de preuves de fonctionnement ;
 * évolutive.
 
 Cette V1 sert de fondation pour présenter des projets vidéoludiques et préparer de futures améliorations.
@@ -80,10 +93,12 @@ La V1 contient les fonctionnalités suivantes :
 * base SQLite ;
 * affichage dynamique de certaines données ;
 * déploiement Render ;
+* dépôt GitHub public ;
 * documentation de déploiement ;
 * documentation d'architecture ;
 * documentation de tests ;
-* documentation des limites et évolutions.
+* documentation des limites et évolutions ;
+* preuves de fonctionnement organisées par catégorie.
 
 ---
 
@@ -171,6 +186,86 @@ comme commande de démarrage.
 
 Le déploiement permet de montrer que le projet fonctionne en dehors de l'environnement local.
 
+Le projet est hébergé avec une offre gratuite Render. Cette offre peut entraîner une mise en veille du service après une période d'inactivité. Ce comportement est lié à l'hébergement et ne constitue pas une erreur du projet.
+
+---
+
+## Dépôt GitHub
+
+Le code source du projet est disponible sur GitHub.
+
+Lien du dépôt :
+
+```txt
+https://github.com/Zero1366/frostia-games
+```
+
+GitHub est utilisé pour :
+
+* sauvegarder le projet ;
+* suivre l'historique des modifications ;
+* centraliser le code source ;
+* conserver les fichiers de documentation ;
+* conserver les preuves de fonctionnement ;
+* permettre la consultation du projet.
+
+Le dépôt contient notamment :
+
+* le code Django ;
+* les templates ;
+* les fichiers statiques ;
+* la configuration Docker ;
+* la configuration Render ;
+* les fichiers de documentation ;
+* les captures de preuves de fonctionnement.
+
+---
+
+## Preuves de fonctionnement
+
+Le projet contient un dossier de preuves de fonctionnement.
+
+Document principal :
+
+```txt
+preuve de fonctionnement.md
+```
+
+Dossier de captures :
+
+```txt
+Preuve De Fonctionnement/
+```
+
+Les preuves sont classées par catégorie :
+
+```txt
+Preuve De Fonctionnement/
+├── Docker/
+├── Figma/
+├── Github/
+├── Render/
+└── SiteWeb_FrostiaGame/
+    ├── Admin/
+    ├── Desktop/
+    └── Mobile/
+```
+
+Ces preuves montrent :
+
+* le fonctionnement Docker ;
+* les maquettes Figma ;
+* le dépôt GitHub ;
+* le déploiement Render ;
+* les variables d'environnement masquées ;
+* les logs Render ;
+* le site en ligne ;
+* l'administration Django ;
+* l'affichage desktop ;
+* l'affichage mobile responsive.
+
+Les captures ne doivent pas afficher de mot de passe, de clé secrète ou de valeur sensible.
+
 ---
 
 ## Documentation produite
@@ -194,7 +289,8 @@ Documents principaux :
 * architecture ;
 * tests et vérifications ;
 * captures et preuves ;
-* limites et évolutions.
+* limites et évolutions ;
+* preuves de fonctionnement.
 
 Cette documentation montre les choix réalisés, les problèmes rencontrés, les solutions appliquées et les évolutions possibles.
 
@@ -215,6 +311,7 @@ Les choix techniques principaux sont :
 | Fichiers statiques | WhiteNoise                              |
 | Versioning         | Git et GitHub                           |
 | Documentation      | Markdown                                |
+| Conteneurisation   | Docker                                  |
 
 Ces choix permettent de garder un projet simple, stable et compréhensible.
 
@@ -268,11 +365,13 @@ Frostia Games montre plusieurs compétences importantes :
 * configuration de l'administration Django ;
 * déploiement en ligne ;
 * gestion des variables d'environnement ;
+* utilisation de Git et GitHub ;
+* organisation des preuves de fonctionnement ;
 * documentation technique ;
 * cadrage du périmètre ;
 * réflexion sur les évolutions futures.
 
-Le projet montre donc une démarche complète : conception, développement, test, déploiement et documentation.
+Le projet montre donc une démarche complète : conception, développement, test, déploiement, versioning et documentation.
 
 ---
 
@@ -280,31 +379,52 @@ Le projet montre donc une démarche complète : conception, développement, test
 
 État actuel de la V1 :
 
-| Partie             | État                         |
-| ------------------ | ---------------------------- |
-| Projet Django      | Fonctionnel                  |
-| Pages publiques    | Fonctionnelles               |
-| Backend            | Fonctionnel pour V1          |
-| Base SQLite        | Fonctionnelle                |
-| Admin Django       | Fonctionnel                  |
-| Déploiement Render | Fonctionnel                  |
-| Documentation      | Avancée                      |
-| Responsive         | Fonctionnel mais améliorable |
-| Sécurité minimale  | Correcte pour V1             |
+| Partie                    | État                         |
+| ------------------------- | ---------------------------- |
+| Projet Django             | Fonctionnel                  |
+| Pages publiques           | Fonctionnelles               |
+| Backend                   | Fonctionnel pour V1          |
+| Base SQLite               | Fonctionnelle                |
+| Admin Django              | Fonctionnel                  |
+| Déploiement Render        | Fonctionnel                  |
+| Dépôt GitHub              | Disponible                   |
+| Documentation             | Avancée                      |
+| Preuves de fonctionnement | Réalisées et rangées         |
+| Responsive                | Fonctionnel mais améliorable |
+| Sécurité minimale         | Correcte pour V1             |
+
+---
+
+## Vérifications réalisées
+
+Plusieurs vérifications ont été effectuées avant la fermeture de la V1 :
+
+* lancement local du projet ;
+* vérification des pages publiques ;
+* vérification de l'administration Django ;
+* vérification Docker ;
+* vérification Render ;
+* vérification du site en ligne ;
+* vérification des variables d'environnement masquées ;
+* vérification du dépôt GitHub ;
+* vérification du statut Git final.
+
+Le statut Git final indique que le projet est bien synchronisé avec le dépôt distant et qu'aucune modification locale n'est oubliée.
 
 ---
 
 ## Prochaines étapes avant présentation
 
-Avant de présenter officiellement ce projet comme projet 2, il reste à finaliser :
+Avant de présenter officiellement ce projet comme projet 2, il reste principalement à faire :
 
-* les captures d'écran ;
-* le README à la racine ;
-* les maquettes Figma si nécessaires ;
-* la relecture des textes ;
-* la vérification mobile ;
-* le dossier projet final ;
-* le commit final propre.
+* relire les textes ;
+* vérifier les captures dans le dossier final ;
+* vérifier que les liens sont accessibles ;
+* préparer la présentation orale ;
+* expliquer clairement le périmètre de la V1 ;
+* insister sur les choix volontairement limités.
+
+Les fonctionnalités principales, les preuves, le déploiement et le dépôt GitHub sont déjà en place.
 
 ---
 
@@ -317,7 +437,7 @@ Il ne faut pas le présenter comme une plateforme finale complète.
 Formulation correcte :
 
 ```txt
-Frostia Games est une première version fonctionnelle d'un portfolio Django destiné à présenter mes projets vidéoludiques. Le projet est déployé en ligne, documenté et conçu pour évoluer progressivement.
+Frostia Games est une première version fonctionnelle d'un portfolio Django destiné à présenter mes projets vidéoludiques. Le projet est déployé en ligne, versionné sur GitHub, documenté et conçu pour évoluer progressivement.
 ```
 
 Formulation à éviter :
@@ -332,8 +452,8 @@ La deuxième formulation serait trop ambitieuse par rapport à l'état réel de 
 
 ## Conclusion
 
-Frostia Games peut être proposé comme second projet car il possède une base technique réelle, un backend Django, une administration, une base de données, un déploiement en ligne et une documentation complète.
+Frostia Games peut être proposé comme second projet car il possède une base technique réelle, un backend Django, une administration, une base de données, un déploiement en ligne, un dépôt GitHub et une documentation complète.
 
 Le projet reste volontairement limité, mais il est stable, cohérent et défendable.
 
-Il montre une capacité à créer un projet web complet dans son périmètre, à le documenter, à le déployer et à préparer ses futures évolutions sans élargir trop vite le périmètre.
+Il montre une capacité à créer un projet web complet dans son périmètre, à le documenter, à le déployer, à le versionner et à préparer ses futures évolutions sans élargir trop vite le périmètre.
