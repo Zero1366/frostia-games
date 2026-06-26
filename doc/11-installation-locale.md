@@ -1,109 +1,647 @@
-# Journal de bord — Frostia Games
+# Installation locale - Frostia Games
 
 ## Objectif du document
 
-Ce document consigne les étapes réalisées pendant le développement du projet **Frostia Games**.
+Ce document explique comment installer, configurer et lancer le projet **Frostia Games** en environnement local.
 
-L’objectif est de garder une trace claire :
+Il sert à garder une procédure claire pour :
 
-* de l’avancement du projet ;
-* des choix réalisés ;
-* des fichiers modifiés ;
-* des problèmes rencontrés ;
-* des validations effectuées ;
-* des limites volontaires de la V1 ;
-* des technologies envisagées mais non retenues.
+* récupérer le projet ;
+* installer les dépendances ;
+* activer l’environnement virtuel Python ;
+* appliquer les migrations Django ;
+* lancer le serveur local ;
+* accéder aux pages principales ;
+* accéder à l’administration Django ;
+* vérifier que le projet fonctionne correctement.
 
-Ce journal permet aussi d’expliquer que certaines décisions techniques ont été prises pour protéger la stabilité du projet, éviter de repartir de zéro et conserver un périmètre réaliste.
+Ce document concerne principalement le lancement local du projet.
 
----
-
-# Étape 01 — Mise en place du socle Django
-
-**Date :** 19/06/2026
-**Statut :** validé
-
-## Objectif
-
-Mettre en place un premier socle technique propre pour le projet Frostia Games avec Python et Django.
-
-Cette étape sert à préparer une base stable avant de commencer le développement des pages du site.
+Le projet dispose aussi d’un lancement avec Docker et d’un déploiement en ligne sur Render, documentés dans d’autres fichiers.
 
 ---
 
-## Actions réalisées
+# 1. Présentation rapide du projet
 
-* Création du dossier du projet **Frostia Games**.
-* Création d’un environnement virtuel Python nommé `.venv`.
-* Activation de l’environnement virtuel dans le terminal VS Code.
-* Installation de Django.
-* Création du projet Django principal : `frostia_config`.
-* Création des applications Django :
+**Frostia Games** est un portfolio développé avec Django.
 
-  * `core` ;
-  * `creations` ;
-  * `playable`.
-* Création des dossiers de structure :
+La V1 du projet contient :
 
-  * `templates` ;
-  * `templates/pages` ;
-  * `templates/partials` ;
-  * `static` ;
-  * `static/css` ;
-  * `static/js` ;
-  * `static/images` ;
-  * `media` ;
-  * `doc` ;
-  * `.vscode`.
+* une page d’accueil ;
+* une page **Mes créations** ;
+* une page **Projets jouables** ;
+* une administration Django ;
+* une base SQLite ;
+* des modèles Django ;
+* des templates HTML ;
+* des fichiers CSS et JavaScript ;
+* une documentation technique ;
+* un déploiement Render.
+
+L’installation locale permet de tester le projet sur la machine de développement avant de le publier ou de le présenter.
 
 ---
 
-## Configuration réalisée
+# 2. Prérequis
 
-Le fichier `frostia_config/settings.py` a été modifié afin de configurer :
+Avant de lancer le projet, les outils suivants doivent être installés :
 
-* les applications internes du projet ;
-* le dossier des templates ;
+* Python ;
+* pip ;
+* Git ;
+* Visual Studio Code ou un autre éditeur ;
+* PowerShell sous Windows ;
+* Docker Desktop, uniquement si le lancement Docker est utilisé.
+
+Pour le lancement local classique, Docker n’est pas obligatoire.
+
+---
+
+# 3. Se placer dans le dossier du projet
+
+Depuis PowerShell, se placer à la racine du projet.
+
+Exemple :
+
+```powershell
+cd "D:\Apprentissage\Autre Projet\Frostia Games"
+```
+
+La racine du projet doit contenir notamment :
+
+```text
+manage.py
+requirements.txt
+README.md
+CHOIX_TECHNIQUES.md
+Dockerfile
+docker-compose.yml
+build.sh
+```
+
+Le fichier `manage.py` doit être présent à la racine.
+
+C’est lui qui permet de lancer les commandes Django.
+
+---
+
+# 4. Structure attendue du projet
+
+La structure générale du projet est la suivante :
+
+```text
+frostia-games/
+├── frostia_config/
+│   ├── settings.py
+│   ├── urls.py
+│   ├── wsgi.py
+│   └── asgi.py
+├── core/
+├── creations/
+├── playable/
+├── templates/
+│   ├── base.html
+│   └── pages/
+│       ├── home.html
+│       ├── creation.html
+│       └── projet_jouable.html
+├── static/
+│   ├── css/
+│   ├── js/
+│   └── images/
+├── doc/
+├── manage.py
+├── requirements.txt
+├── Dockerfile
+├── docker-compose.yml
+├── build.sh
+├── README.md
+├── CHOIX_TECHNIQUES.md
+├── .env.example
+└── .gitignore
+```
+
+Cette organisation permet de séparer :
+
+* la configuration Django ;
+* les applications ;
+* les templates ;
 * les fichiers statiques ;
-* le dossier média ;
-* la langue française ;
-* le fuseau horaire `Europe/Paris`.
-
-Les applications ajoutées sont :
-
-```python
-"core",
-"creations",
-"playable",
-```
-
-Le dossier des templates est configuré avec :
-
-```python
-"DIRS": [BASE_DIR / "templates"],
-```
-
-Les fichiers statiques et médias sont configurés avec :
-
-```python
-STATIC_URL = "static/"
-STATICFILES_DIRS = [BASE_DIR / "static"]
-
-MEDIA_URL = "media/"
-MEDIA_ROOT = BASE_DIR / "media"
-```
+* la documentation ;
+* les fichiers de lancement ;
+* les fichiers de déploiement.
 
 ---
 
-## Vérifications effectuées
+# 5. Créer ou utiliser l’environnement virtuel
 
-Commande utilisée :
+Le projet utilise un environnement virtuel Python nommé :
+
+```text
+.venv
+```
+
+## 5.1 Créer l’environnement virtuel
+
+Si l’environnement virtuel n’existe pas encore :
+
+```powershell
+python -m venv .venv
+```
+
+Cette commande crée un dossier `.venv` à la racine du projet.
+
+---
+
+## 5.2 Activer l’environnement virtuel
+
+Sous Windows avec PowerShell :
+
+```powershell
+.\.venv\Scripts\Activate.ps1
+```
+
+Lorsque l’environnement virtuel est activé, le terminal affiche généralement :
+
+```text
+(.venv)
+```
+
+Cela signifie que les commandes Python et pip utilisent l’environnement du projet.
+
+---
+
+## 5.3 Problème possible avec PowerShell
+
+Si PowerShell bloque l’activation de l’environnement virtuel, il peut afficher une erreur liée à la politique d’exécution.
+
+Dans ce cas, la commande suivante peut être utilisée pour la session actuelle :
+
+```powershell
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process
+```
+
+Puis relancer :
+
+```powershell
+.\.venv\Scripts\Activate.ps1
+```
+
+Cette modification s’applique uniquement à la session PowerShell en cours.
+
+---
+
+# 6. Installer les dépendances
+
+Une fois l’environnement virtuel activé, installer les dépendances du projet :
+
+```powershell
+pip install -r requirements.txt
+```
+
+Le fichier `requirements.txt` contient les bibliothèques nécessaires au fonctionnement du projet.
+
+Il peut contenir notamment :
+
+```text
+Django
+gunicorn
+whitenoise
+```
+
+Rôle des principales dépendances :
+
+| Dépendance | Rôle                                         |
+| ---------- | -------------------------------------------- |
+| Django     | Framework principal du projet                |
+| Gunicorn   | Serveur utilisé pour le déploiement Render   |
+| WhiteNoise | Gestion des fichiers statiques en production |
+
+Même si Gunicorn et WhiteNoise sont surtout utiles pour Render, ils restent présents dans les dépendances du projet afin que l’environnement soit complet.
+
+---
+
+# 7. Vérifier l’installation Django
+
+Après l’installation des dépendances, vérifier que Django fonctionne :
 
 ```powershell
 python manage.py check
 ```
 
-Résultat obtenu :
+Résultat attendu :
+
+```text
+System check identified no issues (0 silenced).
+```
+
+Cette commande permet de vérifier que la configuration Django ne contient pas d’erreur bloquante.
+
+Elle doit être utilisée régulièrement après une modification importante.
+
+---
+
+# 8. Appliquer les migrations
+
+La base de données locale utilise SQLite.
+
+Avant de lancer le serveur, appliquer les migrations :
+
+```powershell
+python manage.py migrate
+```
+
+Cette commande crée ou met à jour les tables nécessaires dans la base locale.
+
+Les migrations concernent notamment :
+
+* les tables internes de Django ;
+* le modèle `Creation` ;
+* le modèle `PlayableProject` ;
+* les tables nécessaires à l’administration Django.
+
+---
+
+# 9. Créer un administrateur local
+
+Pour accéder à l’administration Django en local, un superutilisateur doit exister.
+
+Commande :
+
+```powershell
+python manage.py createsuperuser
+```
+
+Django demande ensuite :
+
+* un nom d’utilisateur ;
+* une adresse e-mail ;
+* un mot de passe ;
+* une confirmation du mot de passe.
+
+Après création, l’administrateur peut se connecter à l’adresse :
+
+```text
+http://127.0.0.1:8000/admin/
+```
+
+Les identifiants administrateur ne doivent pas être publiés dans GitHub ou dans la documentation publique.
+
+---
+
+# 10. Lancer le serveur local
+
+Pour lancer le serveur Django local :
+
+```powershell
+python manage.py runserver
+```
+
+Le site devient accessible à l’adresse :
+
+```text
+http://127.0.0.1:8000/
+```
+
+Le terminal doit rester ouvert pendant que le serveur fonctionne.
+
+Pour arrêter le serveur :
+
+```text
+Ctrl + C
+```
+
+---
+
+# 11. Pages à tester en local
+
+Après le lancement du serveur, tester les pages suivantes :
+
+```text
+http://127.0.0.1:8000/
+http://127.0.0.1:8000/mes-creations/
+http://127.0.0.1:8000/projets-jouables/
+http://127.0.0.1:8000/admin/
+```
+
+## Page d’accueil
+
+Adresse :
+
+```text
+http://127.0.0.1:8000/
+```
+
+Cette page présente le portfolio Frostia Games et les sections principales.
+
+## Page Mes créations
+
+Adresse :
+
+```text
+http://127.0.0.1:8000/mes-creations/
+```
+
+Cette page affiche les créations visibles enregistrées dans la base.
+
+## Page Projets jouables
+
+Adresse :
+
+```text
+http://127.0.0.1:8000/projets-jouables/
+```
+
+Cette page affiche les futurs projets jouables enregistrés dans la base.
+
+Elle contient aussi une interface préparatoire de sélection de fichier local.
+
+## Administration Django
+
+Adresse :
+
+```text
+http://127.0.0.1:8000/admin/
+```
+
+Cette interface permet d’ajouter ou modifier les contenus dynamiques du site.
+
+---
+
+# 12. Ajouter des données depuis l’administration
+
+Une fois connecté à l’administration Django, il est possible de gérer les contenus du site.
+
+## 12.1 Ajouter une création
+
+Dans l’administration :
+
+1. Aller dans **Créations**.
+2. Cliquer sur **Ajouter une création**.
+3. Remplir les champs.
+4. Cocher la visibilité si le contenu doit apparaître sur le site.
+5. Enregistrer.
+
+Exemple :
+
+```text
+Titre : KryonCore
+Identifiant URL : kryoncore
+Lettre alphabétique : K
+Nom de code : KryonCore
+Type de projet : Jeu vidéo PC
+Statut : En préparation
+Visible sur le site : Oui
+```
+
+La création peut ensuite apparaître sur la page **Mes créations**.
+
+---
+
+## 12.2 Ajouter un projet jouable
+
+Dans l’administration :
+
+1. Aller dans **Projets jouables**.
+2. Cliquer sur **Ajouter un projet jouable**.
+3. Remplir les champs.
+4. Définir le statut et le message de disponibilité.
+5. Cocher la visibilité si le contenu doit apparaître sur le site.
+6. Enregistrer.
+
+Exemple :
+
+```text
+Titre : Prototype jouable à venir
+Identifiant URL : prototype-jouable-a-venir
+Statut : Non disponible
+Type prévu : Démonstration / teaser
+Disponible : Non
+Visible sur le site : Oui
+```
+
+Le projet peut ensuite apparaître sur la page **Projets jouables**.
+
+---
+
+# 13. Vérifier les données dynamiques
+
+Les données affichées dans les pages publiques proviennent de la base SQLite.
+
+Exemples de récupération dans les vues Django :
+
+```python
+Creation.objects.filter(is_visible=True)
+```
+
+```python
+PlayableProject.objects.filter(is_visible=True)
+```
+
+Cela signifie qu’un contenu peut exister dans l’administration mais ne pas apparaître sur le site si son champ de visibilité est désactivé.
+
+À vérifier :
+
+* les créations visibles apparaissent sur la page **Mes créations** ;
+* les projets jouables visibles apparaissent sur la page **Projets jouables** ;
+* les contenus masqués ne s’affichent pas côté public.
+
+---
+
+# 14. Variables d’environnement locales
+
+Le fichier `.env.example` sert de modèle pour documenter les variables attendues.
+
+Exemple :
+
+```text
+DJANGO_DEBUG=False
+DJANGO_SECRET_KEY=change-me
+DJANGO_SUPERUSER_USERNAME=admin
+DJANGO_SUPERUSER_EMAIL=admin@example.com
+DJANGO_SUPERUSER_PASSWORD=change-me
+```
+
+Ce fichier ne doit contenir aucune vraie valeur sensible.
+
+Pour le développement local, les vraies valeurs peuvent être définies selon la configuration du projet.
+
+Les variables sensibles ne doivent pas être envoyées dans GitHub.
+
+Le fichier `.gitignore` doit donc ignorer :
+
+```text
+.env
+.env.local
+```
+
+---
+
+# 15. Fichier `.gitignore`
+
+Le fichier `.gitignore` permet d’éviter l’envoi de fichiers inutiles ou sensibles.
+
+Il peut ignorer notamment :
+
+```text
+.venv/
+__pycache__/
+*.pyc
+db.sqlite3
+staticfiles/
+media/
+
+.env
+.env.local
+
+.vscode/
+.DS_Store
+Thumbs.db
+```
+
+Rôle principal :
+
+* ne pas envoyer l’environnement virtuel ;
+* ne pas envoyer les caches Python ;
+* ne pas envoyer les fichiers locaux sensibles ;
+* ne pas envoyer les fichiers générés ;
+* protéger les variables d’environnement.
+
+Attention : si un fichier était déjà suivi par Git avant son ajout dans `.gitignore`, il peut rester suivi.
+
+Il faut vérifier avec :
+
+```powershell
+git status
+```
+
+---
+
+# 16. Lancement local avec Docker
+
+Le projet peut aussi être lancé localement avec Docker Compose.
+
+Commande :
+
+```powershell
+docker compose up --build
+```
+
+Le site est ensuite accessible à l’adresse :
+
+```text
+http://127.0.0.1:8000/
+```
+
+Commandes utiles dans Docker :
+
+```powershell
+docker compose exec web python manage.py check
+docker compose exec web python manage.py migrate
+docker compose exec web python manage.py createsuperuser
+```
+
+Arrêter Docker :
+
+```powershell
+docker compose down
+```
+
+Le lancement Docker est détaillé dans le fichier :
+
+```text
+04-docker-et-lancement.md
+```
+
+---
+
+# 17. Différence avec le déploiement Render
+
+Le lancement local sert à développer et tester le projet sur la machine.
+
+Le déploiement Render sert à rendre le projet accessible en ligne.
+
+URL de production :
+
+```text
+https://frostia-games.onrender.com
+```
+
+Render utilise :
+
+```bash
+bash build.sh
+```
+
+comme commande de build, puis :
+
+```bash
+gunicorn frostia_config.wsgi:application --bind 0.0.0.0:$PORT
+```
+
+comme commande de démarrage.
+
+Le déploiement Render est détaillé dans le fichier :
+
+```text
+09-deploiement-render.md
+```
+
+---
+
+# 18. Fichiers importants à la racine
+
+Plusieurs fichiers situés à la racine du projet sont importants pour l’installation ou la compréhension du projet.
+
+## `README.md`
+
+Présente rapidement :
+
+* le projet ;
+* les technologies utilisées ;
+* l’installation locale ;
+* le lancement Docker ;
+* le déploiement Render ;
+* les limites de la V1.
+
+## `CHOIX_TECHNIQUES.md`
+
+Explique :
+
+* les choix techniques ;
+* pourquoi Django a été retenu ;
+* pourquoi certaines pistes ont été reportées ;
+* pourquoi le périmètre est volontairement limité.
+
+## `.env.example`
+
+Documente les variables d’environnement nécessaires sans exposer les vraies valeurs sensibles.
+
+## `requirements.txt`
+
+Liste les dépendances Python du projet.
+
+## `build.sh`
+
+Script utilisé par Render pendant le déploiement.
+
+## `Dockerfile` et `docker-compose.yml`
+
+Permettent de lancer le projet avec Docker.
+
+---
+
+# 19. Vérifications avant démonstration locale
+
+Avant une démonstration, effectuer les vérifications suivantes.
+
+## 19.1 Vérifier Django
+
+```powershell
+python manage.py check
+```
+
+Résultat attendu :
 
 ```text
 System check identified no issues (0 silenced).
@@ -111,633 +649,149 @@ System check identified no issues (0 silenced).
 
 ---
 
-## Fichiers concernés
-
-* `manage.py`
-* `frostia_config/settings.py`
-* `frostia_config/urls.py`
-* `core/views.py`
-* `core/urls.py`
-* `.vscode/settings.json`
-
----
-
-## Problèmes rencontrés
-
-Plusieurs problèmes ont été rencontrés pendant l’installation :
-
-* environnement virtuel créé partiellement après une interruption ;
-* difficulté d’activation du `.venv` dans PowerShell ;
-* commande invalide tapée par erreur dans le terminal ;
-* alertes de typage inutiles dans VS Code liées à Django ;
-* besoin de distinguer les vraies erreurs Django des faux positifs de l’éditeur.
-
----
-
-## Décision prise
-
-Le projet ne devait pas commencer par une accumulation de fonctionnalités.
-
-La priorité a été de mettre en place une base Django stable, compréhensible et documentée avant d’aller plus loin.
-
----
-
-# Étape 02 — Réflexion sur les technologies envisagées
-
-**Date :** 19/06/2026
-**Statut :** documenté
-
-## Objectif
-
-Cette étape permet d’expliquer les technologies envisagées pour le projet et les raisons pour lesquelles certaines pistes n’ont pas été retenues dans la V1.
-
-Ce point est important, car il montre que le choix technique n’a pas été fait au hasard. Il a été fait en tenant compte :
-
-* du temps disponible ;
-* du périmètre du projet ;
-* de la stabilité attendue ;
-* de la documentation à produire ;
-* de la capacité à terminer une V1 présentable.
-
----
-
-## Technologies envisagées
-
-Plusieurs pistes techniques ont été envisagées avant de stabiliser le projet avec Django :
-
-* une approche plus orientée C# ;
-* une solution ASP.NET / Razor ;
-* une technologie plus fortement typée ;
-* une architecture backend plus structurée dès le départ ;
-* une solution plus proche de mes futurs projets de jeux vidéo ;
-* une organisation plus proche d’un environnement applicatif C#.
-
-Ces pistes restent intéressantes pour de futurs projets, car elles correspondent davantage à certaines préférences personnelles en matière de structure, de typage et de lisibilité du code.
-
----
-
-## Point de vue technique personnel
-
-J’accorde de l’importance à l’élégance d’une technologie.
-
-Par élégance, j’entends :
-
-* une syntaxe claire ;
-* une structure logique ;
-* un typage rassurant ;
-* une séparation propre des responsabilités ;
-* une architecture qui évite les solutions trop dispersées ;
-* un langage qui aide le développeur à garder un code stable.
-
-De ce point de vue, certaines technologies envisagées me semblaient plus intéressantes que Python, notamment pour leur structure ou leur typage.
-
-Cependant, ce projet devait rester réaliste et terminé dans un délai raisonnable.
-
----
-
-## Pourquoi ne pas avoir changé de technologie
-
-Même si certaines pistes me paraissaient plus élégantes ou plus proches de mes préférences techniques, elles n’ont pas été retenues pour cette V1.
-
-Changer de technologie à ce stade aurait obligé à repartir de zéro ou à reconstruire une grande partie du projet.
-
-Ce choix aurait créé plusieurs risques :
-
-* perte de temps importante ;
-* instabilité du projet ;
-* documentation à refaire ;
-* augmentation du périmètre ;
-* complexité inutile ;
-* risque de ne pas terminer une version présentable ;
-* transformation du projet en expérimentation technique au lieu d’un livrable stable.
-
-La décision a donc été de ne pas repartir de zéro.
-
-Ce choix est important, car il montre une capacité à limiter le périmètre et à terminer un projet plutôt qu’à suivre uniquement une préférence technique.
-
----
-
-## Choix final de Django et Python
-
-Le choix final s’est porté sur Django avec Python.
-
-Python reste un langage assez permissif. Cela peut parfois donner moins de sécurité qu’un langage plus strict ou plus fortement typé.
-
-Cependant, dans le cadre de cette V1, Django apporte une structure claire :
-
-* routes ;
-* vues ;
-* modèles ;
-* migrations ;
-* administration ;
-* templates ;
-* base SQLite ;
-* séparation entre code, données et affichage.
-
-Même si Python n’est pas le langage le plus strict, Django permet d’encadrer le projet avec une architecture compréhensible.
-
-Python reste également lisible, rapide à mettre en place et suffisamment élégant lorsqu’il est utilisé avec méthode, documentation et règles de validation.
-
----
-
-## Décision retenue
-
-La décision prise est donc la suivante :
-
-* conserver Django pour la V1 ;
-* ne pas repartir de zéro avec une nouvelle technologie ;
-* documenter les limites du choix technique ;
-* reporter les expérimentations C# / ASP.NET / Razor à de futurs projets ;
-* privilégier une version fonctionnelle, testable et maintenable ;
-* éviter le changement de technologie en cours de route.
-
-Ce choix permet de protéger le projet contre le risque de dérive technique.
-
----
-
-## Bilan de cette réflexion
-
-Cette réflexion est un point positif du projet.
-
-Elle montre que les technologies mises de côté ne l’ont pas été par oubli, mais par choix de périmètre.
-
-Le projet aurait pu partir vers une technologie plus proche de mes préférences, mais cela aurait augmenté le risque de ne pas terminer correctement la V1.
-
-Le choix final est donc un compromis entre :
-
-* mes préférences techniques ;
-* la stabilité du projet ;
-* le temps disponible ;
-* la capacité à documenter ;
-* la capacité à livrer une version présentable.
-
----
-
-# Étape 03 — Création de l’interface principale
-
-**Date :** 19/06/2026
-**Statut :** validé
-
-## Objectif
-
-Créer les pages principales du portfolio Frostia Games avec une interface simple, moderne et responsive.
-
----
-
-## Actions réalisées
-
-Création des trois pages principales :
-
-* Accueil ;
-* Mes créations ;
-* Projets jouables.
-
-Mise en place :
-
-* du template commun `base.html` ;
-* de la navigation principale ;
-* de la sidebar desktop ;
-* du menu mobile ;
-* du fichier CSS principal ;
-* du fichier JavaScript pour le menu.
-
----
-
-## Fichiers concernés
-
-* `templates/base.html`
-* `templates/pages/home.html`
-* `templates/pages/creation.html`
-* `templates/pages/projet_jouable.html`
-* `static/css/main.css`
-* `static/js/menu.js`
-* `core/views.py`
-* `core/urls.py`
-
----
-
-## Résultat obtenu
-
-Le site dispose maintenant :
-
-* d’une page d’accueil ;
-* d’une page Mes créations ;
-* d’une page Projets jouables ;
-* d’une navigation active ;
-* d’un menu mobile ;
-* d’une interface responsive ;
-* d’un thème bleu cohérent avec le nom Frostia Games.
-
----
-
-## Vérifications effectuées
-
-Pages testées :
-
-```text
-/
-/mes-creations/
-/projets-jouables/
-```
-
-Résultat :
-
-* les pages s’ouvrent ;
-* la navigation fonctionne ;
-* le menu mobile fonctionne ;
-* le rendu est exploitable pour une V1.
-
----
-
-# Étape 04 — Modernisation de l’interface
-
-**Date :** 20/06/2026
-**Statut :** validé
-
-## Objectif
-
-Améliorer l’apparence du site sans utiliser de template Django lourd.
-
-L’objectif est de conserver le contrôle du code, du CSS et de la structure.
-
----
-
-## Actions réalisées
-
-* Harmonisation des couleurs bleues.
-* Ajout d’un fond dégradé.
-* Amélioration des cartes.
-* Ajout d’ombres et de bordures plus modernes.
-* Amélioration de la sidebar.
-* Amélioration du footer.
-* Amélioration de l’état actif dans le menu.
-* Préparation du responsive mobile.
-
----
-
-## Fichiers concernés
-
-* `static/css/main.css`
-* `templates/base.html`
-* `templates/pages/home.html`
-* `templates/pages/creation.html`
-* `templates/pages/projet_jouable.html`
-
----
-
-## Problèmes rencontrés
-
-* Certaines classes CSS ne correspondaient pas encore au HTML.
-* Certains styles étaient placés dans le mauvais bloc responsive.
-* Le footer ne s’intégrait pas correctement à la page.
-* Certains textes étaient trop petits ou mal hiérarchisés.
-
----
-
-## Résultat obtenu
-
-L’interface est devenue plus propre, plus lisible et plus professionnelle.
-
-La modernisation lourde est volontairement reportée après la stabilisation du backend et de la documentation.
-
----
-
-# Étape 05 — Création du backend SQL
-
-**Date :** 24/06/2026
-**Statut :** validé
-
-## Objectif
-
-Ajouter un backend Django minimal mais réel afin que le site ne soit pas uniquement statique.
-
-L’objectif est de connecter certaines pages à une base SQLite via les modèles Django.
-
----
-
-## Actions réalisées
-
-Création des modèles :
-
-* `Creation` ;
-* `PlayableProject`.
-
-Ajout des modèles dans l’administration Django.
-
-Création et application des migrations.
-
-Ajout de données depuis l’admin Django.
-
-Connexion des vues aux modèles.
-
-Affichage des données dans les templates.
-
----
-
-## Fichiers concernés
-
-* `creations/models.py`
-* `creations/admin.py`
-* `playable/models.py`
-* `playable/admin.py`
-* `core/views.py`
-* `templates/pages/creation.html`
-* `templates/pages/projet_jouable.html`
-* `frostia_config/settings.py`
-
----
-
-## Modèle Creation
-
-Le modèle `Creation` permet de gérer les créations affichées dans la page **Mes créations**.
-
-Il contient notamment :
-
-* un titre ;
-* un slug ;
-* une lettre alphabétique ;
-* un nom de code ;
-* un type de projet ;
-* un statut ;
-* une description courte ;
-* un champ de visibilité ;
-* des dates de création et de modification.
-
----
-
-## Modèle PlayableProject
-
-Le modèle `PlayableProject` permet de gérer les futurs contenus de la page **Projets jouables**.
-
-Il contient notamment :
-
-* un titre ;
-* un slug ;
-* un statut ;
-* un type de contenu prévu ;
-* une description courte ;
-* un message de disponibilité ;
-* un état de disponibilité ;
-* un champ de visibilité ;
-* des dates de création et de modification.
-
----
-
-## Vérifications effectuées
-
-Commandes utilisées :
+## 19.2 Lancer le serveur
 
 ```powershell
-python manage.py makemigrations
+python manage.py runserver
+```
+
+---
+
+## 19.3 Tester les pages
+
+```text
+http://127.0.0.1:8000/
+http://127.0.0.1:8000/mes-creations/
+http://127.0.0.1:8000/projets-jouables/
+http://127.0.0.1:8000/admin/
+```
+
+---
+
+## 19.4 Vérifier les contenus
+
+Vérifier que :
+
+* la page d’accueil se charge ;
+* le CSS est appliqué ;
+* la navigation fonctionne ;
+* la page **Mes créations** affiche les contenus visibles ;
+* la page **Projets jouables** affiche les contenus visibles ;
+* l’administration Django est accessible ;
+* aucune erreur serveur n’apparaît.
+
+---
+
+# 20. Problèmes possibles
+
+## 20.1 L’environnement virtuel ne s’active pas
+
+Solution possible :
+
+```powershell
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process
+.\.venv\Scripts\Activate.ps1
+```
+
+---
+
+## 20.2 Django n’est pas reconnu
+
+Vérifier que l’environnement virtuel est activé.
+
+Puis réinstaller les dépendances :
+
+```powershell
+pip install -r requirements.txt
+```
+
+---
+
+## 20.3 Les tables n’existent pas
+
+Appliquer les migrations :
+
+```powershell
+python manage.py migrate
+```
+
+---
+
+## 20.4 L’administration n’est pas accessible
+
+Vérifier que le serveur est lancé.
+
+Puis créer un superutilisateur si nécessaire :
+
+```powershell
+python manage.py createsuperuser
+```
+
+---
+
+## 20.5 Les styles CSS ne s’affichent pas
+
+Vérifier :
+
+* que le dossier `static/` existe ;
+* que `static/css/main.css` existe ;
+* que les fichiers statiques sont bien configurés dans `settings.py` ;
+* que le serveur a été relancé après modification.
+
+---
+
+## 20.6 Le port 8000 est déjà utilisé
+
+Lancer Django sur un autre port :
+
+```powershell
+python manage.py runserver 8001
+```
+
+Puis ouvrir :
+
+```text
+http://127.0.0.1:8001/
+```
+
+---
+
+# 21. Commandes récapitulatives
+
+## Installation locale complète
+
+```powershell
+cd "D:\Apprentissage\Autre Projet\Frostia Games"
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
 python manage.py migrate
 python manage.py check
+python manage.py runserver
 ```
 
-Résultat obtenu :
-
-```text
-System check identified no issues (0 silenced).
-```
-
-Pages testées :
-
-```text
-/mes-creations/
-/projets-jouables/
-/admin/
-```
-
-Résultat :
-
-* l’administration Django fonctionne ;
-* les données sont enregistrées en base ;
-* les données remontent dans les templates ;
-* les pages restent accessibles.
-
 ---
 
-# Étape 06 — Mise en place de l’administration Django
-
-**Date :** 24/06/2026
-**Statut :** validé
-
-## Objectif
-
-Permettre la gestion des contenus dynamiques depuis l’administration Django.
-
----
-
-## Actions réalisées
-
-Pour le modèle `Creation` :
-
-* ajout de `list_display` ;
-* ajout de `list_filter` ;
-* ajout de `search_fields` ;
-* ajout de `prepopulated_fields` ;
-* ajout de `readonly_fields`.
-
-Pour le modèle `PlayableProject` :
-
-* ajout de `list_display` ;
-* ajout de `list_filter` ;
-* ajout de `search_fields` ;
-* ajout de `prepopulated_fields` ;
-* ajout de `readonly_fields`.
-
----
-
-## Fichiers concernés
-
-* `creations/admin.py`
-* `playable/admin.py`
-
----
-
-## Problème rencontré
-
-VS Code / Pylance signalait des erreurs inutiles sur `admin.ModelAdmin`.
-
-Ces alertes n’étaient pas des erreurs Django.
-
-Elles ont été traitées avec :
-
-```python
-# type: ignore[type-arg]
-```
-
-et avec un réglage plus adapté de Pylance pour un projet Django.
-
----
-
-## Validation
-
-L’administration Django est accessible à l’adresse :
-
-```text
-/admin/
-```
-
-Actions testées :
-
-* ajout d’une création ;
-* modification d’une création ;
-* ajout d’un projet jouable ;
-* modification d’un projet jouable ;
-* affichage des données côté site.
-
----
-
-# Étape 07 — Interface préparatoire des projets jouables
-
-**Date :** 24/06/2026
-**Statut :** validé
-
-## Objectif
-
-Préparer la page **Projets jouables** sans intégrer de vrai upload serveur.
-
-L’objectif est de montrer une interface prévue pour une future évolution, tout en restant honnête sur les limites de la V1.
-
----
-
-## Actions réalisées
-
-* Ajout d’une zone de lecteur préparatoire.
-* Ajout d’un bouton Lecture affichant un message.
-* Ajout d’un bouton de sélection de fichier local.
-* Affichage du nom du fichier sélectionné.
-* Message indiquant clairement que l’upload n’est pas implanté.
-* Affichage des données `PlayableProject` depuis la base.
-
----
-
-## Fichiers concernés
-
-* `templates/pages/projet_jouable.html`
-* `static/css/main.css`
-* `core/views.py`
-* `playable/models.py`
-
----
-
-## Limite volontaire
-
-Aucun vrai upload serveur n’est implanté dans cette V1.
-
-Cela signifie que :
-
-* aucun fichier n’est envoyé au serveur ;
-* aucun fichier n’est stocké ;
-* aucun fichier n’est exécuté ;
-* aucun vrai lecteur vidéo n’est actif.
-
-Ce choix évite d’ajouter une fonctionnalité sensible sans sécurité suffisante.
-
----
-
-## Validation
-
-Tests effectués :
-
-* page Projets jouables accessible ;
-* données SQL affichées ;
-* bouton Lecture fonctionnel ;
-* bouton de sélection de fichier fonctionnel ;
-* message d’upload non implanté visible ;
-* aucun vrai upload serveur.
-
----
-
-# Étape 08 — Nettoyage des alertes inutiles
-
-**Date :** 24/06/2026
-**Statut :** validé
-
-## Objectif
-
-Supprimer les fausses erreurs affichées par VS Code afin de ne conserver que les alertes réellement utiles.
-
----
-
-## Problème rencontré
-
-Le mode strict de Pylance générait de nombreuses alertes sur les champs Django :
-
-* `CharField` ;
-* `SlugField` ;
-* `BooleanField` ;
-* `ModelAdmin`.
-
-Ces alertes étaient liées au typage interne de Django et ne bloquaient pas l’exécution.
-
----
-
-## Actions réalisées
-
-Modification de `.vscode/settings.json` :
-
-* passage de `strict` à `basic` ;
-* désactivation des faux positifs liés aux types inconnus ;
-* conservation de Ruff pour le formatage et les imports ;
-* conservation de `python manage.py check` comme validation principale Django.
-
----
-
-## Fichiers concernés
-
-* `.vscode/settings.json`
-* `creations/admin.py`
-* `playable/admin.py`
-
----
-
-## Validation
-
-Les alertes inutiles ont disparu.
-
-Le projet reste validé avec :
+## Relancer le projet plus tard
 
 ```powershell
+cd "D:\Apprentissage\Autre Projet\Frostia Games"
+.\.venv\Scripts\Activate.ps1
 python manage.py check
+python manage.py runserver
 ```
 
 ---
 
-# Étape 09 — Ajout de Docker
+## Créer un administrateur
 
-**Date :** 24/06/2026
-**Statut :** validé
-
-## Objectif
-
-Ajouter Docker afin de rendre l’environnement de développement reproductible.
+```powershell
+python manage.py createsuperuser
+```
 
 ---
 
-## Actions réalisées
-
-Création des fichiers :
-
-* `Dockerfile` ;
-* `docker-compose.yml` ;
-* `.dockerignore` ;
-* `requirements.txt`.
-
-Test du lancement avec Docker Compose.
-
----
-
-## Fichiers concernés
-
-* `Dockerfile`
-* `docker-compose.yml`
-* `.dockerignore`
-* `requirements.txt`
-
----
-
-## Commande utilisée
+## Lancement Docker
 
 ```powershell
 docker compose up --build
@@ -745,148 +799,27 @@ docker compose up --build
 
 ---
 
-## Problèmes rencontrés
+## Git après modification
 
-Plusieurs erreurs ont été corrigées :
-
-* erreur YAML dans `docker-compose.yml` ;
-* Docker Desktop non lancé ;
-* erreur de nom de fichier dans le `Dockerfile` ;
-* nécessité de lancer le serveur depuis Docker avant de tester la page.
-
----
-
-## Validation
-
-Docker construit l’image correctement.
-
-Le conteneur se lance.
-
-Le serveur Django démarre dans Docker.
-
-Le site est accessible via :
-
-```text
-http://127.0.0.1:8000/
+```powershell
+git status
+git add .
+git commit -m "Update local installation documentation"
+git push
 ```
 
 ---
 
-# Étape 10 — Ajout de la documentation backend
+# 22. Conclusion
 
-**Date :** 24/06/2026
-**Statut :** validé
+L’installation locale de Frostia Games permet de lancer et tester le projet Django sur une machine de développement.
 
-## Objectif
+Le projet peut être utilisé :
 
-Ajouter les documents nécessaires pour répondre aux attendus du dossier projet.
+* en local avec l’environnement virtuel Python ;
+* avec Docker ;
+* en ligne via Render.
 
----
+Pour la V1, l’installation locale est suffisante pour tester les pages, l’administration Django, les modèles, la base SQLite et l’affichage dynamique.
 
-## Documents créés ou mis à jour
-
-* `doc/00-index-documentation.md`
-* `doc/01-modernisation-interface.md`
-* `doc/02-journal-de-bord.md`
-* `doc/03-modelisation-backend.md`
-* `doc/04-docker-et-lancement.md`
-* `doc/05-securite-backend.md`
-* `doc/06-manuel-utilisateur.md`
-* `doc/07-base-de-donnees.md`
-* `doc/08-changelog.md`
-* `doc/sql/schema.sql`
-* `doc/sql/nosql.md`
-
----
-
-## Contenu ajouté
-
-* MCD simplifié.
-* Cas d’utilisation.
-* Diagrammes de séquence.
-* Schéma SQL documentaire.
-* Exemples `CREATE TABLE`.
-* Exemples `INSERT INTO`.
-* Réflexion NoSQL.
-* Documentation Docker.
-* Documentation sécurité.
-* Manuel utilisateur.
-* Changelog.
-* Mise à jour de l’index.
-* Mise à jour du journal de bord.
-
----
-
-## Validation
-
-Les fichiers de documentation sont présents dans le dossier `doc`.
-
-Ils permettent de justifier :
-
-* la base SQL ;
-* le backend Django ;
-* Docker ;
-* la sécurité ;
-* les limites de la V1 ;
-* les évolutions prévues ;
-* les choix techniques ;
-* les technologies volontairement mises de côté.
-
----
-
-# Étape 11 — État actuel du projet
-
-**Date :** 24/06/2026
-**Statut :** en cours de stabilisation finale
-
-## Ce qui fonctionne
-
-* Le serveur Django local fonctionne.
-* Le serveur Docker fonctionne.
-* Les pages principales sont accessibles.
-* L’administration Django est accessible.
-* Les données SQL sont conservées.
-* Les données SQL remontent dans les templates.
-* L’interface préparatoire des projets jouables fonctionne.
-* `python manage.py check` ne signale pas d’erreur.
-* Les fausses alertes Pylance ont été nettoyées.
-
----
-
-## Ce qu’il reste à faire
-
-* Vérifier la cohérence finale de la documentation.
-* Nettoyer les textes temporaires dans l’administration.
-* Préparer les captures écran.
-* Préparer les extraits de code.
-* Moderniser légèrement l’interface si nécessaire.
-* Préparer la présentation du projet.
-* Prévoir une solution d’hébergement Django en ligne plus tard.
-
----
-
-# Bilan
-
-Le projet Frostia Games dispose maintenant d’une V1 Django fonctionnelle.
-
-Il contient :
-
-* une interface responsive ;
-* un backend Django ;
-* une base SQLite ;
-* une administration ;
-* un affichage dynamique ;
-* Docker ;
-* une documentation SQL ;
-* une réflexion NoSQL ;
-* une documentation de sécurité ;
-* un manuel utilisateur ;
-* un changelog.
-
-Le projet reste volontairement limité afin d’éviter une complexité inutile.
-
-Le choix de ne pas changer de technologie en cours de route est une décision importante du projet.
-
-Même si certaines technologies auraient pu correspondre davantage à mes préférences personnelles, la priorité a été donnée à une V1 terminée, stable, documentée et présentable.
-
-L’objectif est maintenant de stabiliser, documenter et présenter le projet proprement.
+Le projet reste volontairement simple afin de conserver une base stable, documentée et maintenable.

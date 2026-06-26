@@ -8,6 +8,10 @@ L'objectif est de montrer que le projet a été volontairement cadré afin de pr
 
 Cette démarche permet d'éviter une dérive du périmètre, une dette technique trop importante ou une complexité inutile pour une première version.
 
+Le document sert aussi à expliquer que certaines idées peuvent être conservées, reportées, simplifiées ou abandonnées pendant la phase de stabilisation.
+
+Une V1 évolue constamment. L'objectif n'est donc pas de tout ajouter, mais de conserver uniquement ce qui renforce réellement le projet.
+
 ---
 
 ## Rappel du périmètre de la V1
@@ -53,6 +57,8 @@ Limites principales :
 * pas de tests automatisés complets.
 
 Ces limites sont assumées dans le cadre d'une première version.
+
+Elles ne sont pas considérées comme des échecs, mais comme des choix de cadrage.
 
 ---
 
@@ -529,7 +535,9 @@ Gestion avancée des médias
 Tests automatisés complets
 ```
 
-Ces éléments ne sont pas oubliés. Ils sont reportés afin de protéger la stabilité du projet.
+Ces éléments ne sont pas oubliés.
+
+Ils sont reportés afin de protéger la stabilité du projet.
 
 ---
 
@@ -548,6 +556,60 @@ Le cadrage de la V1 permet d'éviter plusieurs risques classiques :
 * transformation du projet en usine à gaz.
 
 La priorité a été donnée à une version simple, stable, déployée et défendable.
+
+---
+
+## Idées pouvant être abandonnées pendant la stabilisation
+
+Pendant la phase de stabilisation d'une V1, certaines idées peuvent être reportées, simplifiées ou même abandonnées.
+
+Un projet en V1 évolue constamment.
+
+Toutes les idées envisagées au départ ne sont pas forcément conservées jusqu'à la version présentable.
+
+Certaines idées peuvent sembler intéressantes au début, mais devenir moins pertinentes après :
+
+* les premiers tests ;
+* la mise en place du backend ;
+* le déploiement ;
+* la rédaction de la documentation ;
+* la vérification du temps disponible ;
+* la stabilisation du périmètre.
+
+Abandonner une idée ne signifie pas que le projet échoue.
+
+Cela peut au contraire montrer une bonne gestion du périmètre.
+
+Une idée peut être abandonnée si :
+
+* elle ajoute trop de complexité ;
+* elle n'est pas indispensable pour la V1 ;
+* elle risque de fragiliser le projet ;
+* elle demande trop de temps par rapport à sa valeur réelle ;
+* elle rend la documentation plus difficile à maintenir ;
+* elle détourne le projet de son objectif principal ;
+* elle transforme une version stable en projet trop lourd ;
+* elle peut être remplacée par une solution plus simple ;
+* elle n'apporte pas assez de valeur à l'évaluateur ou à l'utilisateur final.
+
+Dans le cadre de Frostia Games, la priorité de la phase de stabilisation est de conserver une version :
+
+* fonctionnelle ;
+* claire ;
+* déployée ;
+* documentée ;
+* testable ;
+* présentable.
+
+Certaines idées pourront donc être conservées dans la roadmap, tandis que d'autres pourront être abandonnées si elles ne servent plus réellement le projet.
+
+Cette démarche permet d'éviter de conserver des fonctionnalités uniquement parce qu'elles avaient été envisagées au départ.
+
+Une V1 doit rester vivante, mais elle doit aussi être protégée contre l'accumulation excessive d'idées.
+
+L'objectif n'est pas de tout garder.
+
+L'objectif est de garder ce qui renforce réellement le projet.
 
 ---
 
@@ -643,8 +705,13 @@ Avant d'ajouter une nouvelle fonctionnalité, il faudra vérifier :
 * est-ce testable ?
 * est-ce que cela ajoute trop de complexité ?
 * est-ce que cela peut être reporté ?
+* est-ce que cette idée doit vraiment être conservée ?
+* est-ce que cette idée peut être simplifiée ?
+* est-ce que cette idée doit être abandonnée pour stabiliser la V1 ?
 
 Si une fonctionnalité n'est pas indispensable, elle doit être reportée.
+
+Si une idée fragilise la V1, elle doit être simplifiée ou abandonnée.
 
 ---
 
@@ -663,6 +730,12 @@ Elle permet déjà de montrer :
 * une documentation complète ;
 * une réflexion technique sur les limites et évolutions.
 
-Les limites actuelles ne sont pas des échecs. Elles montrent que le projet a été cadré pour rester stable et présentable.
+Les limites actuelles ne sont pas des échecs.
+
+Elles montrent que le projet a été cadré pour rester stable et présentable.
 
 Les évolutions futures sont identifiées, mais elles seront ajoutées progressivement, uniquement si elles apportent une vraie valeur au projet.
+
+Certaines idées pourront aussi être abandonnées pendant la stabilisation si elles ne servent plus l'objectif principal de la V1.
+
+La priorité reste de conserver un projet clair, stable, maintenable, documenté et défendable.

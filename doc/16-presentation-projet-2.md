@@ -220,7 +220,10 @@ Documents principaux :
 * architecture ;
 * tests et vérifications ;
 * captures et preuves ;
-* limites et évolutions.
+* limites et évolutions ;
+* présentation du projet 2 ;
+* pistes explorées et non retenues ;
+* plan de finalisation V1.
 
 Cette documentation montre les choix réalisés, les problèmes rencontrés, les solutions appliquées et les évolutions possibles.
 
@@ -327,7 +330,7 @@ Le choix a donc été de privilégier une V1 propre, testable, documentée et d�
 Avant de présenter officiellement ce projet comme projet 2, il reste à finaliser :
 
 * les captures d'écran ;
-* le README à la racine ;
+* la vérification finale du README à la racine ;
 * les maquettes Figma si nécessaires ;
 * la relecture des textes ;
 * la vérification mobile ;

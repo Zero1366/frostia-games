@@ -6,7 +6,7 @@ Cette étape avait pour objectif de transformer la première maquette wireframe 
 
 Le but était de conserver une structure simple, mais de donner au site une identité visuelle plus forte, cohérente et exploitable pour une V1 Django.
 
-L’objectif n’était pas de créer une interface définitive, mais de mettre en place une base visuelle stable, maintenable et compatible avec les futures évolutions du projet.
+L’objectif n’était pas de créer une interface définitive, mais de mettre en place une base visuelle stable, maintenable, responsive et compatible avec les futures évolutions du projet.
 
 ---
 
@@ -18,11 +18,15 @@ La structure du site a été volontairement limitée à trois pages principales 
 * Mes créations ;
 * Projets jouables.
 
-Le nom **Frostia Games** est utilisé comme nom temporaire de présentation du projet. Le logo actuel est également temporaire et pourra être remplacé lors d’une future mise à jour.
+Le nom **Frostia Games** est utilisé comme nom temporaire de présentation du projet.
+
+Le logo actuel est également temporaire et pourra être remplacé lors d’une future mise à jour.
 
 La direction visuelle retenue repose sur une identité bleue moderne, froide et cohérente avec le nom Frostia.
 
 L’objectif est d’obtenir un rendu sérieux et professionnel sans dépendre d’illustrations personnalisées ou d’un template externe.
+
+Cette décision permet de garder le contrôle sur la structure HTML, le CSS, le responsive et l’évolution future du projet.
 
 ---
 
@@ -45,11 +49,13 @@ Sur desktop, la sidebar reste visible en permanence.
 
 Sur mobile, elle se replie automatiquement et peut être ouverte avec un bouton menu.
 
+Ce choix permet d’avoir une interface simple à comprendre, sans ajouter de dépendance graphique lourde.
+
 ---
 
 ## Travail réalisé
 
-Le fichier CSS principal a été refait pour obtenir une interface plus propre et plus cohérente.
+Le fichier CSS principal a été retravaillé pour obtenir une interface plus propre et plus cohérente.
 
 Les améliorations principales sont :
 
@@ -64,6 +70,8 @@ Les améliorations principales sont :
 * création d’une interface cohérente sur les trois pages principales ;
 * ajout d’une zone préparatoire pour les projets jouables ;
 * ajout d’un affichage visuel pour les données provenant du backend.
+
+L’interface a également été adaptée pour afficher certaines données provenant des modèles Django, ce qui permet à la V1 de ne plus être uniquement statique.
 
 ---
 
@@ -119,6 +127,8 @@ Elle contient :
 
 Cette page prépare l’évolution future vers des fiches projet détaillées, sans les ajouter trop tôt dans la V1.
 
+Elle permet aussi de montrer que certains contenus peuvent être affichés depuis Django plutôt que d’être uniquement écrits en dur dans les templates.
+
 ---
 
 ## Page Projets jouables
@@ -139,6 +149,8 @@ Aucun vrai upload serveur n’est activé dans cette version.
 
 Ce choix évite d’intégrer une fonctionnalité sensible sans avoir encore mis en place les protections nécessaires.
 
+La page permet donc de montrer une intention d’évolution sans exposer le projet à une complexité trop importante.
+
 ---
 
 ## Problèmes rencontrés
@@ -154,6 +166,8 @@ Plusieurs problèmes sont apparus pendant l’intégration :
 * certaines parties de l’interface ont dû être adaptées après l’ajout du backend.
 
 Ces problèmes ont été corrigés progressivement.
+
+Cette étape a aussi permis de mieux séparer ce qui relève de l’interface, du backend et des futures évolutions.
 
 ---
 
@@ -175,6 +189,8 @@ Le site possède maintenant :
 
 L’objectif de cette étape est atteint : le site possède une base graphique exploitable pour continuer le développement et présenter le projet.
 
+L’interface reste volontairement simple afin de préserver la stabilité de la V1.
+
 ---
 
 ## Lien avec le backend
@@ -192,6 +208,27 @@ Les données sont ajoutées dans l’administration Django puis affichées dans 
 
 Ce fonctionnement permet de modifier certains contenus sans toucher directement au code HTML.
 
+Cette évolution donne au projet une dimension backend réelle, tout en conservant une interface simple à maintenir.
+
+---
+
+## Lien avec le déploiement
+
+L’interface a été vérifiée après la mise en ligne du projet sur Render.
+
+Le site est accessible en ligne et les pages principales peuvent être consultées depuis l’URL de production.
+
+Le déploiement permet de vérifier que l’interface fonctionne en dehors de l’environnement local.
+
+Points vérifiés :
+
+* chargement de la page d’accueil ;
+* chargement du CSS ;
+* navigation entre les pages ;
+* accès aux pages principales ;
+* cohérence générale de l’affichage ;
+* compatibilité avec la configuration Render.
+
 ---
 
 ## Ce qui reste à faire
@@ -206,7 +243,9 @@ Les prochaines améliorations visuelles possibles sont :
 * ajouter plus tard des visuels définitifs ;
 * ajouter une future fiche projet détaillée lorsque le contenu sera prêt.
 
-Ces améliorations doivent rester secondaires tant que le backend, la documentation et les tests ne sont pas totalement stabilisés.
+Ces améliorations restent secondaires par rapport à la finalisation de la V1 : captures, relecture, vérification responsive, README racine et dossier projet.
+
+L’objectif n’est pas de relancer une refonte complète, mais de terminer une version propre, stable et défendable.
 
 ---
 
@@ -220,9 +259,12 @@ La V1 ne prévoit pas :
 * de galerie complexe ;
 * de vraie lecture vidéo ;
 * de vrai upload serveur ;
-* de page détail complète pour chaque projet.
+* de page détail complète pour chaque projet ;
+* d’interface graphique définitive.
 
 Ces choix permettent de conserver une interface stable, simple et maintenable.
+
+Ils évitent aussi d’ajouter une complexité excessive alors que la priorité est de finaliser une V1 fonctionnelle et documentée.
 
 ---
 
@@ -242,4 +284,6 @@ Cela permet de garder le contrôle sur :
 * le responsive ;
 * l’évolution future du portfolio.
 
-La modernisation lourde de l’interface est reportée après la stabilisation complète du projet.
+La modernisation lourde de l’interface est reportée à une version future afin de conserver une V1 stable, documentée et déployée.
+
+Cette étape valide donc la base visuelle du projet Frostia Games pour la V1.

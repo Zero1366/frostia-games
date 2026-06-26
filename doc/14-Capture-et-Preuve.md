@@ -10,6 +10,77 @@ Ces captures pourront être utilisées dans le dossier projet, dans une présent
 
 ---
 
+## Organisation des preuves
+
+Un fichier de preuve sera ajouté afin de regrouper et présenter les captures importantes du projet **Frostia Games**.
+
+Ce fichier de preuve servira à montrer visuellement :
+
+* les captures des maquettes Figma ;
+* les captures du site public ;
+* les captures responsive ;
+* les captures de l'administration Django ;
+* les captures du déploiement Render ;
+* les captures du code ;
+* les captures des commandes de validation ;
+* les captures du dépôt GitHub ;
+* les captures de la documentation.
+
+Toutes les images utilisées comme preuves seront regroupées dans un répertoire dédié.
+
+Organisation prévue :
+
+```txt
+doc/
+└── preuves/
+    ├── preuves-frostia-games.md
+    └── images/
+        ├── figma-accueil.png
+        ├── figma-mes-creations.png
+        ├── figma-projets-jouables.png
+        ├── site-accueil-desktop.png
+        ├── site-mes-creations.png
+        ├── site-projets-jouables.png
+        ├── site-accueil-mobile.png
+        ├── site-mes-creations-mobile.png
+        ├── admin-connexion.png
+        ├── admin-tableau-de-bord.png
+        ├── admin-creations.png
+        ├── admin-projets-jouables.png
+        ├── render-service-live.png
+        ├── render-build-start-command.png
+        ├── django-check.png
+        ├── git-status-clean.png
+        └── github-depot.png
+```
+
+Le fichier `preuves-frostia-games.md` servira à présenter les captures avec un court commentaire pour expliquer ce que chaque image prouve.
+
+Le dossier `images/` contiendra toutes les captures utilisées comme preuves.
+
+Cette organisation permet de faciliter :
+
+* la préparation du dossier projet ;
+* la relecture ;
+* l'ajout des images dans le dossier final ;
+* la vérification des preuves techniques ;
+* la présentation du projet à l'évaluateur ;
+* la séparation entre la documentation écrite et les fichiers images.
+
+Les captures ne doivent pas contenir d'informations sensibles.
+
+Avant d'ajouter une image dans le dossier de preuves, il faut vérifier que la capture ne montre pas :
+
+* de mot de passe ;
+* de clé secrète Django ;
+* de valeur `DJANGO_SECRET_KEY` ;
+* de valeur `DJANGO_SUPERUSER_PASSWORD` ;
+* de variable d'environnement sensible ;
+* d'information personnelle inutile ;
+* d'identifiants administrateur complets.
+
+---
+
 ## Règles de sécurité pour les captures
 
 Avant de prendre une capture d'écran, il faut vérifier qu'aucune information sensible n'est visible.
@@ -33,6 +104,7 @@ Les captures doivent montrer le fonctionnement du projet sans exposer les secret
 
 Les captures à conserver sont réparties en plusieurs catégories :
 
+* captures des maquettes Figma ;
 * captures du site public ;
 * captures responsive ;
 * captures de l'administration Django ;
@@ -40,6 +112,39 @@ Les captures à conserver sont réparties en plusieurs catégories :
 * captures du code ;
 * captures de la documentation ;
 * captures de validation technique.
+
+---
+
+# 0. Captures des maquettes Figma
+
+## Capture 00 - Maquettes Figma du projet
+
+### Objectif
+
+Montrer que l'interface du projet a été préparée visuellement avant ou pendant l'intégration.
+
+### Éléments à capturer
+
+* maquette de la page d'accueil ;
+* maquette de la page Mes créations ;
+* maquette de la page Projets jouables ;
+* structure générale prévue ;
+* organisation visuelle des pages.
+
+### À montrer sur la capture
+
+* la mise en page prévue ;
+* les sections principales ;
+* l'organisation des cartes ;
+* la logique de navigation ;
+* les choix visuels de départ ;
+* l'intention graphique du projet.
+
+### Statut
+
+```txt
+À capturer
+```
 
 ---
 
@@ -398,13 +503,17 @@ Montrer l'organisation générale du projet.
 ### À montrer sur la capture
 
 * dossier `frostia_config` ;
+* dossier `core` ;
+* dossier `creations` ;
 * dossier `playable` ;
 * dossier `templates` ;
 * dossier `static` ;
 * dossier `doc` ;
 * fichier `manage.py` ;
 * fichier `requirements.txt` ;
-* fichier `build.sh`.
+* fichier `build.sh` ;
+* fichier `README.md` ;
+* fichier `CHOIX_TECHNIQUES.md`.
 
 ### Statut
 
@@ -619,7 +728,7 @@ Fichiers du dossier `doc` :
 ```txt
 00-index-documentation.md
 01-modernisation-interface.md
-02-Journal de bord.md
+02-journal-de-bord.md
 03-modelisation-backend.md
 04-docker-et-lancement.md
 05-securite-backend.md
@@ -630,8 +739,12 @@ Fichiers du dossier `doc` :
 10-bilan-v1-frostia-games.md
 11-installation-locale.md
 12-architecture.md
-13-tests-et-verifications.md
-14-captures-et-preuves.md
+13-test-et-vérification.md
+14-Capture-et Preuve.md
+15-limites-et-évolutions.md
+16-presentation-projet-2.md
+17-pistes-explorees-et-non-retenues.md
+18-plan-finalisation-v1.md
 ```
 
 ### Statut
@@ -686,35 +799,58 @@ Montrer que l'état du projet est évalué avec un bilan clair.
 
 ---
 
+## Capture 26 - Fichier de preuve
+
+### Objectif
+
+Montrer que les captures sont organisées dans un fichier de preuve dédié.
+
+### À montrer sur la capture
+
+* fichier `preuves-frostia-games.md` ;
+* répertoire `images/` ;
+* liste des captures utilisées ;
+* organisation claire des preuves.
+
+### Statut
+
+```txt
+À capturer après création du fichier de preuve
+```
+
+---
+
 # Tableau récapitulatif des captures
 
-| N° | Capture                            | Priorité | Statut                |
-| -: | ---------------------------------- | -------- | --------------------- |
-| 01 | Page d'accueil desktop             | Haute    | À faire               |
-| 02 | Page Mes créations                 | Haute    | À faire               |
-| 03 | Page Projets jouables              | Haute    | À faire               |
-| 04 | Page d'accueil mobile              | Haute    | À faire               |
-| 05 | Page Mes créations mobile          | Moyenne  | À faire               |
-| 06 | Connexion admin Django             | Haute    | À faire               |
-| 07 | Tableau de bord admin Django       | Haute    | À faire               |
-| 08 | Modèle Creation admin              | Moyenne  | À faire               |
-| 09 | Modèle PlayableProject admin       | Moyenne  | À faire               |
-| 10 | Service Render actif               | Haute    | À faire               |
-| 11 | Logs Render service live           | Haute    | À faire               |
-| 12 | Build Command / Start Command      | Haute    | À faire               |
-| 13 | Variables d'environnement masquées | Moyenne  | À faire avec prudence |
-| 14 | Structure du projet VS Code        | Haute    | À faire               |
-| 15 | settings.py sans secret            | Moyenne  | À faire avec prudence |
-| 16 | models.py                          | Haute    | À faire               |
-| 17 | admin.py                           | Moyenne  | À faire               |
-| 18 | views.py                           | Moyenne  | À faire               |
-| 19 | build.sh                           | Haute    | À faire               |
-| 20 | python manage.py check             | Haute    | À faire               |
-| 21 | git status propre                  | Haute    | À faire               |
-| 22 | dépôt GitHub                       | Moyenne  | À faire               |
-| 23 | dossier doc                        | Haute    | À faire               |
-| 24 | documentation Render               | Moyenne  | À faire               |
-| 25 | bilan V1                           | Moyenne  | À faire               |
+| N° | Capture                            | Priorité | Statut                 |
+| -: | ---------------------------------- | -------- | ---------------------- |
+| 00 | Maquettes Figma                    | Haute    | À faire                |
+| 01 | Page d'accueil desktop             | Haute    | À faire                |
+| 02 | Page Mes créations                 | Haute    | À faire                |
+| 03 | Page Projets jouables              | Haute    | À faire                |
+| 04 | Page d'accueil mobile              | Haute    | À faire                |
+| 05 | Page Mes créations mobile          | Moyenne  | À faire                |
+| 06 | Connexion admin Django             | Haute    | À faire                |
+| 07 | Tableau de bord admin Django       | Haute    | À faire                |
+| 08 | Modèle Creation admin              | Moyenne  | À faire                |
+| 09 | Modèle PlayableProject admin       | Moyenne  | À faire                |
+| 10 | Service Render actif               | Haute    | À faire                |
+| 11 | Logs Render service live           | Haute    | À faire                |
+| 12 | Build Command / Start Command      | Haute    | À faire                |
+| 13 | Variables d'environnement masquées | Moyenne  | À faire avec prudence  |
+| 14 | Structure du projet VS Code        | Haute    | À faire                |
+| 15 | settings.py sans secret            | Moyenne  | À faire avec prudence  |
+| 16 | models.py                          | Haute    | À faire                |
+| 17 | admin.py                           | Moyenne  | À faire                |
+| 18 | views.py                           | Moyenne  | À faire                |
+| 19 | build.sh                           | Haute    | À faire                |
+| 20 | python manage.py check             | Haute    | À faire                |
+| 21 | git status propre                  | Haute    | À faire                |
+| 22 | dépôt GitHub                       | Moyenne  | À faire                |
+| 23 | dossier doc                        | Haute    | À faire                |
+| 24 | documentation Render               | Moyenne  | À faire                |
+| 25 | bilan V1                           | Moyenne  | À faire                |
+| 26 | fichier de preuve                  | Moyenne  | À faire après création |
 
 ---
 
@@ -723,6 +859,7 @@ Montrer que l'état du projet est évalué avec un bilan clair.
 Si le temps est limité, les captures indispensables sont :
 
 ```txt
+00 - Maquettes Figma
 01 - Page d'accueil desktop
 02 - Page Mes créations
 03 - Page Projets jouables
@@ -764,12 +901,15 @@ Les captures listées dans ce document permettent de préparer une preuve claire
 
 Elles montrent :
 
+* les maquettes Figma ;
 * l'interface publique ;
 * le responsive ;
 * l'administration Django ;
 * le déploiement Render ;
 * la configuration technique ;
 * les tests réalisés ;
-* la documentation produite.
+* la documentation produite ;
+* l'organisation des preuves dans un fichier dédié ;
+* le regroupement des images dans un répertoire prévu.
 
 Ce document sert de checklist pour préparer le dossier projet et vérifier que la V1 est correctement présentée.

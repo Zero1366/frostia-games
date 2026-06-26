@@ -4,13 +4,17 @@
 
 Ce document présente les pistes techniques et fonctionnelles envisagées pendant le développement du projet **Frostia Games**, mais qui n'ont pas été intégrées dans la V1.
 
-L'objectif est de montrer que les choix réalisés ne sont pas dus au hasard. Plusieurs solutions ont été réfléchies, comparées, puis certaines ont été volontairement reportées afin de conserver une première version stable, livrable, documentée et déployée.
+L'objectif est de montrer que les choix réalisés ne sont pas dus au hasard. Plusieurs solutions ont été réfléchies, comparées, puis certaines ont été volontairement retenues, reportées ou abandonnées afin de conserver une première version stable, livrable, documentée et déployée.
 
 Le principe retenu pour ce projet est le suivant :
 
 ```txt
 Toutes les pistes intéressantes peuvent être envisagées et explorées, mais seules les fonctionnalités utiles à une V1 stable doivent être intégrées immédiatement.
 ```
+
+Une V1 évolue constamment.
+
+Certaines idées peuvent rester dans la roadmap, tandis que d'autres peuvent être abandonnées pendant la phase de stabilisation si elles ne servent plus réellement le projet.
 
 ---
 
@@ -40,7 +44,7 @@ L'objectif était de créer une base :
 * évolutive ;
 * maîtrisable.
 
-Certaines pistes ont donc été écartées ou reportées afin d'éviter de transformer la V1 en projet trop lourd.
+Certaines pistes ont donc été écartées, reportées ou pourront être abandonnées afin d'éviter de transformer la V1 en projet trop lourd.
 
 ---
 
@@ -55,9 +59,13 @@ Avant d'ajouter une technologie ou une fonctionnalité, plusieurs questions ont 
 * est-ce que cela demande trop de temps ?
 * est-ce que cela complexifie la documentation ?
 * est-ce que cela peut être ajouté plus tard ?
+* est-ce que cela doit vraiment être conservé ?
+* est-ce que cela peut être simplifié ?
 * est-ce que cela risque de transformer le projet en usine à gaz ?
 
 Si une piste n'était pas indispensable, elle a été reportée.
+
+Si une idée risquait de fragiliser la V1 ou d'ajouter trop de complexité, elle pouvait aussi être abandonnée.
 
 ---
 
@@ -610,23 +618,82 @@ La V1 conserve une gestion simple des fichiers statiques.
 
 ---
 
+# 14. Pistes reportées ou abandonnées pendant la stabilisation
+
+## Description
+
+Toutes les pistes explorées ne sont pas forcément destinées à revenir plus tard.
+
+Certaines idées sont simplement reportées, car elles restent intéressantes mais ne sont pas adaptées à la V1.
+
+D'autres idées peuvent être abandonnées pendant la phase de stabilisation si elles ne servent plus réellement l'objectif du projet.
+
+Une V1 évolue constamment.
+
+Les choix faits au départ peuvent donc être ajustés après :
+
+* les premiers tests ;
+* le déploiement ;
+* la mise en place du backend ;
+* la rédaction de la documentation ;
+* la vérification du temps disponible ;
+* la stabilisation du périmètre.
+
+---
+
+## Pourquoi certaines idées peuvent être abandonnées
+
+Une idée peut être abandonnée si :
+
+* elle ajoute trop de complexité ;
+* elle fragilise le projet ;
+* elle demande trop de temps ;
+* elle n'apporte pas assez de valeur à la V1 ;
+* elle rend la documentation plus difficile à maintenir ;
+* elle détourne le projet de son objectif principal ;
+* elle transforme le projet en usine à gaz ;
+* elle peut être remplacée par une solution plus simple.
+
+Abandonner une idée ne signifie pas que le projet échoue.
+
+Cela peut au contraire montrer une bonne gestion du périmètre et une capacité à protéger la stabilité de la V1.
+
+---
+
+## Décision
+
+Dans le cadre de Frostia Games, certaines pistes restent dans la roadmap, tandis que d'autres pourront être abandonnées si elles ne sont plus utiles.
+
+L'objectif n'est pas de conserver toutes les idées envisagées.
+
+L'objectif est de garder uniquement les choix qui renforcent :
+
+* la stabilité ;
+* la lisibilité ;
+* la cohérence ;
+* la maintenabilité ;
+* la présentation de la V1.
+
+---
+
 # Tableau récapitulatif
 
-| Piste explorée              | Décision | Raison principale                 |
-| --------------------------- | -------- | --------------------------------- |
-| C# / ASP.NET Core / Razor   | Reporté  | Risque de complexité pour la V1   |
-| Django                      | Retenu   | Adapté à une V1 stable et rapide  |
-| PostgreSQL                  | Reporté  | Trop tôt pour le périmètre actuel |
-| Compte jury temporaire      | Reporté  | Sécurité et droits à limiter      |
-| Admin personnalisée         | Reporté  | Trop complexe pour une V1         |
-| Upload serveur réel         | Reporté  | Fonction sensible                 |
-| Jeu jouable navigateur      | Reporté  | Hors périmètre immédiat           |
-| Plotly.js                   | Reporté  | Non indispensable                 |
-| Espace privé complet        | Reporté  | Trop large                        |
-| Sauvegardes automatiques    | Reporté  | Architecture plus avancée         |
-| Refonte graphique complète  | Reporté  | Priorité à la stabilité           |
-| Tests automatisés complets  | Reporté  | Temps supplémentaire              |
-| Gestion complète des médias | Reporté  | Trop lourd pour la V1             |
+| Piste explorée              | Décision         | Raison principale                 |
+| --------------------------- | ---------------- | --------------------------------- |
+| C# / ASP.NET Core / Razor   | Reporté          | Risque de complexité pour la V1   |
+| Django                      | Retenu           | Adapté à une V1 stable et rapide  |
+| PostgreSQL                  | Reporté          | Trop tôt pour le périmètre actuel |
+| Compte jury temporaire      | Reporté          | Sécurité et droits à limiter      |
+| Admin personnalisée         | Reporté          | Trop complexe pour une V1         |
+| Upload serveur réel         | Reporté          | Fonction sensible                 |
+| Jeu jouable navigateur      | Reporté          | Hors périmètre immédiat           |
+| Plotly.js                   | Reporté          | Non indispensable                 |
+| Espace privé complet        | Reporté          | Trop large                        |
+| Sauvegardes automatiques    | Reporté          | Architecture plus avancée         |
+| Refonte graphique complète  | Reporté          | Priorité à la stabilité           |
+| Tests automatisés complets  | Reporté          | Temps supplémentaire              |
+| Gestion complète des médias | Reporté          | Trop lourd pour la V1             |
+| Certaines idées secondaires | Abandon possible | Stabilisation de la V1            |
 
 ---
 
@@ -641,15 +708,22 @@ Les choix réalisés montrent :
 * une capacité à limiter le périmètre ;
 * une volonté d'éviter le scope creep ;
 * une priorité donnée à la stabilité ;
-* une volonté de produire une V1 terminée plutôt qu'un projet trop ambitieux.
+* une volonté de produire une V1 terminée plutôt qu'un projet trop ambitieux ;
+* une capacité à abandonner certaines idées si elles ne servent plus réellement le projet.
+
+Cette approche permet de préserver un projet clair, livrable et défendable.
 
 ---
 
 ## Bilan
 
-Les pistes explorées ne sont pas des abandons définitifs.
+Les pistes explorées ne sont pas des oublis.
 
-Elles représentent des évolutions possibles pour le futur.
+Elles montrent que plusieurs directions techniques et fonctionnelles ont été étudiées avant de stabiliser la V1.
+
+Certaines pistes sont reportées, car elles restent intéressantes pour une version future.
+
+D'autres pourront être abandonnées si elles ne servent plus réellement le projet ou si elles risquent de fragiliser la V1.
 
 La V1 de Frostia Games reste centrée sur l'essentiel :
 
@@ -661,4 +735,6 @@ La V1 de Frostia Games reste centrée sur l'essentiel :
 * une documentation complète ;
 * une architecture évolutive.
 
-Les fonctionnalités non intégrées ne sont pas des oublis. Elles sont volontairement reportées afin de protéger la qualité de la V1.
+Les fonctionnalités non intégrées ne sont donc pas des échecs.
+
+Elles sont volontairement écartées, reportées ou abandonnées afin de protéger la qualité, la stabilité et la lisibilité de la V1.

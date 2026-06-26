@@ -11,7 +11,10 @@ Il permet de conserver une trace claire :
 * des fonctionnalités ajoutées ;
 * des vérifications effectuées ;
 * de l’état de validation de chaque étape ;
-* des choix techniques importants.
+* des choix techniques importants ;
+* des éléments volontairement reportés ;
+* du déploiement en ligne ;
+* des fichiers de documentation ajoutés au projet.
 
 ---
 
@@ -41,11 +44,15 @@ Mise en place du projet Django servant de base au site Frostia Games.
 
 Commande utilisée :
 
-`python manage.py check`
+```powershell
+python manage.py check
+```
 
 Résultat attendu :
 
-`System check identified no issues (0 silenced).`
+```text
+System check identified no issues (0 silenced).
+```
 
 ## Statut
 
@@ -53,7 +60,39 @@ Validé.
 
 ---
 
-# 2. Création des pages principales
+# 2. Création des applications Django internes
+
+## Résumé
+
+Création des applications internes utilisées par le projet.
+
+## Applications créées
+
+* `core`
+* `creations`
+* `playable`
+
+## Fichiers concernés
+
+* `core/`
+* `creations/`
+* `playable/`
+* `frostia_config/settings.py`
+
+## Modifications réalisées
+
+* Création de l’application `core` pour les vues principales.
+* Création de l’application `creations` pour les créations du portfolio.
+* Création de l’application `playable` pour les futurs projets jouables.
+* Ajout des applications dans `INSTALLED_APPS`.
+
+## Statut
+
+Validé.
+
+---
+
+# 3. Création des pages principales
 
 ## Résumé
 
@@ -86,9 +125,11 @@ Création des trois pages principales du portfolio.
 
 Pages testées :
 
-* `/`
-* `/mes-creations/`
-* `/projets-jouables/`
+```text
+/
+ /mes-creations/
+ /projets-jouables/
+```
 
 ## Statut
 
@@ -96,7 +137,7 @@ Validé.
 
 ---
 
-# 3. Ajout de l’interface visuelle
+# 4. Ajout de l’interface visuelle
 
 ## Résumé
 
@@ -119,6 +160,8 @@ Création de l’interface utilisateur du site.
 * Création des cartes de contenu.
 * Ajout du menu mobile.
 * Ajout d’une interface préparatoire pour les projets jouables.
+* Amélioration progressive de la lisibilité des pages.
+* Adaptation de l’interface à l’affichage des données Django.
 
 ## Validation
 
@@ -136,11 +179,43 @@ Validé.
 
 ---
 
-# 4. Création de l’application `creations`
+# 5. Modernisation de l’interface
 
 ## Résumé
 
-Ajout d’une application Django dédiée aux créations du portfolio.
+Modernisation de l’interface afin de passer d’un wireframe simple à une présentation plus professionnelle.
+
+## Fichiers concernés
+
+* `static/css/main.css`
+* `templates/base.html`
+* `templates/pages/home.html`
+* `templates/pages/creation.html`
+* `templates/pages/projet_jouable.html`
+* `doc/01-modernisation-interface.md`
+
+## Modifications réalisées
+
+* Harmonisation des couleurs bleues.
+* Ajout d’un fond dégradé.
+* Amélioration des cartes.
+* Amélioration de la sidebar.
+* Amélioration du footer.
+* Amélioration de l’état actif de navigation.
+* Préparation du responsive mobile.
+* Documentation de la modernisation dans un fichier dédié.
+
+## Statut
+
+Validé.
+
+---
+
+# 6. Création du modèle `Creation`
+
+## Résumé
+
+Ajout d’un modèle Django dédié aux créations du portfolio.
 
 ## Fichiers concernés
 
@@ -162,9 +237,11 @@ Ajout d’une application Django dédiée aux créations du portfolio.
 
 Commandes utilisées :
 
-* `python manage.py makemigrations`
-* `python manage.py migrate`
-* `python manage.py check`
+```powershell
+python manage.py makemigrations
+python manage.py migrate
+python manage.py check
+```
 
 ## Statut
 
@@ -172,11 +249,11 @@ Validé.
 
 ---
 
-# 5. Création de l’application `playable`
+# 7. Création du modèle `PlayableProject`
 
 ## Résumé
 
-Ajout d’une application Django dédiée aux futurs projets jouables.
+Ajout d’un modèle Django dédié aux futurs projets jouables.
 
 ## Fichiers concernés
 
@@ -198,9 +275,11 @@ Ajout d’une application Django dédiée aux futurs projets jouables.
 
 Commandes utilisées :
 
-* `python manage.py makemigrations`
-* `python manage.py migrate`
-* `python manage.py check`
+```powershell
+python manage.py makemigrations
+python manage.py migrate
+python manage.py check
+```
 
 ## Statut
 
@@ -208,7 +287,7 @@ Validé.
 
 ---
 
-# 6. Connexion des vues à la base de données
+# 8. Connexion des vues à la base de données
 
 ## Résumé
 
@@ -232,10 +311,16 @@ Connexion des pages aux modèles Django afin d’afficher les données enregistr
 
 Pages testées :
 
-* `/mes-creations/`
-* `/projets-jouables/`
+```text
+/mes-creations/
+/projets-jouables/
+```
 
-Les données ajoutées dans l’administration apparaissent bien côté site.
+Résultat :
+
+* les données ajoutées dans l’administration apparaissent bien côté site ;
+* les contenus invisibles ne sont pas affichés ;
+* les pages restent accessibles.
 
 ## Statut
 
@@ -243,7 +328,7 @@ Validé.
 
 ---
 
-# 7. Mise en place de l’administration Django
+# 9. Mise en place de l’administration Django
 
 ## Résumé
 
@@ -256,17 +341,20 @@ Configuration de l’administration Django pour gérer les contenus dynamiques d
 
 ## Modifications réalisées
 
-* Ajout des colonnes visibles dans l’admin.
+* Ajout des colonnes visibles dans l’administration.
 * Ajout des filtres.
 * Ajout des champs de recherche.
 * Ajout de la génération automatique du slug.
 * Ajout des champs en lecture seule pour les dates.
+* Amélioration de la gestion des contenus depuis l’interface `/admin/`.
 
 ## Validation
 
 Interface testée :
 
-* `/admin/`
+```text
+/admin/
+```
 
 Actions testées :
 
@@ -282,7 +370,46 @@ Validé.
 
 ---
 
-# 8. Ajout de Docker
+# 10. Ajout de l’interface préparatoire des projets jouables
+
+## Résumé
+
+Préparation de la page **Projets jouables** sans activer de vrai upload serveur.
+
+## Fichiers concernés
+
+* `templates/pages/projet_jouable.html`
+* `static/css/main.css`
+* `static/js/menu.js`
+* `core/views.py`
+* `playable/models.py`
+
+## Modifications réalisées
+
+* Ajout d’une zone de lecteur préparatoire.
+* Ajout d’un bouton Lecture affichant un message.
+* Ajout d’un bouton de sélection de fichier local.
+* Affichage du nom du fichier sélectionné.
+* Message indiquant que l’upload réel n’est pas implanté.
+* Affichage des projets jouables enregistrés en base.
+
+## Validation
+
+Tests effectués :
+
+* page accessible ;
+* bouton Lecture fonctionnel ;
+* sélection locale de fichier fonctionnelle ;
+* aucun fichier envoyé au serveur ;
+* message de limite visible.
+
+## Statut
+
+Validé.
+
+---
+
+# 11. Ajout de Docker
 
 ## Résumé
 
@@ -307,7 +434,9 @@ Ajout d’une configuration Docker simple pour rendre le projet reproductible.
 
 Commande utilisée :
 
-`docker compose up --build`
+```powershell
+docker compose up --build
+```
 
 Résultat obtenu :
 
@@ -322,7 +451,7 @@ Validé.
 
 ---
 
-# 9. Ajout du schéma SQL documentaire
+# 12. Ajout du schéma SQL documentaire
 
 ## Résumé
 
@@ -351,7 +480,7 @@ Validé.
 
 ---
 
-# 10. Ajout de la réflexion NoSQL
+# 13. Ajout de la réflexion NoSQL
 
 ## Résumé
 
@@ -374,11 +503,11 @@ Validé.
 
 ---
 
-# 11. Ajout de la documentation backend
+# 14. Ajout de la documentation backend initiale
 
 ## Résumé
 
-Ajout des documents de justification technique du backend.
+Ajout des premiers documents de justification technique du backend.
 
 ## Fichiers concernés
 
@@ -414,7 +543,7 @@ Validé.
 
 ---
 
-# 12. Nettoyage des alertes inutiles VS Code
+# 15. Nettoyage des alertes inutiles VS Code
 
 ## Résumé
 
@@ -438,7 +567,9 @@ Les erreurs inutiles ont disparu.
 
 Django reste validé avec :
 
-`python manage.py check`
+```powershell
+python manage.py check
+```
 
 ## Statut
 
@@ -446,7 +577,7 @@ Validé.
 
 ---
 
-# 13. Documentation des technologies envisagées
+# 16. Documentation des technologies envisagées
 
 ## Résumé
 
@@ -455,6 +586,8 @@ Ajout d’une réflexion sur les technologies envisagées mais non retenues pour
 ## Fichiers concernés
 
 * `doc/02-journal-de-bord.md`
+* `CHOIX_TECHNIQUES.md`
+* `doc/17-pistes-explorees-et-non-retenues.md`
 
 ## Modifications réalisées
 
@@ -462,10 +595,12 @@ Ajout d’une réflexion sur les technologies envisagées mais non retenues pour
 * Explication du choix de ne pas repartir de zéro avec une nouvelle technologie.
 * Présentation du compromis entre préférence technique, stabilité et délai.
 * Justification du choix de conserver Django et Python pour la V1.
+* Documentation du report de C# / ASP.NET / Razor.
+* Documentation des risques de scope creep et d’usine à gaz.
 
 ## Validation
 
-La réflexion technique est maintenant documentée dans le journal de bord.
+La réflexion technique est maintenant documentée dans plusieurs fichiers.
 
 Elle montre que certaines technologies ont été écartées volontairement afin de préserver le périmètre du projet.
 
@@ -475,7 +610,407 @@ Validé.
 
 ---
 
-# 14. État actuel
+# 17. Préparation du déploiement Render
+
+## Résumé
+
+Préparation du projet pour une mise en ligne sur Render.
+
+## Fichiers concernés
+
+* `requirements.txt`
+* `build.sh`
+* `frostia_config/settings.py`
+* `frostia_config/wsgi.py`
+* `.gitignore`
+* `.env.example`
+* `doc/09-deploiement-render.md`
+
+## Modifications réalisées
+
+* Ajout de Gunicorn.
+* Ajout ou vérification de WhiteNoise.
+* Création ou correction du fichier `build.sh`.
+* Configuration du projet pour Render.
+* Préparation des variables d’environnement.
+* Vérification de la commande WSGI.
+* Préparation de la commande de build.
+* Préparation de la commande de démarrage.
+
+## Commande de build Render
+
+```bash
+bash build.sh
+```
+
+## Commande de démarrage Render
+
+```bash
+gunicorn frostia_config.wsgi:application --bind 0.0.0.0:$PORT
+```
+
+## Statut
+
+Validé.
+
+---
+
+# 18. Déploiement Render
+
+## Résumé
+
+Mise en ligne de la V1 sur Render.
+
+## URL de production
+
+```text
+https://frostia-games.onrender.com
+```
+
+## Modifications ou réglages réalisés
+
+* Configuration du service Render.
+* Configuration des variables d’environnement.
+* Configuration du Build Command.
+* Configuration du Start Command.
+* Vérification des logs Render.
+* Vérification de l’accès au site.
+* Vérification de l’accès à l’administration Django.
+
+## Variables d’environnement utilisées
+
+* `DJANGO_DEBUG`
+* `DJANGO_SECRET_KEY`
+* `DJANGO_SUPERUSER_USERNAME`
+* `DJANGO_SUPERUSER_EMAIL`
+* `DJANGO_SUPERUSER_PASSWORD`
+
+## Validation
+
+Résultat attendu :
+
+* le site est accessible en ligne ;
+* les pages principales se chargent ;
+* l’administration est accessible ;
+* les fichiers statiques sont chargés ;
+* le service Render indique que l’application est active.
+
+## Statut
+
+Validé.
+
+---
+
+# 19. Ajout de la documentation Render
+
+## Résumé
+
+Ajout d’un document dédié au déploiement Render.
+
+## Fichier concerné
+
+* `doc/09-deploiement-render.md`
+
+## Modifications réalisées
+
+* Explication de la configuration Render.
+* Description du rôle de `build.sh`.
+* Description de Gunicorn.
+* Description des variables d’environnement.
+* Ajout des commandes utilisées.
+* Ajout des vérifications après déploiement.
+* Ajout des limites de l’offre gratuite Render.
+
+## Statut
+
+Validé.
+
+---
+
+# 20. Ajout du bilan V1
+
+## Résumé
+
+Ajout d’un bilan de la V1 du projet.
+
+## Fichier concerné
+
+* `doc/10-bilan-v1-frostia-games.md`
+
+## Modifications réalisées
+
+* Présentation de l’état global du projet.
+* Liste des éléments fonctionnels.
+* Liste des éléments encore améliorables.
+* Liste des éléments volontairement reportés.
+* Estimation de l’avancement de la V1.
+* Clarification du fait que la V1 n’est pas une plateforme complète.
+
+## Statut
+
+Validé.
+
+---
+
+# 21. Ajout de la documentation finale
+
+## Résumé
+
+Ajout des documents complémentaires pour finaliser la documentation du projet.
+
+## Fichiers concernés
+
+* `doc/11-installation-locale.md`
+* `doc/12-architecture.md`
+* `doc/13-test-et-vérification.md`
+* `doc/14-Capture-et Preuve.md`
+* `doc/15-limites-et-évolutions.md`
+* `doc/16-presentation-projet-2.md`
+* `doc/17-pistes-explorees-et-non-retenues.md`
+* `doc/18-plan-finalisation-v1.md`
+
+## Modifications réalisées
+
+* Ajout de la documentation d’installation locale.
+* Ajout de la documentation d’architecture.
+* Ajout de la documentation de tests.
+* Ajout de la checklist de captures et preuves.
+* Ajout de la documentation des limites et évolutions.
+* Ajout de la présentation du projet 2.
+* Ajout des pistes explorées et non retenues.
+* Ajout du plan de finalisation V1.
+
+## Statut
+
+Validé.
+
+---
+
+# 22. Ajout des fichiers racine du projet
+
+## Résumé
+
+Ajout ou mise à jour des fichiers importants à la racine du dépôt GitHub.
+
+## Fichiers concernés
+
+* `README.md`
+* `CHOIX_TECHNIQUES.md`
+* `.env.example`
+* `.gitignore`
+* `build.sh`
+
+## Modifications réalisées
+
+* Création ou mise à jour du README.
+* Création ou mise à jour du fichier de choix techniques.
+* Ajout du fichier `.env.example`.
+* Vérification du fichier `.gitignore`.
+* Vérification du fichier `build.sh`.
+
+## Rôle des fichiers
+
+`README.md` présente rapidement le projet, son installation, son lancement, son déploiement et ses limites.
+
+`CHOIX_TECHNIQUES.md` explique les décisions techniques, les pistes envisagées et les choix volontairement reportés.
+
+`.env.example` documente les variables d’environnement sans exposer les vraies valeurs sensibles.
+
+`.gitignore` évite d’envoyer dans GitHub les fichiers sensibles ou inutiles.
+
+`build.sh` prépare le projet pendant le déploiement Render.
+
+## Statut
+
+Validé.
+
+---
+
+# 23. Mise à jour de la sécurité backend
+
+## Résumé
+
+Mise à jour de la documentation sécurité pour tenir compte du déploiement Render.
+
+## Fichier concerné
+
+* `doc/05-securite-backend.md`
+
+## Modifications réalisées
+
+* Ajout du rôle des variables d’environnement.
+* Ajout de `.env.example`.
+* Ajout de `.gitignore`.
+* Ajout de `DJANGO_DEBUG=False`.
+* Ajout de la gestion de `DJANGO_SECRET_KEY`.
+* Ajout de la protection des identifiants administrateur.
+* Ajout de WhiteNoise et `collectstatic`.
+* Ajout des limites de sécurité de la V1.
+
+## Statut
+
+Validé.
+
+---
+
+# 24. Mise à jour de la documentation Docker
+
+## Résumé
+
+Mise à jour de la documentation Docker pour distinguer Docker et Render.
+
+## Fichier concerné
+
+* `doc/04-docker-et-lancement.md`
+
+## Modifications réalisées
+
+* Clarification du rôle de Docker.
+* Explication du lancement local.
+* Explication du lancement Docker.
+* Ajout du lien avec Render.
+* Ajout du rôle de `build.sh`.
+* Ajout des variables d’environnement.
+* Clarification du fait que Docker n’est pas la méthode de production actuelle.
+
+## Statut
+
+Validé.
+
+---
+
+# 25. Mise à jour du manuel utilisateur
+
+## Résumé
+
+Mise à jour du manuel utilisateur pour inclure le site en ligne.
+
+## Fichier concerné
+
+* `doc/06-manuel-utilisateur.md`
+
+## Modifications réalisées
+
+* Ajout de l’URL Render.
+* Ajout des pages en ligne.
+* Ajout de l’administration en ligne.
+* Ajout des vérifications avant démonstration.
+* Ajout des fichiers utiles : `README.md`, `CHOIX_TECHNIQUES.md`, `.env.example`, `build.sh`.
+* Ajout des conseils pour les captures d’écran.
+
+## Statut
+
+Validé.
+
+---
+
+# 26. Mise à jour de la documentation base de données
+
+## Résumé
+
+Mise à jour de la documentation base de données.
+
+## Fichier concerné
+
+* `doc/07-base-de-donnees.md`
+
+## Modifications réalisées
+
+* Ajout du lien avec Render.
+* Ajout des variables d’environnement.
+* Ajout du rôle de `.gitignore`.
+* Ajout du lien avec `README.md`.
+* Ajout du lien avec `CHOIX_TECHNIQUES.md`.
+* Clarification des limites de SQLite.
+* Clarification du report de PostgreSQL.
+
+## Statut
+
+Validé.
+
+---
+
+# 27. Mise à jour de l’index de documentation
+
+## Résumé
+
+Mise à jour de l’index pour qu’il corresponde à l’état réel de la documentation.
+
+## Fichier concerné
+
+* `doc/00-index-documentation.md`
+
+## Modifications réalisées
+
+* Ajout des documents `09` à `18`.
+* Suppression de l’ancienne référence à `installation-django.md`.
+* Ajout de `11-installation-locale.md`.
+* Ajout des fichiers racine importants.
+* Mise à jour de l’état actuel de la V1.
+* Mise à jour des limites et prochaines actions.
+
+## Statut
+
+Validé.
+
+---
+
+# 28. Mise à jour du journal de bord
+
+## Résumé
+
+Mise à jour du journal de bord pour intégrer les dernières étapes du projet.
+
+## Fichier concerné
+
+* `doc/02-journal-de-bord.md`
+
+## Modifications réalisées
+
+* Ajout de la préparation du déploiement Render.
+* Ajout du déploiement Render.
+* Ajout des fichiers racine.
+* Ajout de la documentation finale.
+* Ajout de la synchronisation GitHub.
+* Mise à jour de l’état actuel du projet.
+
+## Statut
+
+Validé.
+
+---
+
+# 29. Synchronisation Git et GitHub
+
+## Résumé
+
+Sauvegarde du projet avec Git et synchronisation sur GitHub.
+
+## Commandes utilisées
+
+```powershell
+git status
+git add .
+git commit -m "Complete Frostia Games documentation"
+git push
+git status
+```
+
+## Résultat attendu
+
+```text
+nothing to commit, working tree clean
+```
+
+## Statut
+
+Validé.
+
+---
+
+# 30. État actuel de la V1
+
+## Résumé
 
 La V1 actuelle contient :
 
@@ -487,39 +1022,77 @@ La V1 actuelle contient :
 * données dynamiques ;
 * interface préparatoire de projet jouable ;
 * Docker ;
+* déploiement Render ;
 * documentation SQL ;
 * réflexion NoSQL ;
 * documentation de sécurité ;
 * manuel utilisateur ;
 * changelog ;
 * journal de bord ;
-* documentation de modernisation.
+* documentation de modernisation ;
+* documentation d’architecture ;
+* documentation de tests ;
+* documentation de déploiement ;
+* README racine ;
+* fichier de choix techniques ;
+* fichier `.env.example`.
 
 ## Statut général
 
-V1 backend validée.
+V1 fonctionnelle, documentée et déployée.
 
 ---
 
-# 15. Prochaines étapes
+# 31. Prochaines étapes
 
-Les prochaines étapes prévues sont :
+Les prochaines étapes prévues sont limitées à la finalisation :
 
 1. Vérifier la cohérence finale de la documentation.
-2. Ajouter les captures écran.
-3. Préparer les extraits de code à intégrer au dossier.
-4. Moderniser légèrement l’interface si nécessaire.
-5. Préparer la présentation du projet.
-6. Prévoir un futur hébergement compatible Django.
+2. Vérifier le README à la racine.
+3. Vérifier le fichier `CHOIX_TECHNIQUES.md`.
+4. Tester le site en ligne sur Render.
+5. Tester l’administration Django.
+6. Vérifier le responsive mobile.
+7. Préparer les captures d’écran.
+8. Préparer les extraits de code à intégrer au dossier.
+9. Préparer la présentation du projet.
+10. Effectuer un dernier commit si des corrections sont faites.
 
 ---
 
-# 16. Conclusion
+# 32. Éléments volontairement reportés
 
-Le projet Frostia Games a évolué d’un simple site statique vers une V1 Django complète et documentée.
+Les éléments suivants sont reportés à une version future :
 
-Le backend reste volontairement simple, mais il est fonctionnel, administrable, relié à une base SQLite, lançable avec Docker et documenté.
+* PostgreSQL ;
+* compte jury temporaire ;
+* administration personnalisée ;
+* upload serveur réel ;
+* jeu jouable dans le navigateur ;
+* lecteur vidéo réel ;
+* fiches projet détaillées ;
+* API REST ;
+* comptes utilisateurs publics ;
+* rôles avancés ;
+* base NoSQL connectée ;
+* graphiques Plotly.js ;
+* tests automatisés complets ;
+* système de sauvegarde automatique.
 
-Les technologies mises de côté ont été identifiées et expliquées. Le choix de conserver Django/Python dans cette V1 permet de protéger la stabilité du projet et d’éviter de repartir de zéro.
+Ces éléments ne sont pas oubliés.
 
-Cette approche permet de présenter un projet stable, maintenable et évolutif.
+Ils sont volontairement reportés afin de conserver une V1 stable, maintenable et présentable.
+
+---
+
+# 33. Conclusion
+
+Le projet Frostia Games a évolué d’un simple site statique vers une V1 Django complète, documentée et déployée.
+
+Le backend reste volontairement simple, mais il est fonctionnel, administrable, relié à une base SQLite, lançable avec Docker et disponible en ligne via Render.
+
+Les technologies mises de côté ont été identifiées et expliquées.
+
+Le choix de conserver Django/Python dans cette V1 permet de protéger la stabilité du projet et d’éviter de repartir de zéro.
+
+Cette approche permet de présenter un projet stable, maintenable, documenté, déployé et évolutif.

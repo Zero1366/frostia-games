@@ -1,597 +1,740 @@
-# Plan de finalisation V1 - Frostia Games
+# Pistes explorées et non retenues - Frostia Games
 
 ## Objectif du document
 
-Ce document présente le plan de finalisation de la V1 du projet **Frostia Games**.
+Ce document présente les pistes techniques et fonctionnelles envisagées pendant le développement du projet **Frostia Games**, mais qui n'ont pas été intégrées dans la V1.
 
-L'objectif est de définir clairement les dernières actions à réaliser avant de considérer la V1 comme terminée, présentable et défendable.
+L'objectif est de montrer que les choix réalisés ne sont pas dus au hasard. Plusieurs solutions ont été réfléchies, comparées, puis certaines ont été volontairement retenues, reportées ou abandonnées afin de conserver une première version stable, livrable, documentée et déployée.
 
-Ce document sert aussi à éviter d'ajouter de nouvelles fonctionnalités inutiles à la fin du projet.
+Le principe retenu pour ce projet est le suivant :
 
-La priorité est maintenant de finaliser, vérifier, capturer, relire et stabiliser.
+```txt
+Toutes les pistes intéressantes peuvent être envisagées et explorées, mais seules les fonctionnalités utiles à une V1 stable doivent être intégrées immédiatement.
+```
 
----
+Une V1 évolue constamment.
 
-## État actuel de la V1
-
-Le projet Frostia Games dispose actuellement :
-
-* d'un projet Django fonctionnel ;
-* d'une interface publique ;
-* de pages principales ;
-* d'une base SQLite ;
-* d'une administration Django ;
-* d'un affichage dynamique ;
-* d'un déploiement Render fonctionnel ;
-* d'une documentation technique complète ;
-* d'une réflexion sur les limites et évolutions ;
-* d'une liste de pistes explorées et reportées.
-
-La V1 est donc déjà exploitable comme base de présentation.
+Certaines idées peuvent rester dans la roadmap, tandis que d'autres peuvent être abandonnées pendant la phase de stabilisation si elles ne servent plus réellement le projet.
 
 ---
 
-## Objectif de la finalisation
+## Principe général
 
-La finalisation ne consiste pas à ajouter de nouvelles grosses fonctionnalités.
+Au début du projet, plusieurs pistes étaient possibles.
 
-Elle consiste à rendre le projet :
+Le projet aurait pu évoluer vers :
 
-* propre ;
+* une application Django simple ;
+* une application plus avancée avec PostgreSQL ;
+* une solution C# / ASP.NET Core / Razor ;
+* une interface d'administration personnalisée ;
+* un espace privé complet ;
+* un système de gestion de projets plus dynamique ;
+* une plateforme permettant plus tard d'intégrer des projets jouables.
+
+Cependant, l'objectif de cette V1 n'était pas de tout faire immédiatement.
+
+L'objectif était de créer une base :
+
+* fonctionnelle ;
 * stable ;
-* lisible ;
-* cohérent ;
-* documenté ;
-* présentable ;
-* vérifiable ;
-* prêt à être montré.
+* claire ;
+* documentée ;
+* déployée ;
+* évolutive ;
+* maîtrisable.
 
-L'objectif est de passer d'une V1 fonctionnelle à une V1 correctement finalisée.
-
----
-
-## Règle principale
-
-À partir de cette étape, aucune nouvelle fonctionnalité importante ne doit être ajoutée.
-
-Les éléments suivants sont reportés :
-
-* PostgreSQL ;
-* compte jury temporaire ;
-* administration personnalisée ;
-* upload serveur réel ;
-* jeu jouable dans le navigateur ;
-* graphiques Plotly.js ;
-* espace privé complet ;
-* système de sauvegarde automatique ;
-* tests automatisés complets.
-
-Ces fonctionnalités sont documentées comme pistes futures, mais elles ne font pas partie de la finalisation de la V1.
+Certaines pistes ont donc été écartées, reportées ou pourront être abandonnées afin d'éviter de transformer la V1 en projet trop lourd.
 
 ---
 
-## Étape 1 - Vérification du contenu des pages
+## Méthode de décision
 
-## Objectif
+Avant d'ajouter une technologie ou une fonctionnalité, plusieurs questions ont été utilisées :
 
-Relire les pages principales du site pour vérifier que le contenu est clair, cohérent et adapté à une V1.
+* est-ce indispensable pour la V1 ?
+* est-ce utile pour présenter le projet ?
+* est-ce que cela améliore réellement la version actuelle ?
+* est-ce que cela risque de casser l'existant ?
+* est-ce que cela demande trop de temps ?
+* est-ce que cela complexifie la documentation ?
+* est-ce que cela peut être ajouté plus tard ?
+* est-ce que cela doit vraiment être conservé ?
+* est-ce que cela peut être simplifié ?
+* est-ce que cela risque de transformer le projet en usine à gaz ?
 
-## Pages à vérifier
+Si une piste n'était pas indispensable, elle a été reportée.
 
-* Accueil ;
-* Mes créations ;
-* Projets jouables à venir.
-
-## Points à contrôler
-
-* pas de texte provisoire inutile ;
-* pas de phrase trop vague ;
-* pas de promesse excessive ;
-* pas de faute trop visible ;
-* titres clairs ;
-* textes courts ;
-* contenu honnête sur l'état du projet ;
-* distinction claire entre ce qui existe et ce qui est prévu.
-
-## Statut
-
-```txt
-À faire
-```
+Si une idée risquait de fragiliser la V1 ou d'ajouter trop de complexité, elle pouvait aussi être abandonnée.
 
 ---
 
-## Étape 2 - Vérification du responsive
+# 1. Piste C# / ASP.NET Core / Razor
 
-## Objectif
+## Description
 
-Contrôler que le site reste consultable sur mobile.
+Au départ, une piste envisagée était de développer le projet avec une technologie liée à **C#**, par exemple **ASP.NET Core** avec **Razor**.
 
-## Points à vérifier
+Cette piste était intéressante car C# est un langage que j'apprécie particulièrement.
 
-* pas de débordement horizontal important ;
-* menu mobile utilisable ;
-* textes lisibles ;
-* cartes correctement empilées ;
-* boutons accessibles ;
-* sections lisibles ;
-* espacement correct.
+C# offre plusieurs qualités :
 
-## Résultat attendu
+* typage fort ;
+* structure claire ;
+* rigueur du code ;
+* bonne lisibilité ;
+* équilibre entre propreté et puissance ;
+* meilleure détection de certaines erreurs avant l'exécution ;
+* organisation adaptée aux projets applicatifs plus structurés.
 
-Le responsive n'a pas besoin d'être parfait, mais il doit être suffisamment propre pour une V1.
-
-## Statut
-
-```txt
-À faire
-```
+C# reste un langage que je considère comme très intéressant pour mes futurs projets, notamment parce qu'il impose une discipline plus forte que Python.
 
 ---
 
-## Étape 3 - Captures d'écran
+## Pourquoi cette piste n'a pas été retenue pour la V1
 
-## Objectif
+Même si C# / Razor était une piste intéressante, elle n'a pas été retenue pour cette V1.
 
-Préparer les preuves visuelles du fonctionnement du projet.
+Le risque était de repartir dans une architecture plus lourde, avec plus de configuration, plus de temps d'adaptation et une documentation plus complexe.
 
-## Captures prioritaires
+Pour une première version, cela aurait pu créer :
 
-Les captures indispensables sont :
+* une perte de temps importante ;
+* un risque de ne pas terminer la V1 ;
+* une architecture trop ambitieuse ;
+* une difficulté de déploiement supplémentaire ;
+* une documentation plus longue à produire ;
+* une dérive du périmètre.
 
-* page d'accueil desktop ;
-* page Mes créations ;
-* page Projets jouables à venir ;
-* page d'accueil mobile ;
-* page de connexion admin Django ;
-* tableau de bord admin Django ;
-* service Render actif ;
-* logs Render avec `Your service is live` ;
-* configuration Build Command et Start Command ;
-* structure du projet dans VS Code ;
-* commande `python manage.py check` ;
-* commande `git status` propre ;
-* dossier `doc`.
-
-## Règle de sécurité
-
-Aucune capture ne doit afficher :
-
-* mot de passe ;
-* clé secrète ;
-* valeur de `DJANGO_SECRET_KEY` ;
-* valeur de `DJANGO_SUPERUSER_PASSWORD` ;
-* information sensible inutile.
-
-## Statut
-
-```txt
-À faire
-```
+Le projet avait besoin d'une solution rapide à mettre en place, facile à déployer et adaptée à un portfolio Django.
 
 ---
 
-## Étape 4 - README à la racine
+## Décision
 
-## Objectif
+La piste C# / ASP.NET Core / Razor est reportée.
 
-Créer un fichier `README.md` à la racine du projet.
+Elle reste intéressante pour de futurs projets, mais elle n'était pas la solution la plus adaptée au périmètre court de la V1.
 
-Ce fichier doit permettre à une personne extérieure de comprendre rapidement :
-
-* ce qu'est le projet ;
-* comment l'installer ;
-* comment le lancer ;
-* quelles technologies sont utilisées ;
-* comment le projet est déployé ;
-* quelles sont les limites de la V1.
-
-## Emplacement
-
-```txt
-README.md
-```
-
-Le fichier doit être placé à la racine du projet, au même niveau que :
-
-```txt
-manage.py
-requirements.txt
-build.sh
-Dockerfile
-docker-compose.yml
-```
-
-## Contenu attendu
-
-Le README doit contenir :
-
-* présentation du projet ;
-* objectif de la V1 ;
-* technologies utilisées ;
-* installation locale ;
-* lancement local ;
-* lancement Docker ;
-* déploiement Render ;
-* variables d'environnement ;
-* administration Django ;
-* limites ;
-* évolutions prévues.
-
-## Statut
-
-```txt
-À faire
-```
+La V1 reste donc développée avec Python et Django.
 
 ---
 
-## Étape 5 - Fichier de choix techniques à la racine
+# 2. Choix final : Python et Django
 
-## Objectif
+## Description
 
-Ajouter un fichier expliquant les choix techniques et les pistes explorées.
+Le choix final s'est porté sur **Python avec Django**.
 
-## Emplacement conseillé
+Django a été retenu car il offre une structure web complète et rapide à mettre en place.
 
-```txt
-CHOIX_TECHNIQUES.md
-```
+Django apporte directement :
 
-Ce fichier doit être placé à la racine du projet.
+* routes ;
+* vues ;
+* templates ;
+* modèles ;
+* migrations ;
+* base de données ;
+* administration intégrée ;
+* gestion des fichiers statiques ;
+* organisation claire du projet.
 
-## Rôle
-
-Il permet d'expliquer :
-
-* pourquoi Django a été retenu ;
-* pourquoi C# / Razor a été envisagé mais reporté ;
-* pourquoi PostgreSQL n'est pas intégré en V1 ;
-* pourquoi certaines fonctionnalités sont reportées ;
-* pourquoi le projet évite de devenir une usine à gaz.
-
-## Statut
-
-```txt
-À faire
-```
+Pour une V1 de portfolio avec backend, administration et déploiement, Django était une solution cohérente.
 
 ---
 
-## Étape 6 - Maquettes Figma
+## Pourquoi Django a été retenu
 
-## Objectif
+Django permettait de produire plus rapidement une V1 fonctionnelle.
 
-Préparer ou compléter les maquettes Figma pour montrer la réflexion visuelle du projet.
+Ses avantages dans ce projet :
 
-## Maquettes minimales conseillées
+* structure déjà organisée ;
+* administration native ;
+* simplicité de SQLite pour démarrer ;
+* templates faciles à utiliser ;
+* bon équilibre entre rapidité et structure ;
+* déploiement possible sur Render ;
+* documentation abondante ;
+* architecture compréhensible pour un dossier projet.
 
-* page d'accueil ;
-* page Mes créations ;
-* page Projets jouables à venir ;
-* version mobile simple.
-
-## Objectif des maquettes
-
-Les maquettes n'ont pas besoin d'être parfaites.
-
-Elles doivent surtout montrer :
-
-* l'intention visuelle ;
-* l'organisation des pages ;
-* la navigation ;
-* la cohérence du projet ;
-* la préparation de l'interface.
-
-## Statut
-
-```txt
-À faire
-```
+Django a donc été choisi pour sa capacité à produire une base stable sans multiplier les couches techniques.
 
 ---
 
-## Étape 7 - Vérification technique finale
+## Limite de Python
 
-## Objectif
+Python reste un langage très permissif.
 
-S'assurer que le projet ne contient pas d'erreur bloquante avant la présentation.
+Cette permissivité peut être une force pour avancer rapidement, mais elle peut aussi laisser passer plus d'erreurs qu'un langage fortement typé comme C#.
 
-## Commandes à lancer
+Risques possibles :
 
-```powershell
-python manage.py check
-```
+* erreurs détectées plus tard ;
+* typage moins strict ;
+* variables mal utilisées ;
+* dépendance plus forte aux tests ;
+* besoin de discipline supplémentaire ;
+* alertes parfois imprécises dans l'éditeur.
 
-Résultat attendu :
-
-```txt
-System check identified no issues (0 silenced).
-```
-
-Puis :
-
-```powershell
-python manage.py runserver
-```
-
-Pages à tester :
-
-```txt
-/
- /mes-creations/
- /projets-jouables/
- /admin/
-```
-
-## Points à vérifier
-
-* le serveur local démarre ;
-* les pages s'affichent ;
-* le CSS est chargé ;
-* le menu fonctionne ;
-* l'admin Django est accessible ;
-* aucune erreur Django visible.
-
-## Statut
-
-```txt
-À faire
-```
+Ce point a été pris en compte dans la manière de travailler sur le projet.
 
 ---
 
-## Étape 8 - Vérification Render
+## Garde-fous ajoutés
 
-## Objectif
+Pour compenser la souplesse de Python, plusieurs garde-fous ont été mis en place :
 
-Contrôler que la version en ligne fonctionne toujours après les derniers commits.
+* documentation régulière ;
+* journal de bord ;
+* changelog ;
+* vérification avec `python manage.py check` ;
+* utilisation d'un environnement virtuel `.venv` ;
+* séparation entre templates, vues et fichiers statiques ;
+* migrations Django ;
+* administration Django contrôlée ;
+* variables d'environnement pour les informations sensibles ;
+* déploiement Render documenté ;
+* tests manuels des pages ;
+* vérification de l'administration ;
+* vérification du responsive ;
+* documentation des limites et évolutions.
 
-## URL de production
-
-```txt
-https://frostia-games.onrender.com
-```
-
-## Points à vérifier
-
-* site accessible ;
-* page d'accueil chargée ;
-* CSS chargé ;
-* navigation fonctionnelle ;
-* admin Django accessible ;
-* Render indique le service actif ;
-* logs sans erreur bloquante.
-
-## Attention
-
-Sur l'offre gratuite Render, le premier chargement peut être lent si le service est en veille.
-
-Ce comportement n'est pas une erreur du projet.
-
-## Statut
-
-```txt
-À faire
-```
+Ces garde-fous permettent de rendre le projet plus fiable malgré la permissivité de Python.
 
 ---
 
-## Étape 9 - Relecture de la documentation
+# 3. PostgreSQL
 
-## Objectif
+## Description
 
-Vérifier que la documentation est cohérente et ne contient pas de contradiction importante.
+PostgreSQL a été envisagé comme base de données de production plus robuste que SQLite.
 
-## Documents à relire en priorité
-
-* `00-index-documentation.md` ;
-* `09-deploiement-render.md` ;
-* `10-bilan-v1-frostia-games.md` ;
-* `12-architecture.md` ;
-* `13-test-et-vérification.md` ;
-* `15-limites-et-évolutions.md` ;
-* `16-presentation-projet-2.md` ;
-* `17-pistes-explorees-et-non-retenues.md`.
-
-## Points à vérifier
-
-* noms de fichiers cohérents ;
-* pas de promesse excessive ;
-* limites clairement assumées ;
-* technologies correctement expliquées ;
-* déploiement bien documenté ;
-* sécurité correctement présentée ;
-* captures prévues.
-
-## Statut
-
-```txt
-À faire
-```
+PostgreSQL serait plus adapté à une vraie production avec plusieurs utilisateurs, davantage de données et une meilleure persistance.
 
 ---
 
-## Étape 10 - Git final
+## Pourquoi PostgreSQL n'a pas été intégré
 
-## Objectif
+Pour la V1, PostgreSQL n'était pas indispensable.
 
-S'assurer que tout est sauvegardé dans Git et envoyé sur GitHub.
+L'intégrer aurait demandé :
 
-## Commandes à utiliser
+* une configuration supplémentaire ;
+* une base distante ;
+* des variables d'environnement supplémentaires ;
+* une adaptation du déploiement ;
+* des tests de connexion ;
+* une documentation dédiée.
 
-```powershell
-git status
-```
-
-Puis si des fichiers sont modifiés :
-
-```powershell
-git add .
-git commit -m "Finalize Frostia Games V1 documentation"
-git push
-```
-
-Après le push, relancer :
-
-```powershell
-git status
-```
-
-Résultat attendu :
-
-```txt
-nothing to commit, working tree clean
-```
-
-## Statut
-
-```txt
-À faire
-```
+SQLite suffit actuellement pour un portfolio simple.
 
 ---
 
-## Étape 11 - Déploiement final Render
+## Décision
 
-## Objectif
+PostgreSQL est reporté à une version future.
 
-Vérifier que le dernier commit déclenche bien un redéploiement ou que Render utilise bien la dernière version du projet.
-
-## Points à vérifier
-
-* dernier commit visible ;
-* déploiement terminé ;
-* service live ;
-* URL fonctionnelle ;
-* pas d'erreur dans les logs.
-
-## Statut
-
-```txt
-À faire
-```
+La V1 conserve SQLite afin de rester simple et stable.
 
 ---
 
-## Étape 12 - Préparation du dossier projet
+# 4. Compte jury temporaire
 
-## Objectif
+## Description
 
-Préparer la version présentable du projet pour une évaluation ou une proposition de projet 2.
+Un compte temporaire pour le jury ou l'évaluateur a été envisagé.
 
-## Éléments à inclure
+Ce compte permettrait de consulter l'administration Django sans utiliser le vrai compte administrateur.
 
-* présentation du projet ;
-* objectif de la V1 ;
-* technologies utilisées ;
-* architecture ;
-* captures du site ;
-* captures de l'administration ;
-* captures Render ;
-* explication du déploiement ;
+---
+
+## Pourquoi cette piste n'a pas été intégrée
+
+Créer un compte jury demande une gestion supplémentaire :
+
+* identifiant temporaire ;
+* mot de passe temporaire ;
+* droits limités ;
+* risque de donner trop d'accès ;
+* suppression du compte après évaluation ;
+* transmission sécurisée des identifiants.
+
+Pour la V1, les captures d'écran et la documentation suffisent à prouver que l'administration Django fonctionne.
+
+---
+
+## Décision
+
+Le compte jury temporaire est reporté.
+
+Il pourra être créé plus tard uniquement si le projet est validé comme second projet ou si l'évaluateur demande explicitement un accès direct.
+
+---
+
+# 5. Administration personnalisée
+
+## Description
+
+Une interface d'administration personnalisée a été envisagée pour remplacer ou compléter l'administration Django native.
+
+Elle aurait pu permettre de gérer :
+
+* projets ;
+* captures ;
+* versions ;
+* liens ;
+* statuts ;
+* médias ;
+* textes du portfolio.
+
+---
+
+## Pourquoi cette piste n'a pas été intégrée
+
+L'administration Django native est suffisante pour une V1.
+
+Créer une administration personnalisée aurait demandé :
+
+* des vues privées ;
+* des formulaires ;
+* une gestion des permissions ;
+* une interface dédiée ;
+* des validations ;
+* des tests supplémentaires ;
+* une sécurité plus poussée.
+
+Cela aurait fortement élargi le périmètre.
+
+---
+
+## Décision
+
+L'administration personnalisée est reportée.
+
+La V1 utilise l'administration Django native.
+
+---
+
+# 6. Upload serveur réel
+
+## Description
+
+Un système d'upload serveur a été envisagé pour permettre l'ajout de fichiers, médias ou futures démonstrations.
+
+La page des projets jouables contient une interface préparatoire, mais aucun upload réel n'est effectué côté serveur.
+
+---
+
+## Pourquoi cette piste n'a pas été intégrée
+
+L'upload serveur est une fonctionnalité sensible.
+
+Elle demande :
+
+* validation stricte des fichiers ;
+* limitation de taille ;
+* contrôle des extensions ;
+* protection contre les fichiers dangereux ;
+* stockage sécurisé ;
+* suppression contrôlée ;
+* tests de sécurité.
+
+Ajouter cette fonctionnalité dans la V1 aurait augmenté fortement le risque technique.
+
+---
+
+## Décision
+
+L'upload serveur réel est reporté.
+
+La V1 conserve uniquement une interface préparatoire honnête.
+
+---
+
+# 7. Jeu jouable dans le navigateur
+
+## Description
+
+Une future intégration de jeux ou démonstrations jouables directement dans le navigateur a été envisagée.
+
+Cette piste correspond à une évolution possible du portfolio vers une plateforme de présentation interactive.
+
+---
+
+## Pourquoi cette piste n'a pas été intégrée
+
+Intégrer un jeu jouable dans le navigateur demande une réflexion technique plus large.
+
+Il faudrait gérer :
+
+* format du jeu ;
+* performances ;
+* compatibilité navigateur ;
+* chargement ;
 * sécurité ;
-* limites ;
-* évolutions prévues ;
-* bilan personnel.
+* contrôles ;
+* stockage des fichiers ;
+* intégration dans Django.
 
-## Positionnement à garder
-
-Le projet doit être présenté comme :
-
-```txt
-Une V1 Django fonctionnelle, documentée, déployée et évolutive.
-```
-
-Il ne doit pas être présenté comme :
-
-```txt
-Une plateforme finale complète de gestion de projets de jeux vidéo.
-```
-
-## Statut
-
-```txt
-À faire
-```
+Cette fonctionnalité dépasse le périmètre de la V1.
 
 ---
 
-## Checklist finale
+## Décision
 
-| Élément                         | Statut  |
-| ------------------------------- | ------- |
-| Pages relues                    | À faire |
-| Responsive vérifié              | À faire |
-| Captures réalisées              | À faire |
-| README racine créé              | À faire |
-| CHOIX_TECHNIQUES.md créé        | À faire |
-| Maquettes Figma préparées       | À faire |
-| `python manage.py check` validé | À faire |
-| Site local testé                | À faire |
-| Site Render testé               | À faire |
-| Admin Django testé              | À faire |
-| Documentation relue             | À faire |
-| Git propre                      | À faire |
-| Dernier push effectué           | À faire |
-| Déploiement final vérifié       | À faire |
+Les projets jouables dans le navigateur sont reportés.
+
+La V1 prépare seulement l'idée avec une page dédiée.
 
 ---
 
-## Ce qui ne doit plus être ajouté dans cette V1
+# 8. Plotly.js et graphiques
 
-Pour éviter d'élargir le projet, les éléments suivants ne doivent plus être ajoutés maintenant :
+## Description
 
-```txt
-PostgreSQL
-Compte jury temporaire
-Admin personnalisée
-Upload serveur réel
-Jeu jouable navigateur
-Plotly.js
-Espace privé complet
-Système de sauvegarde automatique
-Refonte complète du design
-Nouvelle application Django importante
-```
+Plotly.js a été envisagé pour afficher des graphiques de suivi.
 
-Ces éléments sont déjà identifiés comme évolutions futures.
+Exemples possibles :
 
-La priorité est maintenant la finalisation.
+* avancement d'un projet ;
+* répartition des tâches ;
+* progression par version ;
+* suivi de développement ;
+* statistiques de production.
 
 ---
 
-## Critère de validation final
+## Pourquoi cette piste n'a pas été intégrée
 
-La V1 peut être considérée comme terminée lorsque :
+Les graphiques ne sont pas indispensables pour la V1.
 
-* le site fonctionne en local ;
-* le site fonctionne sur Render ;
-* les pages principales sont accessibles ;
-* l'administration Django est accessible ;
-* la documentation est complète ;
-* les captures sont prêtes ;
-* le README racine existe ;
-* le dépôt GitHub est propre ;
-* le dernier déploiement Render est fonctionnel ;
-* les limites et évolutions sont clairement expliquées.
+Ils auraient demandé :
+
+* du JavaScript supplémentaire ;
+* des données structurées ;
+* une logique d'affichage ;
+* des tests ;
+* une documentation dédiée.
+
+Pour cette première version, le bénéfice immédiat était inférieur à l'effort nécessaire.
 
 ---
 
-## Bilan attendu
+## Décision
 
-Une fois ce plan terminé, Frostia Games pourra être présenté comme une V1 propre et maîtrisée.
+Plotly.js est reporté.
 
-Le projet montrera :
+Il pourra être intégré plus tard comme amélioration visuelle ou fonctionnelle.
 
-* une base Django fonctionnelle ;
-* une interface publique ;
-* un backend simple ;
+---
+
+# 9. Espace privé complet
+
+## Description
+
+Un espace privé complet a été envisagé pour gérer le portfolio depuis une interface dédiée.
+
+Cet espace aurait pu contenir :
+
+* tableau de bord ;
+* gestion des projets ;
+* gestion des médias ;
+* gestion des versions ;
+* gestion des statuts ;
+* historique ;
+* sauvegardes.
+
+---
+
+## Pourquoi cette piste n'a pas été intégrée
+
+Un espace privé complet aurait transformé la V1 en projet beaucoup plus lourd.
+
+Il aurait fallu gérer :
+
+* authentification ;
+* permissions ;
+* formulaires ;
+* routes privées ;
+* sécurité ;
+* validations ;
+* tests ;
+* interface complète.
+
+Cela aurait dépassé le besoin immédiat.
+
+---
+
+## Décision
+
+L'espace privé complet est reporté.
+
+La V1 s'appuie sur l'administration Django native.
+
+---
+
+# 10. Sauvegardes automatiques
+
+## Description
+
+Un système de sauvegarde automatique avant modification a été envisagé.
+
+L'idée serait de créer un historique ou des snapshots avant chaque modification importante.
+
+---
+
+## Pourquoi cette piste n'a pas été intégrée
+
+Cette fonctionnalité est utile, mais elle demande une architecture plus avancée.
+
+Il faudrait prévoir :
+
+* système d'historique ;
+* versions de données ;
+* restauration ;
+* interface de consultation ;
+* logique de comparaison ;
+* tests.
+
+Pour la V1, Git et la documentation suffisent à conserver une trace du travail.
+
+---
+
+## Décision
+
+Les sauvegardes automatiques sont reportées.
+
+Elles pourront être ajoutées plus tard si le projet évolue vers une vraie plateforme d'administration.
+
+---
+
+# 11. Refonte graphique complète
+
+## Description
+
+Une refonte graphique plus ambitieuse a été envisagée pour obtenir une interface plus moderne.
+
+Elle aurait pu inclure :
+
+* animations ;
+* transitions ;
+* sections plus complexes ;
+* identité visuelle plus forte ;
+* maquettes plus détaillées ;
+* effets visuels avancés.
+
+---
+
+## Pourquoi cette piste n'a pas été intégrée
+
+Une refonte complète aurait demandé beaucoup de temps.
+
+La priorité de la V1 était :
+
+* avoir un site fonctionnel ;
+* avoir un backend réel ;
+* réussir le déploiement ;
+* produire une documentation complète ;
+* garder une version stable.
+
+---
+
+## Décision
+
+La refonte graphique complète est reportée.
+
+La V1 conserve un design simple et améliorable.
+
+---
+
+# 12. Tests automatisés complets
+
+## Description
+
+Des tests automatisés plus complets ont été envisagés.
+
+Ils pourraient couvrir :
+
+* modèles ;
+* vues ;
+* routes ;
+* administration ;
+* formulaires ;
+* sécurité ;
+* comportements attendus.
+
+---
+
+## Pourquoi cette piste n'a pas été intégrée
+
+La V1 a été vérifiée manuellement et avec les commandes Django principales.
+
+Mettre en place une vraie suite de tests automatisés aurait demandé du temps supplémentaire.
+
+Pour cette version, les vérifications manuelles et `python manage.py check` suffisent à valider le périmètre actuel.
+
+---
+
+## Décision
+
+Les tests automatisés complets sont reportés.
+
+Ils pourront être ajoutés dans une prochaine version plus stabilisée.
+
+---
+
+# 13. Gestion complète des médias
+
+## Description
+
+Un système de gestion des médias a été envisagé pour stocker des images, captures, vidéos ou fichiers liés aux projets.
+
+---
+
+## Pourquoi cette piste n'a pas été intégrée
+
+La gestion complète des médias demande :
+
+* modèles dédiés ;
+* upload ;
+* stockage ;
+* sécurité ;
+* suppression contrôlée ;
+* limitation de taille ;
+* organisation claire des fichiers ;
+* tests supplémentaires.
+
+Cela dépasse le besoin immédiat de la V1.
+
+---
+
+## Décision
+
+Le système complet de médias est reporté.
+
+La V1 conserve une gestion simple des fichiers statiques.
+
+---
+
+# 14. Pistes reportées ou abandonnées pendant la stabilisation
+
+## Description
+
+Toutes les pistes explorées ne sont pas forcément destinées à revenir plus tard.
+
+Certaines idées sont simplement reportées, car elles restent intéressantes mais ne sont pas adaptées à la V1.
+
+D'autres idées peuvent être abandonnées pendant la phase de stabilisation si elles ne servent plus réellement l'objectif du projet.
+
+Une V1 évolue constamment.
+
+Les choix faits au départ peuvent donc être ajustés après :
+
+* les premiers tests ;
+* le déploiement ;
+* la mise en place du backend ;
+* la rédaction de la documentation ;
+* la vérification du temps disponible ;
+* la stabilisation du périmètre.
+
+---
+
+## Pourquoi certaines idées peuvent être abandonnées
+
+Une idée peut être abandonnée si :
+
+* elle ajoute trop de complexité ;
+* elle fragilise le projet ;
+* elle demande trop de temps ;
+* elle n'apporte pas assez de valeur à la V1 ;
+* elle rend la documentation plus difficile à maintenir ;
+* elle détourne le projet de son objectif principal ;
+* elle transforme le projet en usine à gaz ;
+* elle peut être remplacée par une solution plus simple.
+
+Abandonner une idée ne signifie pas que le projet échoue.
+
+Cela peut au contraire montrer une bonne gestion du périmètre et une capacité à protéger la stabilité de la V1.
+
+---
+
+## Décision
+
+Dans le cadre de Frostia Games, certaines pistes restent dans la roadmap, tandis que d'autres pourront être abandonnées si elles ne sont plus utiles.
+
+L'objectif n'est pas de conserver toutes les idées envisagées.
+
+L'objectif est de garder uniquement les choix qui renforcent :
+
+* la stabilité ;
+* la lisibilité ;
+* la cohérence ;
+* la maintenabilité ;
+* la présentation de la V1.
+
+---
+
+# Tableau récapitulatif
+
+| Piste explorée              | Décision         | Raison principale                 |
+| --------------------------- | ---------------- | --------------------------------- |
+| C# / ASP.NET Core / Razor   | Reporté          | Risque de complexité pour la V1   |
+| Django                      | Retenu           | Adapté à une V1 stable et rapide  |
+| PostgreSQL                  | Reporté          | Trop tôt pour le périmètre actuel |
+| Compte jury temporaire      | Reporté          | Sécurité et droits à limiter      |
+| Admin personnalisée         | Reporté          | Trop complexe pour une V1         |
+| Upload serveur réel         | Reporté          | Fonction sensible                 |
+| Jeu jouable navigateur      | Reporté          | Hors périmètre immédiat           |
+| Plotly.js                   | Reporté          | Non indispensable                 |
+| Espace privé complet        | Reporté          | Trop large                        |
+| Sauvegardes automatiques    | Reporté          | Architecture plus avancée         |
+| Refonte graphique complète  | Reporté          | Priorité à la stabilité           |
+| Tests automatisés complets  | Reporté          | Temps supplémentaire              |
+| Gestion complète des médias | Reporté          | Trop lourd pour la V1             |
+| Certaines idées secondaires | Abandon possible | Stabilisation de la V1            |
+
+---
+
+## Ce que montre cette démarche
+
+Cette démarche montre que le projet a été pensé avec plusieurs directions possibles.
+
+Les choix réalisés montrent :
+
+* une capacité à explorer plusieurs solutions ;
+* une capacité à comparer les technologies ;
+* une capacité à limiter le périmètre ;
+* une volonté d'éviter le scope creep ;
+* une priorité donnée à la stabilité ;
+* une volonté de produire une V1 terminée plutôt qu'un projet trop ambitieux ;
+* une capacité à abandonner certaines idées si elles ne servent plus réellement le projet.
+
+Cette approche permet de préserver un projet clair, livrable et défendable.
+
+---
+
+## Bilan
+
+Les pistes explorées ne sont pas des oublis.
+
+Elles montrent que plusieurs directions techniques et fonctionnelles ont été étudiées avant de stabiliser la V1.
+
+Certaines pistes sont reportées, car elles restent intéressantes pour une version future.
+
+D'autres pourront être abandonnées si elles ne servent plus réellement le projet ou si elles risquent de fragiliser la V1.
+
+La V1 de Frostia Games reste centrée sur l'essentiel :
+
+* un projet Django fonctionnel ;
 * une base SQLite ;
 * une administration Django ;
+* une interface publique ;
 * un déploiement Render ;
 * une documentation complète ;
-* une réflexion claire sur les choix techniques ;
-* une maîtrise du périmètre.
+* une architecture évolutive.
 
-La V1 ne sera pas une version finale complète, mais elle sera stable, cohérente, défendable et prête à évoluer.
+Les fonctionnalités non intégrées ne sont donc pas des échecs.
+
+Elles sont volontairement écartées, reportées ou abandonnées afin de protéger la qualité, la stabilité et la lisibilité de la V1.

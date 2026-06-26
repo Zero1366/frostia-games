@@ -1,9 +1,8 @@
-````md
 # NoSQL - Frostia Games
 
 ## Objectif
 
-Cette section présente la réflexion autour d'une future intégration NoSQL dans le projet Frostia Games.
+Cette section présente la réflexion autour d'une future intégration NoSQL dans le projet **Frostia Games**.
 
 Dans la V1 actuelle, aucune base NoSQL n'est implantée. Le projet utilise Django avec SQLite afin de conserver une architecture simple, stable et maîtrisable.
 
@@ -15,14 +14,15 @@ Le NoSQL est identifié comme une évolution possible, notamment pour stocker de
 
 La V1 de Frostia Games a pour objectif principal de mettre en place un socle Django fonctionnel :
 
-- pages principales ;
-- base SQLite ;
-- modèles Django ;
-- migrations ;
-- administration Django ;
-- affichage dynamique des données ;
-- lancement local ;
-- lancement avec Docker.
+* pages principales ;
+* base SQLite ;
+* modèles Django ;
+* migrations ;
+* administration Django ;
+* affichage dynamique des données ;
+* lancement local ;
+* lancement avec Docker ;
+* déploiement en ligne sur Render.
 
 L'ajout d'une base NoSQL dès cette version aurait augmenté la complexité du projet sans apporter de bénéfice immédiat au fonctionnement actuel du site.
 
@@ -34,16 +34,18 @@ Le choix retenu est donc de stabiliser d'abord le socle relationnel avec SQLite,
 
 Une base NoSQL pourrait être utile plus tard pour stocker des données moins structurées, par exemple :
 
-- fiches détaillées de projets ;
-- sections variables selon les jeux ;
-- historiques de développement ;
-- notes de conception ;
-- journaux de mise à jour ;
-- blocs de contenu personnalisés ;
-- métadonnées de médias ;
-- informations évolutives sur les prototypes.
+* fiches détaillées de projets ;
+* sections variables selon les jeux ;
+* historiques de développement ;
+* notes de conception ;
+* journaux de mise à jour ;
+* blocs de contenu personnalisés ;
+* métadonnées de médias ;
+* informations évolutives sur les prototypes.
 
-Ces données peuvent varier fortement d'un projet à l'autre. Une structure NoSQL permettrait donc plus de souplesse qu'une table SQL classique.
+Ces données peuvent varier fortement d'un projet à l'autre.
+
+Une structure NoSQL permettrait donc plus de souplesse qu'une table SQL classique.
 
 ---
 
@@ -78,13 +80,13 @@ Exemple théorique d'un document MongoDB pour une future fiche projet :
   },
   "updated_at": "2026-06-24"
 }
-````
+```
 
 ---
 
 ## Différence entre SQL et NoSQL dans le projet
 
-### SQL actuel
+## SQL actuel
 
 La base SQLite sert à stocker les données principales du site :
 
@@ -96,7 +98,9 @@ La base SQLite sert à stocker les données principales du site :
 
 Ces données sont structurées et correspondent bien à des tables relationnelles.
 
-### NoSQL prévu
+---
+
+## NoSQL prévu
 
 Une future base NoSQL pourrait servir à stocker des contenus plus flexibles :
 
@@ -105,6 +109,10 @@ Une future base NoSQL pourrait servir à stocker des contenus plus flexibles :
 * notes de conception ;
 * médias associés ;
 * historiques de projet.
+
+Le NoSQL ne remplacerait pas forcément toute la base relationnelle.
+
+Il pourrait être utilisé en complément de SQLite ou PostgreSQL pour certains contenus plus libres.
 
 ---
 
@@ -121,6 +129,27 @@ Ce choix permet de garder une V1 stable, testable et maintenable.
 
 ---
 
+## Pourquoi ne pas ajouter NoSQL artificiellement
+
+Ajouter une technologie uniquement pour montrer qu'elle existe ne serait pas pertinent.
+
+Dans la V1 actuelle, les données principales sont encore simples et structurées.
+
+Elles sont donc adaptées à une base relationnelle.
+
+Ajouter NoSQL maintenant aurait créé :
+
+* une configuration supplémentaire ;
+* une dépendance technique en plus ;
+* une documentation plus longue ;
+* des tests supplémentaires ;
+* une architecture plus complexe ;
+* un risque de confusion entre SQL et NoSQL.
+
+Le choix le plus raisonnable est donc de documenter cette possibilité sans l'intégrer trop tôt.
+
+---
+
 ## Roadmap NoSQL
 
 Une future version pourrait intégrer MongoDB ou une autre solution NoSQL pour gérer les fiches détaillées des projets.
@@ -134,6 +163,52 @@ Une future version pourrait intégrer MongoDB ou une autre solution NoSQL pour g
 5. Tester la récupération des données.
 6. Afficher les fiches détaillées dynamiquement.
 7. Sécuriser les accès et les données.
+8. Documenter la nouvelle architecture.
+
+---
+
+## Exemple d'utilisation future
+
+Dans une version plus avancée, le projet pourrait utiliser :
+
+* PostgreSQL pour les données structurées ;
+* MongoDB pour les fiches longues et variables ;
+* Django pour l'administration et l'affichage ;
+* un système de sauvegarde pour éviter la perte de contenu.
+
+Exemple de séparation possible :
+
+| Type de donnée             | Solution possible |
+| -------------------------- | ----------------- |
+| Utilisateurs               | PostgreSQL        |
+| Créations principales      | PostgreSQL        |
+| Projets jouables           | PostgreSQL        |
+| Fiches longues de projets  | MongoDB           |
+| Notes de conception        | MongoDB           |
+| Blocs de contenu variables | MongoDB           |
+| Métadonnées flexibles      | MongoDB           |
+
+Cette organisation n'est pas nécessaire dans la V1, mais elle reste envisageable si le projet devient plus complet.
+
+---
+
+## Limites de cette évolution
+
+Une future intégration NoSQL devra être étudiée avec prudence.
+
+Elle ne devra pas être ajoutée uniquement pour complexifier le projet.
+
+Avant d'intégrer NoSQL, il faudra vérifier :
+
+* si le besoin est réel ;
+* si les données sont vraiment variables ;
+* si une base SQL ne suffit plus ;
+* si l'ajout reste maintenable ;
+* si la sécurité est maîtrisée ;
+* si la documentation peut rester claire ;
+* si le projet ne devient pas trop lourd.
+
+Si le besoin n'est pas confirmé, l'idée pourra être reportée ou abandonnée.
 
 ---
 
@@ -141,7 +216,8 @@ Une future version pourrait intégrer MongoDB ou une autre solution NoSQL pour g
 
 Le NoSQL n'est pas implanté dans la V1 de Frostia Games, mais son usage est identifié et documenté.
 
-La V1 privilégie une base SQL simple avec SQLite afin de valider le fonctionnement du backend Django. Le NoSQL est prévu comme une évolution future pour gérer des contenus plus souples et plus détaillés liés aux projets de jeux vidéo.
+La V1 privilégie une base SQL simple avec SQLite afin de valider le fonctionnement du backend Django.
 
-```
-```
+Le NoSQL est prévu comme une évolution future possible pour gérer des contenus plus souples et plus détaillés liés aux projets de jeux vidéo.
+
+Ce choix permet de conserver une V1 stable, claire et défendable, tout en préparant une évolution technique plus avancée si le besoin devient réel.
