@@ -80,6 +80,57 @@
   </div>
 </section>
 
+<section class="home-cards" aria-labelledby="project-notes-title">
+  <article class="home-card">
+    <div class="home-card__visual">
+      <span class="home-card__icon">🗂</span>
+    </div>
+
+    <div class="home-card__content">
+      <h2 id="project-notes-title">Notes de progression</h2>
+      <p>
+        Ces notes sont lues depuis une base NoSQL TinyDB afin de suivre les
+        étapes importantes du projet Frostia Games.
+      </p>
+    </div>
+  </article>
+
+  {% for note in project_notes %}
+    <article class="home-card">
+      <div class="home-card__visual">
+        <span class="home-card__icon">•</span>
+      </div>
+
+      <div class="home-card__content">
+        <h2>{{ note.title }}</h2>
+
+        <p>{{ note.content }}</p>
+
+        <p>
+          <strong>Statut :</strong> {{ note.status }}
+        </p>
+
+        <p>
+          <strong>Tags :</strong> {{ note.tags|join:", " }}
+        </p>
+      </div>
+    </article>
+  {% empty %}
+    <article class="home-card">
+      <div class="home-card__visual">
+        <span class="home-card__icon">?</span>
+      </div>
+
+      <div class="home-card__content">
+        <h2>Aucune note disponible</h2>
+        <p>
+          Les notes de progression NoSQL ne sont pas encore disponibles.
+        </p>
+      </div>
+    </article>
+  {% endfor %}
+</section>
+
 <section class="about-card">
   <div class="about-card__icon">!</div>
 
