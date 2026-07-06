@@ -9,13 +9,44 @@ from core.services.nosql_notes import find_notes_by_project, seed_project_notes
 from creations.models import Creation
 from playable.models import PlayableProject
 
+DEFAULT_PROJECT_NOTES: list[dict[str, Any]] = [
+    {
+        "title": "Mise en place de la V1",
+        "content": (
+            "Création du portfolio Django, structuration du projet, "
+            "déploiement Render et organisation des preuves."
+        ),
+        "tags": ["django", "portfolio", "v1", "render"],
+        "status": "done",
+    },
+    {
+        "title": "Renforcement du dossier projet",
+        "content": (
+            "Ajout de la conception, du SQL natif, du JavaScript documenté et de la partie NoSQL."
+        ),
+        "tags": ["dossier-projet", "conception", "sql", "nosql"],
+        "status": "in_progress",
+    },
+    {
+        "title": "Préparation de la V3",
+        "content": "Ajout des éléments demandés après le retour formateur.",
+        "tags": ["v3", "formation", "preuves"],
+        "status": "planned",
+    },
+]
+
 
 def get_project_notes_safe() -> list[dict[str, Any]]:
     try:
         seed_project_notes()
-        return find_notes_by_project("frostia-games")
+        notes = find_notes_by_project("frostia-games")
+
+        if notes:
+            return notes
+
+        return DEFAULT_PROJECT_NOTES
     except Exception:
-        return []
+        return DEFAULT_PROJECT_NOTES
 
 
 def home(request: HttpRequest) -> HttpResponse:
@@ -57,9 +88,9 @@ def creations(request: HttpRequest) -> HttpResponse:
 
 
 def projets_jouables(request: HttpRequest) -> HttpResponse:
-    playable_projects = PlayableProject.objects.filter(is_visible=True).order_by(
-        "title",
-    )
+    playable_projects = PlayableProject.objects.filter(
+        is_visible=True,
+    ).order_by("title")
 
     return render(
         request,
