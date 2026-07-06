@@ -8,83 +8,235 @@ L’objectif est de montrer comment les données principales du site sont struct
 
 Le projet utilise **Django ORM** afin de définir les modèles en Python, puis de générer les tables correspondantes dans la base de données SQLite.
 
+Ce document sert aussi à faire le lien entre :
+
+* le code Python ;
+* les migrations Django ;
+* les tables SQL ;
+* l’administration Django ;
+* les vues ;
+* les templates ;
+* le rendu final visible par l’utilisateur.
+
 ---
 
-## Modèles principaux
+# 1. Fichiers concernés
+
+Les modèles principaux sont définis dans les fichiers suivants :
+
+```text
+creations/models.py
+playable/models.py
+```
+
+Ils sont ensuite utilisés par :
+
+```text
+creations/admin.py
+playable/admin.py
+core/views.py
+templates/pages/creation.html
+templates/pages/projet_jouable.html
+```
+
+---
+
+# 2. Modèles principaux
 
 Deux modèles principaux sont utilisés dans la V1 du projet.
 
-| Modèle            | Rôle                                                                        |
-| ----------------- | --------------------------------------------------------------------------- |
-| `Creation`        | Représente une création ou un projet présenté dans la page “Mes créations”. |
-| `PlayableProject` | Représente un projet jouable ou une démonstration prévue.                   |
+| Modèle | Rôle |
+| ------ | ---- |
+| `Creation` | Représente une création ou un projet présenté dans la page “Mes créations”. |
+| `PlayableProject` | Représente un projet jouable ou une démonstration prévue. |
+
+Ces deux modèles permettent de montrer que le site ne repose pas uniquement sur du contenu statique écrit directement dans les templates.
+
+Les données peuvent être créées, modifiées ou masquées depuis l’administration Django.
 
 ---
 
-## Modèle Creation
+# 3. Modèle `Creation`
+
+## Rôle général
 
 Le modèle `Creation` permet de stocker les informations liées aux créations présentées dans le portfolio.
 
-Il contient notamment :
+Il sert principalement à alimenter la page :
 
-* un titre ;
-* un slug ;
-* une lettre de classement alphabétique ;
-* un nom de code ;
-* un type de projet ;
-* un état d’avancement ;
-* une description courte ;
-* un indicateur de visibilité ;
-* une date de création ;
-* une date de modification.
+```text
+/mes-creations/
+```
 
-Ce modèle sert à organiser les créations visibles dans la page **Mes créations**.
+Chaque création peut représenter :
 
----
-
-## Rôle du modèle Creation
-
-Le modèle `Creation` permet de structurer les contenus présentés dans le portfolio.
-
-Chaque création peut être affichée ou masquée grâce au champ `is_visible`.
-
-Cela permet de préparer des contenus depuis l’administration Django sans forcément les rendre visibles immédiatement sur le site public.
+* un projet en cours ;
+* un ancien projet ;
+* un prototype ;
+* une idée de jeu ;
+* une création destinée au portfolio.
 
 ---
 
-## Modèle PlayableProject
+## Champs principaux
+
+Le modèle `Creation` contient notamment :
+
+| Champ | Rôle |
+| ----- | ---- |
+| `title` | Titre public de la création |
+| `slug` | Identifiant utilisé dans les URLs ou références internes |
+| `alphabet_letter` | Lettre de classement alphabétique |
+| `code_name` | Nom de code du projet |
+| `project_type` | Type de projet |
+| `status` | État d’avancement |
+| `short_description` | Description courte affichable côté public |
+| `is_visible` | Indique si la création doit apparaître sur le site |
+| `created_at` | Date de création |
+| `updated_at` | Date de dernière modification |
+
+---
+
+## Exemple de structure logique
+
+Exemple simplifié du modèle :
+
+```python
+class Creation(models.Model):
+    title = models.CharField(max_length=200)
+    slug = models.SlugField(unique=True)
+    alphabet_letter = models.CharField(max_length=1)
+    code_name = models.CharField(max_length=100, blank=True)
+    project_type = models.CharField(max_length=100)
+    status = models.CharField(max_length=100)
+    short_description = models.TextField()
+    is_visible = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.title
+```
+
+Cet extrait montre la structure générale du modèle.
+
+Le fichier réel du projet reste la référence principale.
+
+---
+
+## Rôle du champ `is_visible`
+
+Le champ `is_visible` permet de contrôler l’affichage public d’une création.
+
+Une création peut exister dans l’administration sans être affichée sur le site.
+
+Cela permet de préparer un contenu sans le publier immédiatement.
+
+Exemple de logique :
+
+```python
+Creation.objects.filter(is_visible=True)
+```
+
+Cette requête récupère uniquement les créations visibles.
+
+---
+
+# 4. Modèle `PlayableProject`
+
+## Rôle général
 
 Le modèle `PlayableProject` permet de stocker les informations liées aux projets jouables ou aux futures démonstrations.
 
-Il contient notamment :
+Il sert principalement à alimenter la page :
 
-* un titre ;
-* un slug ;
-* un état ;
-* un type de contenu ;
-* une description courte ;
-* un message de disponibilité ;
-* un indicateur de disponibilité ;
-* un indicateur de visibilité ;
-* une date de création ;
-* une date de modification.
+```text
+/projets-jouables/
+```
 
-Ce modèle sert à présenter les projets jouables prévus dans la V1 du site.
+Dans la V1, aucun vrai jeu jouable dans le navigateur n’est encore intégré.
+
+Ce modèle prépare seulement la structure future.
 
 ---
 
-## Rôle du modèle PlayableProject
+## Champs principaux
 
-Le modèle `PlayableProject` permet de séparer les créations générales des projets réellement jouables ou prévus comme démonstrations.
+Le modèle `PlayableProject` contient notamment :
 
-Cette séparation rend l’organisation du projet plus claire :
-
-* les créations présentent les projets, l’univers ou les idées du portfolio ;
-* les projets jouables présentent les démonstrations disponibles ou prévues.
+| Champ | Rôle |
+| ----- | ---- |
+| `title` | Titre du projet jouable ou de la démonstration |
+| `slug` | Identifiant du projet |
+| `status` | État du projet |
+| `content_type` | Type de contenu prévu |
+| `short_description` | Description courte |
+| `availability_message` | Message affiché si le projet n’est pas encore disponible |
+| `is_available` | Indique si le contenu est disponible |
+| `is_visible` | Indique si le projet doit apparaître sur le site |
+| `created_at` | Date de création |
+| `updated_at` | Date de dernière modification |
 
 ---
 
-## Utilisation de Django ORM
+## Exemple de structure logique
+
+Exemple simplifié du modèle :
+
+```python
+class PlayableProject(models.Model):
+    title = models.CharField(max_length=200)
+    slug = models.SlugField(unique=True)
+    status = models.CharField(max_length=100)
+    content_type = models.CharField(max_length=100)
+    short_description = models.TextField()
+    availability_message = models.TextField(blank=True)
+    is_available = models.BooleanField(default=False)
+    is_visible = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.title
+```
+
+Cet extrait montre la structure générale du modèle.
+
+Le fichier réel du projet reste la référence principale.
+
+---
+
+## Rôle du champ `is_available`
+
+Le champ `is_available` permet d’indiquer si un projet jouable est réellement disponible.
+
+Dans la V1, les projets jouables sont surtout prévus comme une évolution future.
+
+Cela permet d’afficher un message honnête au visiteur au lieu de promettre une fonctionnalité non disponible.
+
+---
+
+# 5. Séparation entre `Creation` et `PlayableProject`
+
+Les deux modèles ont des rôles différents.
+
+| Modèle | Usage principal |
+| ------ | --------------- |
+| `Creation` | Présenter une création ou un projet dans le portfolio |
+| `PlayableProject` | Préparer l’affichage d’une démonstration ou d’un projet jouable |
+
+Cette séparation rend l’organisation du projet plus claire.
+
+Elle évite de mélanger :
+
+* les créations générales ;
+* les projets futurs ;
+* les démonstrations prévues ;
+* les contenus réellement disponibles.
+
+---
+
+# 6. Utilisation de Django ORM
 
 Django ORM permet de manipuler les données à partir de classes Python.
 
@@ -96,41 +248,279 @@ Les modèles définis dans `models.py` sont utilisés par Django pour :
 * récupérer les contenus dans les vues ;
 * afficher les contenus dans les templates.
 
+L’ORM permet aussi d’éviter d’écrire directement du SQL brut dans les vues.
+
+Cela rend le code plus lisible, plus maintenable et plus cohérent avec Django.
+
 ---
 
-## Lien avec la base SQL
+# 7. Lien avec les migrations Django
+
+Après la création ou la modification des modèles, Django peut générer des migrations.
+
+Commandes utilisées :
+
+```powershell
+python manage.py makemigrations
+python manage.py migrate
+```
+
+Rôle des migrations :
+
+| Commande | Rôle |
+| -------- | ---- |
+| `makemigrations` | Génère les fichiers de migration à partir des modèles |
+| `migrate` | Applique les migrations dans la base de données |
+
+Les migrations permettent de transformer les classes Python en tables SQL.
+
+---
+
+# 8. Lien avec la base SQL
 
 Les modèles Django sont liés aux tables SQL générées par les migrations.
 
-| Modèle Django     | Table SQL générée          |
-| ----------------- | -------------------------- |
-| `Creation`        | `creations_creation`       |
+| Modèle Django | Table SQL générée |
+| ------------- | ----------------- |
+| `Creation` | `creations_creation` |
 | `PlayableProject` | `playable_playableproject` |
 
-Les fichiers SQL générés sont présents dans :
+Les fichiers SQL documentaires sont présents dans :
 
-```txt
+```text
 docs/sql/create_tables_creations.sql
 docs/sql/create_tables_playable.sql
+docs/sql/exemples_insert.sql
+docs/sql/sql-natif.md
+```
+
+Ces fichiers permettent de montrer la structure SQL correspondant aux modèles.
+
+Le SQL natif reste documentaire.
+
+La création réelle des tables reste gérée par les migrations Django.
+
+---
+
+# 9. Exemple SQL documentaire
+
+Exemple d’insertion pour une création :
+
+```sql
+INSERT INTO creations_creation (
+    title,
+    slug,
+    alphabet_letter,
+    code_name,
+    project_type,
+    status,
+    short_description,
+    is_visible,
+    created_at,
+    updated_at
+) VALUES (
+    'Frostia Games',
+    'frostia-games',
+    'F',
+    'FROSTIA',
+    'Portfolio Django',
+    'V1 en développement',
+    'Portfolio Django permettant de présenter des projets vidéoludiques.',
+    1,
+    CURRENT_TIMESTAMP,
+    CURRENT_TIMESTAMP
+);
+```
+
+Exemple d’insertion pour un projet jouable :
+
+```sql
+INSERT INTO playable_playableproject (
+    title,
+    slug,
+    status,
+    content_type,
+    short_description,
+    availability_message,
+    is_available,
+    is_visible,
+    created_at,
+    updated_at
+) VALUES (
+    'Prototype jouable à venir',
+    'prototype-jouable-a-venir',
+    'Prévu',
+    'Démonstration',
+    'Projet jouable prévu pour une future évolution du site.',
+    'Aucune version jouable disponible actuellement.',
+    0,
+    1,
+    CURRENT_TIMESTAMP,
+    CURRENT_TIMESTAMP
+);
+```
+
+Ces exemples servent à montrer la compréhension du lien entre modèles Django et SQL.
+
+---
+
+# 10. Lien avec l’administration Django
+
+Les modèles sont enregistrés dans l’administration Django.
+
+Fichiers concernés :
+
+```text
+creations/admin.py
+playable/admin.py
+```
+
+L’administration permet :
+
+* d’ajouter une création ;
+* de modifier une création ;
+* de masquer une création ;
+* d’ajouter un projet jouable ;
+* de modifier un projet jouable ;
+* de contrôler la visibilité des contenus.
+
+L’administration Django évite d’avoir à modifier directement les templates pour changer les données.
+
+---
+
+# 11. Lien avec les vues Django
+
+Les modèles sont utilisés dans les vues pour récupérer les contenus visibles.
+
+Exemple logique pour les créations :
+
+```python
+creations = Creation.objects.filter(is_visible=True)
+```
+
+Exemple logique pour les projets jouables :
+
+```python
+playable_projects = PlayableProject.objects.filter(is_visible=True)
+```
+
+Les vues transmettent ensuite les données aux templates.
+
+Chaîne de fonctionnement :
+
+```text
+Modèle Django
+→ Vue Django
+→ Template HTML
+→ Page affichée
 ```
 
 ---
 
-## Preuves à intégrer dans le dossier
+# 12. Lien avec les templates
 
-Pour cette partie, les preuves à intégrer dans le dossier projet sont :
+Les données récupérées dans les vues sont affichées dans les templates.
 
-| Élément                          | Preuve                                      |
-| -------------------------------- | ------------------------------------------- |
-| Code du modèle `Creation`        | Capture du fichier `models.py`              |
-| Code du modèle `PlayableProject` | Capture du fichier `models.py`              |
-| Table SQL générée                | Extrait `CREATE TABLE` correspondant        |
-| Administration Django            | Capture des modèles visibles dans `/admin/` |
-| Rendu final                      | Capture de la page utilisant les données    |
+Templates concernés :
+
+```text
+templates/pages/creation.html
+templates/pages/projet_jouable.html
+```
+
+Les templates peuvent afficher :
+
+* le titre ;
+* la description ;
+* le statut ;
+* le type de projet ;
+* le message de disponibilité ;
+* les informations visibles côté public.
 
 ---
 
-## Intérêt pour le projet
+# 13. Rendu final côté utilisateur
+
+Le rendu final est visible sur les pages publiques :
+
+```text
+/mes-creations/
+/projets-jouables/
+```
+
+Le visiteur ne voit pas directement les modèles Django.
+
+Il voit seulement les données préparées, filtrées et affichées par les templates.
+
+Cela montre le fonctionnement complet :
+
+```text
+Code Python
+→ Base SQLite
+→ Administration Django
+→ Vue Django
+→ Template HTML
+→ Rendu navigateur
+```
+
+---
+
+# 14. Limites actuelles
+
+Les modèles actuels sont volontairement simples.
+
+Ils ne gèrent pas encore :
+
+* les images dynamiques ;
+* les fichiers médias ;
+* les versions de projet ;
+* les relations complexes ;
+* les catégories avancées ;
+* les tags dynamiques ;
+* les historiques de modification ;
+* les commentaires ;
+* les statistiques.
+
+Ces éléments sont reportés afin de garder une V1 stable.
+
+---
+
+# 15. Évolutions possibles
+
+Une future version pourrait ajouter de nouveaux modèles comme :
+
+```text
+ProjectDetail
+ProjectVersion
+MediaAsset
+DevelopmentLog
+ProjectTag
+ProjectLink
+```
+
+Ces modèles permettraient d’enrichir progressivement le portfolio.
+
+Cependant, ils ne sont pas nécessaires pour la V1.
+
+---
+
+# 16. Preuves à intégrer dans le dossier
+
+Pour cette partie, les preuves à intégrer dans le dossier projet sont :
+
+| Élément | Preuve |
+| ------- | ------ |
+| Code du modèle `Creation` | Capture du fichier `creations/models.py` |
+| Code du modèle `PlayableProject` | Capture du fichier `playable/models.py` |
+| Table SQL générée | Extrait `CREATE TABLE` correspondant |
+| Exemple SQL | Extrait `INSERT INTO` |
+| Administration Django | Capture des modèles visibles dans `/admin/` |
+| Vue Django | Capture de la récupération des données dans `core/views.py` |
+| Rendu final | Capture de la page utilisant les données |
+
+---
+
+# 17. Intérêt pour le projet
 
 Les modèles Django constituent la base du back-end du projet.
 
@@ -144,3 +534,17 @@ Cette partie montre le lien entre :
 * les vues ;
 * les templates ;
 * le rendu final côté utilisateur.
+
+Elle permet aussi de démontrer la compétence back-end attendue dans un dossier projet.
+
+---
+
+# 18. Conclusion
+
+Les modèles `Creation` et `PlayableProject` forment la base de la partie dynamique de Frostia Games.
+
+Ils permettent de gérer les contenus depuis l’administration Django et de les afficher dans les pages publiques.
+
+La V1 reste volontairement simple, mais les modèles montrent déjà une vraie structure back-end.
+
+Les évolutions plus avancées pourront être ajoutées plus tard, lorsque le projet aura besoin de gérer davantage de contenus, de médias ou de relations.

@@ -1,20 +1,22 @@
-# NoSQL - Frostia Games
+# NoSQL — Frostia Games
 
 ## Objectif du document
 
-Ce document présente la réflexion menée autour d'une future intégration NoSQL dans le projet **Frostia Games**.
+Ce document présente la partie **NoSQL** du projet **Frostia Games**.
 
-Dans la V1 actuelle, aucune base NoSQL n'est implantée. Le projet utilise Django avec une base relationnelle SQLite afin de conserver une architecture simple, stable et maîtrisable.
+L’objectif est d’expliquer pourquoi une structure NoSQL légère a été ajoutée dans la V1 renforcée du projet, comment elle est utilisée et quelles sont ses limites.
 
-Le NoSQL est identifié comme une évolution possible du projet, notamment pour stocker des contenus plus souples liés aux projets de jeux vidéo.
+La V1 utilise toujours **SQLite** comme base principale.
 
-Ce document ne présente donc pas une fonctionnalité NoSQL déjà développée, mais une analyse technique préparatoire permettant d'expliquer pourquoi cette technologie n'a pas été ajoutée dans la V1 et dans quels cas elle pourrait devenir pertinente.
+Le NoSQL est utilisé sous forme d’expérimentation légère avec un fichier **JSON structuré**, compatible avec une logique documentaire de type **TinyDB**.
+
+Ce document remplace l’ancienne version qui présentait le NoSQL uniquement comme une piste future.
 
 ---
 
-## Situation actuelle du projet
+# 1. Situation actuelle du projet
 
-La V1 de Frostia Games repose sur une architecture Django classique.
+La V1 de Frostia Games repose principalement sur une architecture Django classique.
 
 Elle comprend :
 
@@ -24,41 +26,55 @@ Elle comprend :
 * des migrations ;
 * une administration Django ;
 * un affichage dynamique des données ;
+* un menu mobile JavaScript ;
 * un lancement local ;
 * un lancement avec Docker ;
 * un déploiement en ligne sur Render ;
 * une documentation technique ;
 * des preuves de fonctionnement.
 
-Cette version a été volontairement limitée afin de produire un socle stable, testable et défendable.
+À cette base SQL principale s’ajoute maintenant une expérimentation NoSQL légère.
 
-Le choix principal de la V1 est donc de stabiliser d'abord le fonctionnement SQL avec Django ORM avant d'ajouter une technologie supplémentaire.
+Cette expérimentation repose sur :
 
----
+```text
+Docs/nosql/project_notes.json
+Docs/nosql/read_project_notes.py
+```
 
-## Pourquoi le NoSQL n'est pas implanté dans la V1
+Le fichier JSON contient des documents.
 
-L'ajout d'une base NoSQL dès la V1 aurait augmenté la complexité du projet sans apporter de bénéfice immédiat au fonctionnement actuel du site.
+Le script Python lit ces documents, les filtre et les affiche dans le terminal.
 
-Les données actuellement utilisées dans Frostia Games sont simples et structurées.
-
-Elles concernent principalement :
-
-* les créations ;
-* les projets jouables ;
-* les statuts ;
-* les informations de visibilité ;
-* les dates de création et de modification.
-
-Ces données correspondent bien à une structure relationnelle classique.
-
-Le choix retenu est donc de ne pas ajouter NoSQL artificiellement, mais de documenter cette possibilité comme une évolution future si le projet devient plus riche.
+Cette approche permet de démontrer une logique NoSQL documentaire sans complexifier l’architecture.
 
 ---
 
-## Rôle de la base SQL actuelle
+# 2. Choix retenu pour la V1 renforcée
 
-La base SQLite est utilisée comme base relationnelle principale.
+Le choix technique retenu est le suivant :
+
+| Besoin | Solution utilisée |
+| ------ | ----------------- |
+| Données principales structurées | SQLite avec Django ORM |
+| Créations | Modèle Django `Creation` |
+| Projets jouables | Modèle Django `PlayableProject` |
+| Administration | Django Admin |
+| Notes de progression souples | JSON structuré |
+| Logique NoSQL légère | Structure documentaire compatible TinyDB |
+| Démonstration NoSQL | Script Python de lecture |
+
+Cette organisation permet de montrer à la fois :
+
+* une base relationnelle classique ;
+* une logique documentaire NoSQL légère ;
+* une séparation claire entre données structurées et données plus libres.
+
+---
+
+# 3. Rôle de SQLite
+
+SQLite reste la base relationnelle principale du projet.
 
 Elle permet de stocker les données nécessaires au fonctionnement de la V1.
 
@@ -70,97 +86,103 @@ Les données sont manipulées avec Django ORM, ce qui permet :
 * de gérer les données depuis l'administration Django ;
 * d'afficher les informations dans les templates.
 
-Dans la V1, cette solution est suffisante car les données restent prévisibles et structurées.
+SQLite est utilisé pour les données structurées, notamment :
+
+* les créations ;
+* les projets jouables ;
+* les statuts ;
+* la visibilité ;
+* les dates de création ;
+* les dates de modification.
+
+Ces données correspondent bien à une structure relationnelle classique.
 
 ---
 
-## Limite de l'approche SQL pour les futures évolutions
+# 4. Rôle de la partie NoSQL
 
-Si Frostia Games évolue vers une plateforme plus complète, certains contenus pourraient devenir plus difficiles à modéliser uniquement avec des tables relationnelles.
+La partie NoSQL sert à démontrer une logique de documents JSON.
 
-Par exemple, chaque projet de jeu vidéo pourrait avoir une structure différente :
+Dans Frostia Games, elle sert principalement à représenter des notes de progression.
 
-* certains projets pourraient avoir une section gameplay ;
-* d'autres pourraient avoir une section univers ;
-* certains pourraient avoir un journal de développement détaillé ;
-* certains pourraient contenir des prototypes ;
-* certains pourraient contenir des médias ;
-* certains pourraient avoir des notes de conception très variables.
+Exemples de données adaptées à cette approche :
 
-Dans ce cas, une base relationnelle classique pourrait demander beaucoup de tables ou de champs optionnels.
-
-Le NoSQL pourrait alors devenir utile pour stocker des documents plus souples.
-
----
-
-## Besoins possibles pour une future base NoSQL
-
-Une base NoSQL pourrait être utile plus tard pour stocker des données moins structurées.
-
-Exemples de contenus concernés :
-
-* fiches détaillées de projets ;
-* sections variables selon les jeux ;
-* historiques de développement ;
 * notes de conception ;
-* journaux de mise à jour ;
-* blocs de contenu personnalisés ;
-* métadonnées de médias ;
-* informations évolutives sur les prototypes ;
-* brouillons de description ;
-* informations narratives ou créatives.
+* notes de progression ;
+* éléments de suivi ;
+* informations souples ;
+* contenus de démonstration ;
+* données qui n’ont pas forcément besoin d’une table SQL complète.
 
-Ces données peuvent varier fortement d'un projet à l'autre.
+Cette approche est cohérente pour une V1, car elle ne demande pas de serveur externe.
 
-Une structure NoSQL permettrait donc plus de souplesse qu'une table SQL classique.
+Elle permet de montrer le principe du NoSQL sans ajouter une architecture trop lourde comme MongoDB.
 
 ---
 
-## Exemple de document NoSQL possible
+# 5. Fichiers concernés
 
-Exemple théorique d'un document MongoDB pour une future fiche projet :
+La partie NoSQL est documentée et testée dans le dossier :
+
+```text
+Docs/nosql/
+```
+
+Fichiers concernés :
+
+```text
+Docs/nosql/nosql.md
+Docs/nosql/project_notes.json
+Docs/nosql/read_project_notes.py
+Docs/nosql/structure-nosql.md
+Docs/nosql/tinydb-integration.md
+```
+
+Le principe est le suivant :
+
+```text
+document JSON
+→ script Python
+→ récupération des notes
+→ filtrage par projet
+→ affichage terminal
+```
+
+Cette chaîne permet de produire une preuve simple et vérifiable.
+
+---
+
+# 6. Exemple de document NoSQL
+
+Un document NoSQL peut représenter une note de progression.
+
+Exemple :
 
 ```json
 {
-  "slug": "kryoncore",
-  "title": "KryonCore",
-  "status": "En préparation",
-  "type": "Jeu vidéo PC",
-  "sections": [
-    {
-      "title": "Présentation",
-      "content": "KryonCore est un projet de jeu vidéo servant de base à des recherches techniques et créatives."
-    },
-    {
-      "title": "Gameplay",
-      "content": "Le gameplay sera documenté lorsque la direction du projet sera stabilisée."
-    },
-    {
-      "title": "État du développement",
-      "content": "Le projet est actuellement en phase préparatoire."
-    }
-  ],
-  "media": {
-    "poster": null,
-    "trailer": null,
-    "screenshots": []
-  },
+  "project_code": "frostia-games",
+  "title": "Intégration NoSQL légère",
+  "content": "Ajout d’une structure documentaire JSON et d’un script Python de lecture pour démontrer une approche NoSQL légère compatible avec TinyDB.",
+  "status": "done",
   "tags": [
-    "jeu vidéo",
-    "prototype",
-    "recherche technique"
+    "nosql",
+    "tinydb",
+    "json",
+    "python"
   ],
-  "updated_at": "2026-06-24"
+  "created_at": "2026-06-30"
 }
 ```
 
-Ce type de document permettrait de stocker une fiche projet complète sans imposer une structure identique à tous les projets.
+Ce type de structure est plus souple qu’une table SQL classique.
+
+Il permet d’ajouter ou de modifier certains champs sans devoir créer immédiatement une nouvelle migration Django.
 
 ---
 
-## Différence entre SQL et NoSQL dans Frostia Games
+# 7. Différence entre SQL et NoSQL dans Frostia Games
 
-### SQL actuel
+## SQL actuel
 
 La base SQLite sert à stocker les données principales du site.
 
@@ -178,157 +200,267 @@ Ces données correspondent bien à des tables relationnelles.
 
 ---
 
-### NoSQL envisagé
+## NoSQL léger
 
-Une future base NoSQL pourrait servir à stocker des contenus plus flexibles.
+La partie NoSQL sert à stocker des contenus plus flexibles.
 
-Elle serait adaptée pour :
+Elle est adaptée pour :
 
-* les fiches longues ;
-* les blocs de contenu variables ;
-* les notes de conception ;
-* les médias associés ;
-* les historiques de projet ;
-* les informations créatives non uniformes.
+* des notes ;
+* des blocs de contenu libres ;
+* des informations de suivi ;
+* des brouillons ;
+* des données de démonstration ;
+* des documents JSON simples.
 
-Le NoSQL ne remplacerait pas forcément la base relationnelle.
+Elle ne remplace pas la base relationnelle.
 
-Il pourrait être utilisé en complément de SQLite ou PostgreSQL pour certains contenus plus libres.
-
----
-
-## Exemple de séparation SQL / NoSQL
-
-Dans une version plus avancée, l'organisation pourrait être la suivante :
-
-| Type de donnée             | Solution possible |
-| -------------------------- | ----------------- |
-| Utilisateurs               | PostgreSQL        |
-| Créations principales      | PostgreSQL        |
-| Projets jouables           | PostgreSQL        |
-| Statuts                    | PostgreSQL        |
-| Visibilité                 | PostgreSQL        |
-| Fiches longues de projets  | MongoDB           |
-| Notes de conception        | MongoDB           |
-| Blocs de contenu variables | MongoDB           |
-| Métadonnées flexibles      | MongoDB           |
-
-Cette organisation n'est pas nécessaire dans la V1, mais elle pourrait devenir pertinente si le projet évolue vers une plateforme plus complète.
+Elle complète le projet pour démontrer une logique documentaire légère.
 
 ---
 
-## Exemple de composant d'accès NoSQL envisagé
+# 8. Exemple de séparation SQL / NoSQL
 
-Dans une future version, un composant spécifique pourrait être créé pour accéder aux documents NoSQL.
+Dans la V1 renforcée, l’organisation peut être comprise ainsi :
 
-Exemple théorique :
+| Type de donnée | Solution utilisée |
+| -------------- | ----------------- |
+| Créations principales | SQLite |
+| Projets jouables | SQLite |
+| Statuts | SQLite |
+| Visibilité | SQLite |
+| Données administrables | Django Admin + SQLite |
+| Notes de progression | JSON structuré |
+| Documents de démonstration | NoSQL léger |
+| Contenus très flexibles futurs | NoSQL plus avancé possible |
 
-```python
-class ProjectDocumentRepository:
-    def __init__(self, collection):
-        self.collection = collection
+Cette séparation permet d’utiliser chaque technologie pour un rôle adapté.
 
-    def find_by_slug(self, slug):
-        return self.collection.find_one({"slug": slug})
+---
 
-    def find_visible_projects(self):
-        return self.collection.find({"is_visible": True})
+# 9. Script de lecture NoSQL
 
-    def update_project_sections(self, slug, sections):
-        return self.collection.update_one(
-            {"slug": slug},
-            {"$set": {"sections": sections}}
-        )
+Le script suivant permet de lire les notes stockées dans le fichier JSON :
+
+```text
+Docs/nosql/read_project_notes.py
 ```
 
-Ce code n'est pas intégré dans la V1.
+Son rôle est de :
 
-Il montre seulement comment un futur composant d'accès aux données NoSQL pourrait être organisé.
+* charger le fichier `project_notes.json` ;
+* vérifier que le fichier existe ;
+* vérifier que le JSON contient une liste de documents ;
+* filtrer les notes liées au projet `frostia-games` ;
+* afficher les notes dans le terminal.
+
+Commande de test :
+
+```powershell
+python Docs/nosql/read_project_notes.py
+```
+
+Cette commande doit afficher les notes de progression du projet.
+
+Cette preuve montre que les données NoSQL ne sont pas seulement décrites dans la documentation, mais également lues par un script Python.
 
 ---
 
-## Exemple d'utilisation future côté Django
+# 10. Exemple de logique compatible TinyDB
 
-Dans une future version, une vue Django pourrait récupérer une fiche projet détaillée depuis une base NoSQL.
+TinyDB peut aussi lire un fichier JSON comme petite base documentaire.
 
-Exemple théorique :
+Exemple de logique TinyDB :
 
 ```python
-def project_detail(request, slug):
-    project = project_document_repository.find_by_slug(slug)
+from tinydb import TinyDB, Query
 
-    if project is None:
-        raise Http404("Projet introuvable")
+db = TinyDB("Docs/nosql/project_notes.json")
+Note = Query()
 
-    return render(request, "pages/project_detail.html", {
-        "project": project
+notes = db.search(Note.project_code == "frostia-games")
+
+for note in notes:
+    print(note["title"])
+    print(note["status"])
+    print(note["content"])
+```
+
+Cette logique montre :
+
+* l’ouverture d’une base TinyDB ;
+* la recherche dans des documents JSON ;
+* la lecture de données souples ;
+* l’affichage des résultats.
+
+Dans la V1, le script `read_project_notes.py` permet déjà de démontrer la lecture du fichier documentaire.
+
+TinyDB reste la solution légère retenue ou compatible pour une évolution immédiate sans infrastructure externe.
+
+---
+
+# 11. Exemple d’utilisation dans une logique Django
+
+Dans une logique Django, les notes peuvent être récupérées puis transmises à un template.
+
+Exemple simplifié :
+
+```python
+def home(request):
+    project_notes = read_project_notes("frostia-games")
+
+    return render(request, "pages/home.html", {
+        "project_notes": project_notes,
     })
 ```
 
-Ce type de fonctionnement permettrait d'afficher des fiches longues avec des sections variables.
+Le template peut ensuite afficher les notes :
 
-La base SQL pourrait continuer à stocker les informations principales, tandis que la base NoSQL stockerait les contenus détaillés.
+```django
+{% for note in project_notes %}
+    <article>
+        <h2>{{ note.title }}</h2>
+        <p>{{ note.content }}</p>
+        <p>{{ note.status }}</p>
+    </article>
+{% endfor %}
+```
 
----
+Cette logique montre comment une donnée documentaire peut être utilisée dans une page Django.
 
-## Choix retenu pour la V1
-
-Pour cette V1, le choix technique est le suivant :
-
-* SQLite est utilisé pour la base de données principale ;
-* Django ORM est utilisé pour manipuler les données ;
-* aucune base NoSQL n'est connectée ;
-* l'intégration NoSQL est placée dans la roadmap du projet ;
-* la priorité est donnée à la stabilité de la V1.
-
-Ce choix permet de garder une version stable, testable et maintenable.
+Pour la V1, cette intégration complète dans le rendu public peut rester limitée ou démonstrative.
 
 ---
 
-## Pourquoi ne pas ajouter NoSQL artificiellement
+# 12. Pourquoi une solution légère plutôt que MongoDB
 
-Ajouter une technologie uniquement pour montrer qu'elle existe ne serait pas pertinent.
+MongoDB aurait pu être utilisé pour une vraie base NoSQL plus avancée.
 
-Dans la V1 actuelle, les données principales sont encore simples et structurées.
+Cependant, MongoDB aurait demandé :
 
-Elles sont donc adaptées à une base relationnelle.
+* une base externe ;
+* une configuration dédiée ;
+* des variables d’environnement supplémentaires ;
+* une gestion de connexion ;
+* une sécurisation plus poussée ;
+* une documentation supplémentaire ;
+* des tests supplémentaires.
 
-Ajouter NoSQL maintenant aurait créé :
+Pour une V1, ce niveau de complexité n’était pas nécessaire.
 
-* une configuration supplémentaire ;
-* une dépendance technique en plus ;
-* une documentation plus longue ;
-* des tests supplémentaires ;
-* une architecture plus complexe ;
-* un risque de confusion entre SQL et NoSQL ;
-* une dette technique inutile.
-
-Le choix le plus raisonnable est donc de documenter cette possibilité sans l'intégrer trop tôt.
+Une structure JSON compatible TinyDB permet de démontrer le principe NoSQL avec une solution plus simple.
 
 ---
 
-## Roadmap NoSQL
+# 13. Limites de la solution retenue
 
-Une future version pourrait intégrer MongoDB ou une autre solution NoSQL pour gérer les fiches détaillées des projets.
+La solution NoSQL actuelle reste légère.
 
-Étapes possibles :
+Elle ne doit pas être présentée comme une base NoSQL de production complète.
 
-1. Identifier les contenus réellement variables.
-2. Définir une structure de document.
-3. Choisir une solution NoSQL adaptée.
-4. Connecter Django à cette base.
-5. Créer un composant d'accès aux données NoSQL.
-6. Tester la récupération des documents.
-7. Afficher les fiches détaillées dynamiquement.
-8. Sécuriser les accès et les données.
-9. Documenter la nouvelle architecture.
-10. Vérifier que l'ajout apporte un bénéfice réel au projet.
+Limites principales :
+
+* stockage local dans un fichier JSON ;
+* pas adapté à une forte charge ;
+* pas adapté à plusieurs écritures simultanées importantes ;
+* pas prévu pour stocker des données sensibles ;
+* pas destiné à remplacer SQLite ;
+* persistance limitée selon l’environnement d’hébergement.
+
+Sur Render, il faut rester prudent avec les fichiers locaux, surtout sur une offre gratuite.
+
+Le fichier JSON doit être considéré comme une démonstration ou une donnée non critique.
 
 ---
 
-## Risques d'une intégration NoSQL
+# 14. Sécurité
 
-Une future intégration NoSQL devra être étudiée avec prudence.
+La partie NoSQL ne doit contenir aucune donnée sensible.
+
+Ne pas stocker dans `project_notes.json` :
+
+* mot de passe ;
+* clé secrète ;
+* jeton privé ;
+* clé API ;
+* donnée personnelle sensible ;
+* identifiant administrateur ;
+* variable d’environnement.
+
+Le fichier JSON doit contenir uniquement des données de démonstration ou des notes non sensibles.
+
+---
+
+# 15. Pourquoi ne pas tout mettre en NoSQL
+
+Les données principales du projet sont structurées.
+
+Les créations et les projets jouables ont des champs réguliers :
+
+* titre ;
+* slug ;
+* statut ;
+* visibilité ;
+* description ;
+* dates.
+
+Ces données sont mieux adaptées à SQL.
+
+Le choix cohérent est donc :
+
+```text
+SQLite pour les données principales.
+JSON / TinyDB pour une démonstration NoSQL légère.
+```
+
+Ce choix permet d’éviter une architecture confuse.
+
+---
+
+# 16. Évolution possible vers un NoSQL plus avancé
+
+Une future version pourrait utiliser MongoDB ou une autre base NoSQL pour gérer des contenus plus variables.
+
+Exemples de contenus concernés :
+
+* fiches longues de projets ;
+* sections variables selon les jeux ;
+* journaux de développement ;
+* notes de conception ;
+* métadonnées de médias ;
+* blocs de contenu personnalisés.
+
+Exemple de document futur :
+
+```json
+{
+  "slug": "kryoncore",
+  "title": "KryonCore",
+  "status": "En préparation",
+  "sections": [
+    {
+      "title": "Présentation",
+      "content": "Présentation du projet."
+    },
+    {
+      "title": "Gameplay",
+      "content": "Description du gameplay."
+    }
+  ],
+  "tags": [
+    "jeu vidéo",
+    "prototype"
+  ]
+}
+```
+
+Ce type de structure pourrait devenir utile si les fiches projets deviennent très différentes les unes des autres.
+
+---
+
+# 17. Risques d'une intégration NoSQL avancée
+
+Une future intégration NoSQL avancée devra être étudiée avec prudence.
 
 Les principaux risques seraient :
 
@@ -338,15 +470,15 @@ Les principaux risques seraient :
 * devoir sécuriser une deuxième base ;
 * augmenter les tests nécessaires ;
 * créer une dépendance technique supplémentaire ;
-* rendre le projet moins lisible pour une V1.
+* rendre le projet moins lisible.
 
-Avant d'intégrer NoSQL, il faudra vérifier que le besoin est réel.
+Avant d'intégrer une solution NoSQL plus lourde, il faudra vérifier que le besoin est réel.
 
 ---
 
-## Critères avant une future intégration
+# 18. Critères avant une future évolution NoSQL
 
-Avant d'ajouter NoSQL, plusieurs questions devront être posées :
+Avant d'ajouter une base NoSQL plus avancée, plusieurs questions devront être posées :
 
 * Les données sont-elles vraiment variables ?
 * Une base SQL ne suffit-elle plus ?
@@ -357,52 +489,74 @@ Avant d'ajouter NoSQL, plusieurs questions devront être posées :
 * Le projet reste-t-il maintenable ?
 * L'intégration ne transforme-t-elle pas le projet en architecture trop lourde ?
 
-Si le besoin n'est pas confirmé, l'idée pourra être reportée ou abandonnée.
+Si le besoin n'est pas confirmé, l'idée devra être reportée.
 
 ---
 
-## Positionnement pour le dossier projet
+# 19. Preuves à intégrer dans le dossier
 
-Pour le dossier projet, il est important de présenter cette partie avec précision.
+Pour cette partie, les preuves utiles sont :
 
-La V1 de Frostia Games ne doit pas être présentée comme un projet utilisant déjà NoSQL.
+| Élément | Preuve |
+| ------- | ------ |
+| Fichier JSON | Capture de `Docs/nosql/project_notes.json` |
+| Script de lecture | Capture de `Docs/nosql/read_project_notes.py` |
+| Structure NoSQL | Capture de `Docs/nosql/structure-nosql.md` |
+| Documentation NoSQL | Capture de `Docs/nosql/nosql.md` |
+| Documentation TinyDB | Capture de `Docs/nosql/tinydb-integration.md` |
+| Résultat terminal | Capture de l’exécution du script |
+| Sécurité | Vérification qu’aucune donnée sensible n’est présente |
+
+Dossier conseillé :
+
+```text
+Preuve De Fonctionnement/NoSQL/
+```
+
+Captures conseillées :
+
+```text
+capture-nosql-json.png
+capture-nosql-script.png
+capture-nosql-terminal.png
+```
+
+---
+
+# 20. Formulation correcte pour le dossier projet
 
 La formulation correcte est :
 
-```txt
-Le projet utilise actuellement une base relationnelle SQLite. Une évolution NoSQL est documentée pour de futurs besoins de contenus plus flexibles, mais elle n'est pas intégrée dans la V1.
+```text
+Le projet utilise SQLite comme base principale. Une expérimentation NoSQL légère a été ajoutée avec une structure documentaire JSON compatible TinyDB afin de stocker et lire des notes de progression.
 ```
 
-La formulation à éviter est :
+Formulation à éviter :
 
-```txt
-Le projet utilise SQL et NoSQL.
+```text
+Le projet utilise une architecture NoSQL complète.
 ```
 
-Cette deuxième formulation serait incorrecte pour l'état actuel de la V1.
+Autre formulation à éviter :
+
+```text
+Le NoSQL remplace SQLite.
+```
+
+Ces formulations seraient trop larges ou incorrectes.
 
 ---
 
-## Limite par rapport à la compétence NoSQL
+# 21. Conclusion
 
-Cette section permet de montrer une réflexion technique sur le NoSQL, mais elle ne remplace pas un composant NoSQL réellement développé.
+La V1 de Frostia Games utilise principalement une base relationnelle SQLite avec Django ORM.
 
-Si le dossier projet final exige une preuve concrète de composant d'accès NoSQL, il faudra soit :
+Une expérimentation NoSQL légère a été ajoutée afin de démontrer le stockage et la lecture de documents JSON.
 
-* ajouter une petite intégration NoSQL réelle dans une future version ;
-* présenter cette compétence à travers un autre projet ;
-* demander au formateur si cette documentation préparatoire est suffisante pour le dépôt d'entraînement.
+Ce choix permet de montrer une compétence NoSQL sans alourdir fortement l’architecture du projet.
 
-Pour le dépôt d'entraînement du dossier projet, cette section permet surtout d'obtenir un retour du formateur sur la manière de traiter cette compétence.
+La solution actuelle reste limitée à une démonstration non critique.
 
----
+SQLite reste la base principale du projet.
 
-## Conclusion
-
-Le NoSQL n'est pas implanté dans la V1 de Frostia Games, mais son usage est identifié, cadré et documenté.
-
-La V1 privilégie une base SQL simple avec SQLite afin de valider le fonctionnement du backend Django.
-
-Le NoSQL est prévu comme une évolution future possible pour gérer des contenus plus souples et plus détaillés liés aux projets de jeux vidéo.
-
-Ce choix permet de conserver une V1 stable, claire et défendable, tout en préparant une évolution technique plus avancée si le besoin devient réel.
+Cette séparation permet de conserver une V1 stable, claire et défendable, tout en ouvrant une évolution possible vers une solution NoSQL plus avancée si le besoin devient réel.

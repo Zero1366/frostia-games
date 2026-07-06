@@ -1,26 +1,68 @@
 [
-{
-"project_code": "frostia-games",
-"title": "Mise en place de la V1",
-"content": "Création du portfolio Django, structuration du projet, déploiement Render et organisation des preuves.",
-"tags": ["django", "portfolio", "v1", "render"],
-"status": "done",
-"created_at": "2026-06-30"
-},
-{
-"project_code": "frostia-games",
-"title": "Renforcement du dossier projet",
-"content": "Ajout des documents de conception, du SQL natif et préparation de la partie NoSQL.",
-"tags": ["dossier-projet", "conception", "sql", "nosql"],
-"status": "in_progress",
-"created_at": "2026-06-30"
-},
-{
-"project_code": "frostia-games",
-"title": "Préparation de la V3",
-"content": "Ajout des éléments demandés après le retour formateur : conception, preuves techniques, SQL natif et NoSQL ciblé.",
-"tags": ["v3", "formation", "preuves", "amelioration"],
-"status": "planned",
-"created_at": "2026-06-30"
-}
+  {
+    "project_code": "frostia-games",
+    "title": "Mise en place de la V1",
+    "content": "Création du portfolio Django, structuration du projet, déploiement Render et organisation des preuves de fonctionnement.",
+    "tags": [
+      "django",
+      "portfolio",
+      "v1",
+      "render"
+    ],
+    "status": "done",
+    "created_at": "2026-06-30"
+  },
+  {
+    "project_code": "frostia-games",
+    "title": "Renforcement du dossier projet",
+    "content": "Ajout des documents de conception, du MCD, du diagramme de cas d’utilisation, du diagramme de séquence, du SQL natif et des explications techniques.",
+    "tags": [
+      "dossier-projet",
+      "conception",
+      "sql",
+      "documentation"
+    ],
+    "status": "done",
+    "created_at": "2026-06-30"
+  },
+  {
+    "project_code": "frostia-games",
+    "title": "Intégration NoSQL légère",
+   "content": "Ajout d’une structure documentaire JSON et d’un script Python de lecture pour démontrer une approche NoSQL légère compatible avec TinyDB.",
+    "tags": [
+      "nosql",
+      "tinydb",
+      "json",
+      "python"
+    ],
+    "status": "done",
+    "created_at": "2026-06-30"
+  },
+  {
+    "project_code": "frostia-games",
+    "title": "Préparation des preuves finales",
+    "content": "Organisation des captures et des annexes pour montrer le fonctionnement du site, l’administration Django, Render, GitHub, Docker, SQL et NoSQL.",
+    "tags": [
+      "preuves",
+      "annexes",
+      "render",
+      "github",
+      "docker"
+    ],
+    "status": "in_progress",
+    "created_at": "2026-06-30"
+  },
+  {
+    "project_code": "frostia-games",
+    "title": "Préparation de la V3",
+    "content": "Préparation des évolutions futures du projet après la V1 : amélioration des fiches projets, contenus plus détaillés, statistiques et éventuelle base NoSQL plus avancée.",
+    "tags": [
+      "v3",
+      "evolution",
+      "amelioration",
+      "future-version"
+    ],
+    "status": "planned",
+    "created_at": "2026-06-30"
+  }
 ]
