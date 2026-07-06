@@ -534,8 +534,8 @@ Pour le projet Frostia Games, les hôtes nécessaires peuvent inclure :
 
 ```python
 ALLOWED_HOSTS = [
-    "localhost",
-    "127.0.0.1",
+    "frostia-games.onrender.com",
+    "frostia-games.onrender.com",
     "frostia-games.onrender.com",
 ]
 ```
@@ -943,3 +943,6 @@ La V1 n'est pas une plateforme de production complète, mais elle est structuré
 Les protections avancées seront ajoutées plus tard si le projet évolue vers une version plus complète.
 
 À ce stade, l'objectif principal n'est plus d'ajouter des fonctionnalités sensibles, mais de préparer les preuves, les captures et l'intégration propre dans le dossier projet final.
+
+
+

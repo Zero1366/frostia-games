@@ -819,3 +819,5 @@ Il montre une capacité à créer un projet web complet dans son périmètre, à
 À ce stade, la priorité n’est plus d’ajouter de nouvelles fonctionnalités lourdes.
 
 La priorité est de finaliser les captures, les preuves, les annexes et le dossier projet final.
+
+

@@ -455,7 +455,7 @@ Résultat obtenu :
 * image construite ;
 * conteneur créé ;
 * serveur Django lancé ;
-* site accessible sur `http://127.0.0.1:8000/`.
+* site accessible sur `https://frostia-games.onrender.com/`.
 
 ## Statut
 
@@ -1862,3 +1862,5 @@ Le choix de conserver Django/Python dans cette V1 permet de protéger la stabili
 Cette approche permet de présenter un projet stable, maintenable, documenté, déployé, renforcé et évolutif.
 
 À ce stade, l’objectif principal est de finaliser les captures, les annexes et le dossier projet final, sans ajouter de nouvelles fonctionnalités lourdes.
+
+

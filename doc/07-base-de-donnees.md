@@ -435,7 +435,7 @@ La base SQLite est alimentée principalement via l’administration Django.
 Adresse locale :
 
 ```text
-http://127.0.0.1:8000/admin/
+https://frostia-games.onrender.com/admin/
 ```
 
 Adresse en ligne :
@@ -1010,3 +1010,5 @@ Le projet dispose donc d’une base de données cohérente avec son périmètre 
 À ce stade, la priorité n’est plus d’ajouter une nouvelle base ou de complexifier l’architecture.
 
 La priorité est de préparer les captures, les preuves et l’intégration propre dans le dossier projet final.
+
+

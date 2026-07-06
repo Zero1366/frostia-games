@@ -670,3 +670,5 @@ Le déploiement ne transforme pas le projet en plateforme de production complèt
 Il permet de présenter une V1 fonctionnelle, déployée et cohérente avec le périmètre du dossier projet.
 
 La priorité après cette étape est de préparer les captures, les preuves et les annexes du dossier final.
+
+

@@ -812,7 +812,7 @@ Le projet utilise l'administration intégrée de Django.
 Adresse locale :
 
 ```text
-http://127.0.0.1:8000/admin/
+https://frostia-games.onrender.com/admin/
 ```
 
 Adresse en ligne :
@@ -1348,7 +1348,7 @@ docker compose up --build
 Le site est ensuite accessible localement :
 
 ```text
-http://127.0.0.1:8000/
+https://frostia-games.onrender.com/
 ```
 
 Tests utiles dans Docker :
@@ -1528,3 +1528,5 @@ Elle permet :
 Cette architecture correspond à l'objectif actuel : obtenir une base stable, déployée, documentée, renforcée et défendable.
 
 À ce stade, la priorité n'est plus d'élargir l'architecture, mais de finaliser les captures, les preuves et le dossier projet final.
+
+

@@ -448,7 +448,7 @@ Les contenus affichés dans les pages peuvent être gérés depuis l’administr
 Adresse locale :
 
 ```text
-http://127.0.0.1:8000/admin/
+https://frostia-games.onrender.com/admin/
 ```
 
 Adresse en ligne :
@@ -590,3 +590,5 @@ URL
 ```
 
 Cette structure pourra être enrichie plus tard si le projet évolue vers des pages détaillées, une API ou une interface privée.
+
+

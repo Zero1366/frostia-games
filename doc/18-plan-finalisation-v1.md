@@ -846,3 +846,5 @@ dossier final
 La V1 est suffisamment complète pour être défendue si elle est présentée clairement.
 
 Les prochaines étapes doivent rester concentrées sur la qualité du rendu final, pas sur l'ajout de nouvelles fonctionnalités lourdes.
+
+

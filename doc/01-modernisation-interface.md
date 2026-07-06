@@ -287,3 +287,5 @@ Cela permet de garder le contrôle sur :
 La modernisation lourde de l’interface est reportée à une version future afin de conserver une V1 stable, documentée et déployée.
 
 Cette étape valide donc la base visuelle du projet **Frostia Games** pour la V1.
+
+

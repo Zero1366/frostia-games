@@ -220,3 +220,5 @@ Il complète utilement les autres documents de conception, notamment :
 * la documentation des vues et routes.
 
 Il permet ainsi de mieux prouver la logique de développement utilisée dans la V1 du projet.
+
+

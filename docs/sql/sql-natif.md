@@ -363,3 +363,5 @@ Le fichier `exemples_insert.sql` montre des exemples d’ajout de données.
 Le projet conserve Django ORM et les migrations comme fonctionnement principal.
 
 Les extraits SQL servent de preuves techniques pour renforcer le dossier projet et démontrer la compréhension de la couche base de données.
+
+

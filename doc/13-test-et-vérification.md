@@ -121,7 +121,7 @@ python manage.py runserver
 Adresse utilisée :
 
 ```txt
-http://127.0.0.1:8000/
+https://frostia-games.onrender.com/
 ```
 
 Vérifications effectuées :
@@ -476,7 +476,7 @@ L'administration Django a été testée en local puis en ligne.
 Adresse locale :
 
 ```txt
-http://127.0.0.1:8000/admin/
+https://frostia-games.onrender.com/admin/
 ```
 
 Adresse en ligne :
@@ -576,7 +576,7 @@ Vérifications réalisées :
 Adresse utilisée :
 
 ```txt
-http://127.0.0.1:8000/
+https://frostia-games.onrender.com/
 ```
 
 Résultat :
@@ -943,3 +943,5 @@ La V1 renforcée contient également une expérimentation TinyDB fonctionnelle, 
 La V1 reste volontairement limitée, mais elle est stable, testée et présentable dans son périmètre actuel.
 
 À ce stade, la priorité n'est plus d'ajouter de nouvelles fonctionnalités lourdes, mais de finaliser les captures, les preuves et le dossier projet final.
+
+

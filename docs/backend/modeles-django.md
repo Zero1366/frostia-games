@@ -548,3 +548,5 @@ Ils permettent de gérer les contenus depuis l’administration Django et de les
 La V1 reste volontairement simple, mais les modèles montrent déjà une vraie structure back-end.
 
 Les évolutions plus avancées pourront être ajoutées plus tard, lorsque le projet aura besoin de gérer davantage de contenus, de médias ou de relations.
+
+

@@ -348,7 +348,7 @@ Django demande ensuite :
 Après création, l’administrateur peut se connecter à l’adresse :
 
 ```text
-http://127.0.0.1:8000/admin/
+https://frostia-games.onrender.com/admin/
 ```
 
 Les identifiants administrateur ne doivent pas être publiés dans GitHub ou dans la documentation publique.
@@ -393,7 +393,7 @@ python manage.py runserver
 Le site devient accessible à l’adresse :
 
 ```text
-http://127.0.0.1:8000/
+https://frostia-games.onrender.com/
 ```
 
 Le terminal doit rester ouvert pendant que le serveur fonctionne.
@@ -411,10 +411,10 @@ Ctrl + C
 Après le lancement du serveur, tester les pages suivantes :
 
 ```text
-http://127.0.0.1:8000/
-http://127.0.0.1:8000/mes-creations/
-http://127.0.0.1:8000/projets-jouables/
-http://127.0.0.1:8000/admin/
+https://frostia-games.onrender.com/
+https://frostia-games.onrender.com/mes-creations/
+https://frostia-games.onrender.com/projets-jouables/
+https://frostia-games.onrender.com/admin/
 ```
 
 ## Page d’accueil
@@ -422,7 +422,7 @@ http://127.0.0.1:8000/admin/
 Adresse :
 
 ```text
-http://127.0.0.1:8000/
+https://frostia-games.onrender.com/
 ```
 
 Cette page présente le portfolio Frostia Games et les sections principales.
@@ -434,7 +434,7 @@ Elle affiche aussi les notes de progression provenant de TinyDB.
 Adresse :
 
 ```text
-http://127.0.0.1:8000/mes-creations/
+https://frostia-games.onrender.com/mes-creations/
 ```
 
 Cette page affiche les créations visibles enregistrées dans la base SQLite.
@@ -444,7 +444,7 @@ Cette page affiche les créations visibles enregistrées dans la base SQLite.
 Adresse :
 
 ```text
-http://127.0.0.1:8000/projets-jouables/
+https://frostia-games.onrender.com/projets-jouables/
 ```
 
 Cette page affiche les futurs projets jouables enregistrés dans la base SQLite.
@@ -456,7 +456,7 @@ Elle contient aussi une interface préparatoire de sélection de fichier local.
 Adresse :
 
 ```text
-http://127.0.0.1:8000/admin/
+https://frostia-games.onrender.com/admin/
 ```
 
 Cette interface permet d’ajouter ou modifier les contenus dynamiques du site.
@@ -655,7 +655,7 @@ docker compose up --build
 Le site est ensuite accessible à l’adresse :
 
 ```text
-http://127.0.0.1:8000/
+https://frostia-games.onrender.com/
 ```
 
 Commandes utiles dans Docker :
@@ -846,10 +846,10 @@ python manage.py runserver
 ## 23.4 Tester les pages
 
 ```text
-http://127.0.0.1:8000/
-http://127.0.0.1:8000/mes-creations/
-http://127.0.0.1:8000/projets-jouables/
-http://127.0.0.1:8000/admin/
+https://frostia-games.onrender.com/
+https://frostia-games.onrender.com/mes-creations/
+https://frostia-games.onrender.com/projets-jouables/
+https://frostia-games.onrender.com/admin/
 ```
 
 ---
@@ -992,7 +992,7 @@ python manage.py runserver 8001
 Puis ouvrir :
 
 ```text
-http://127.0.0.1:8001/
+https://frostia-games.onrender.com/
 ```
 
 ---
@@ -1115,3 +1115,6 @@ Pour la V1, l’installation locale est suffisante pour tester :
 Le projet reste volontairement simple afin de conserver une base stable, documentée et maintenable.
 
 À ce stade, l’objectif n’est plus d’ajouter de nouvelles fonctionnalités lourdes, mais de finaliser les preuves, les captures et le dossier projet final.
+
+
+

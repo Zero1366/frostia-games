@@ -1216,3 +1216,4 @@ La V1 de Frostia Games répond désormais aux principaux points de renforcement 
 * affichage NoSQL sur l'accueil ;
 * compte temporaire de lecture seule ;
 * organisation des preuves à intégrer dans le dossier projet.
+

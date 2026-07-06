@@ -389,3 +389,5 @@ Ces entités suffisent pour présenter les créations et les futurs projets joua
 TinyDB est traité séparément comme une expérimentation NoSQL légère.
 
 Cette organisation permet de garder un projet stable, lisible et évolutif, tout en montrant une vraie réflexion sur les données utilisées par l’application.
+
+

@@ -560,3 +560,5 @@ La solution actuelle reste limitée à une démonstration non critique.
 SQLite reste la base principale du projet.
 
 Cette séparation permet de conserver une V1 stable, claire et défendable, tout en ouvrant une évolution possible vers une solution NoSQL plus avancée si le besoin devient réel.
+
+

@@ -802,7 +802,7 @@ Le serveur Django démarre dans Docker.
 Le site est accessible via :
 
 ```text
-http://127.0.0.1:8000/
+https://frostia-games.onrender.com/
 ```
 
 ---
@@ -2209,3 +2209,5 @@ Le projet reste volontairement limité afin d'éviter une complexité inutile.
 L'objectif n'est plus d'ajouter de nouvelles fonctionnalités dans Frostia Games V1.
 
 L'objectif est maintenant de finaliser les documents, préparer les captures, vérifier les preuves et intégrer les éléments dans le dossier projet final.
+
+

@@ -1033,3 +1033,5 @@ Les fonctionnalités non intégrées ne sont donc pas des échecs.
 Elles sont volontairement écartées, reportées ou abandonnées afin de protéger la qualité, la stabilité et la lisibilité de la V1.
 
 À ce stade, la priorité reste la finalisation des captures, des preuves, des annexes et du dossier projet final.
+
+

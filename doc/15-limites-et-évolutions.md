@@ -933,3 +933,5 @@ Certaines idées pourront aussi être abandonnées pendant la stabilisation si e
 La priorité reste de conserver un projet clair, stable, maintenable, documenté et défendable.
 
 À ce stade, la priorité immédiate est la finalisation des captures, des preuves, des annexes et du dossier projet final, pas l’ajout de nouvelles fonctionnalités lourdes.
+
+

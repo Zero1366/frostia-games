@@ -787,3 +787,5 @@ Elle ne représente pas le projet final, mais une première version stable, docu
 À ce stade, la priorité n'est plus d'ajouter de nouvelles fonctionnalités lourdes.
 
 La priorité est de finaliser les captures, les preuves, les annexes et la mise en forme du dossier projet final.
+
+

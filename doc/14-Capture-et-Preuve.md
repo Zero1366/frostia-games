@@ -1389,3 +1389,5 @@ Elles montrent :
 Ce document sert de checklist pour préparer le dossier projet et vérifier que la V1 est correctement présentée.
 
 À ce stade, la priorité est de préparer les captures utiles et d’éviter d’ajouter de nouvelles fonctionnalités lourdes.
+
+

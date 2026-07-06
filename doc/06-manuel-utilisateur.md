@@ -249,21 +249,21 @@ python manage.py runserver
 Le site est ensuite accessible à l'adresse :
 
 ```text
-http://127.0.0.1:8000/
+https://frostia-games.onrender.com/
 ```
 
 Pages principales locales :
 
 ```text
-http://127.0.0.1:8000/
-http://127.0.0.1:8000/mes-creations/
-http://127.0.0.1:8000/projets-jouables/
+https://frostia-games.onrender.com/
+https://frostia-games.onrender.com/mes-creations/
+https://frostia-games.onrender.com/projets-jouables/
 ```
 
 Administration Django locale :
 
 ```text
-http://127.0.0.1:8000/admin/
+https://frostia-games.onrender.com/admin/
 ```
 
 ---
@@ -296,21 +296,21 @@ docker compose up --build
 Le site est ensuite accessible à l'adresse :
 
 ```text
-http://127.0.0.1:8000/
+https://frostia-games.onrender.com/
 ```
 
 Pages principales :
 
 ```text
-http://127.0.0.1:8000/
-http://127.0.0.1:8000/mes-creations/
-http://127.0.0.1:8000/projets-jouables/
+https://frostia-games.onrender.com/
+https://frostia-games.onrender.com/mes-creations/
+https://frostia-games.onrender.com/projets-jouables/
 ```
 
 Administration Django :
 
 ```text
-http://127.0.0.1:8000/admin/
+https://frostia-games.onrender.com/admin/
 ```
 
 ---
@@ -393,7 +393,7 @@ docker compose down
 Adresse locale :
 
 ```text
-http://127.0.0.1:8000/
+https://frostia-games.onrender.com/
 ```
 
 Adresse en ligne :
@@ -450,7 +450,7 @@ Les notes sont préparées par le service Python NoSQL.
 Adresse locale :
 
 ```text
-http://127.0.0.1:8000/mes-creations/
+https://frostia-games.onrender.com/mes-creations/
 ```
 
 Adresse en ligne :
@@ -480,7 +480,7 @@ Cela permet de masquer une création sans la supprimer de la base.
 Adresse locale :
 
 ```text
-http://127.0.0.1:8000/projets-jouables/
+https://frostia-games.onrender.com/projets-jouables/
 ```
 
 Adresse en ligne :
@@ -510,7 +510,7 @@ Aucun vrai upload serveur n'est implanté dans cette version.
 Adresse locale :
 
 ```text
-http://127.0.0.1:8000/admin/
+https://frostia-games.onrender.com/admin/
 ```
 
 Adresse en ligne :
@@ -862,10 +862,10 @@ python -m scripts.demo_tinydb_notes
 Puis tester :
 
 ```text
-http://127.0.0.1:8000/
-http://127.0.0.1:8000/mes-creations/
-http://127.0.0.1:8000/projets-jouables/
-http://127.0.0.1:8000/admin/
+https://frostia-games.onrender.com/
+https://frostia-games.onrender.com/mes-creations/
+https://frostia-games.onrender.com/projets-jouables/
+https://frostia-games.onrender.com/admin/
 ```
 
 Vérifier aussi le site en ligne :
@@ -976,3 +976,5 @@ Le projet reste volontairement limité afin de conserver une base stable, testab
 Les fonctionnalités avancées sont reportées à une version future.
 
 À ce stade, l'objectif principal est de préparer les captures, les preuves et l'intégration propre dans le dossier projet final.
+
+

@@ -216,3 +216,5 @@ L’administrateur gère les contenus depuis l’administration Django.
 Le compte lecture seule permet une consultation limitée sans donner les pleins droits administrateur.
 
 Cette organisation correspond à l’objectif de la V1 : proposer un projet stable, clair, documenté et défendable, sans transformer le site en plateforme trop complexe.
+
+

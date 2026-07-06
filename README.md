@@ -665,3 +665,4 @@ Le projet reste volontairement limité, mais il est stable, cohérent et défend
 Il montre une capacité à créer un projet web complet dans son périmètre, à le documenter, à le déployer, à le versionner et à préparer ses futures évolutions sans élargir trop vite le périmètre.
 
 L'accès d'évaluation en lecture seule permet aussi de consulter l'administration Django sans exposer de droits de modification.
+

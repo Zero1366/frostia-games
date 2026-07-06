@@ -490,3 +490,4 @@ C'est une décision de périmètre.
 L'objectif était de produire une V1 stable, présentable et évolutive, sans transformer le projet en usine à gaz.
 
 Les pistes non intégrées sont documentées afin de montrer qu'elles ont été réfléchies, mais qu'elles ne devaient pas toutes être ajoutées immédiatement.
+

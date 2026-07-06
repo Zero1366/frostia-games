@@ -321,3 +321,5 @@ SQLite reste utilisé pour les données structurées du site.
 TinyDB sert de complément léger pour démontrer une logique documentaire.
 
 Cette séparation permet de conserver une V1 stable, claire et défendable, tout en montrant une première utilisation concrète du NoSQL.
+
+

@@ -1155,3 +1155,5 @@ Il constitue une base stable pour faire évoluer le projet progressivement.
 À ce stade, les éléments backend essentiels sont implantés.
 
 La priorité n'est plus d'ajouter de nouvelles fonctionnalités lourdes, mais de préparer les captures, les annexes et l'intégration propre dans le dossier projet final.
+
+

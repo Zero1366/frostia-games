@@ -561,3 +561,4 @@ Le projet possède une base fonctionnelle claire :
 Cette version constitue une première base exploitable pour présenter le projet, justifier les choix techniques et préparer les évolutions futures.
 
 Le rôle de ce fichier est de rendre les preuves faciles à trouver, sans obliger à intégrer toutes les captures dans le corps principal du dossier projet.
+

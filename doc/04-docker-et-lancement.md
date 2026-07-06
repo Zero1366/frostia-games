@@ -232,21 +232,21 @@ python manage.py runserver
 Le site est ensuite accessible à l'adresse :
 
 ```text
-http://127.0.0.1:8000/
+https://frostia-games.onrender.com/
 ```
 
 Pages principales :
 
 ```text
-http://127.0.0.1:8000/
-http://127.0.0.1:8000/mes-creations/
-http://127.0.0.1:8000/projets-jouables/
+https://frostia-games.onrender.com/
+https://frostia-games.onrender.com/mes-creations/
+https://frostia-games.onrender.com/projets-jouables/
 ```
 
 Administration Django :
 
 ```text
-http://127.0.0.1:8000/admin/
+https://frostia-games.onrender.com/admin/
 ```
 
 ---
@@ -288,7 +288,7 @@ Django demande ensuite :
 Une fois créé, l'administrateur peut se connecter à :
 
 ```text
-http://127.0.0.1:8000/admin/
+https://frostia-games.onrender.com/admin/
 ```
 
 En production sur Render, la création du superutilisateur peut être automatisée avec des variables d'environnement et le script `build.sh`.
@@ -506,16 +506,16 @@ Cette commande :
 Le site est ensuite accessible à l'adresse :
 
 ```text
-http://127.0.0.1:8000/
+https://frostia-games.onrender.com/
 ```
 
 Pages à tester :
 
 ```text
-http://127.0.0.1:8000/
-http://127.0.0.1:8000/mes-creations/
-http://127.0.0.1:8000/projets-jouables/
-http://127.0.0.1:8000/admin/
+https://frostia-games.onrender.com/
+https://frostia-games.onrender.com/mes-creations/
+https://frostia-games.onrender.com/projets-jouables/
+https://frostia-games.onrender.com/admin/
 ```
 
 ---
@@ -644,7 +644,7 @@ Résultat obtenu :
 * les dépendances sont installées ;
 * le conteneur est lancé ;
 * le serveur Django démarre ;
-* le site est accessible sur `http://127.0.0.1:8000/`.
+* le site est accessible sur `https://frostia-games.onrender.com/`.
 
 La validation Django peut ensuite être faite avec :
 
@@ -929,3 +929,5 @@ La V1 doit donc être validée avec :
 * une vérification du déploiement Render.
 
 L'objectif n'est plus d'ajouter de nouvelles fonctionnalités lourdes à cette V1, mais de finaliser les preuves, les captures et la documentation du dossier projet.
+
+

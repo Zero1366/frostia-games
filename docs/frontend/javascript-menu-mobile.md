@@ -385,3 +385,5 @@ Le script permet de détecter une action utilisateur, de modifier l’état visu
 Cette fonctionnalité reste limitée, mais elle est adaptée au périmètre de la V1.
 
 Elle montre que l’interface n’est pas uniquement statique et qu’un comportement dynamique a bien été intégré au projet.
+
+
