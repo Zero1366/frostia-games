@@ -5,13 +5,13 @@ from typing import Any, cast
 
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group, Permission
-from django.core.management.base import BaseCommand
+from django.core.management.base import BaseCommand, CommandParser
 
 
 class Command(BaseCommand):
     help = "Configure le compte d'évaluation en lecture seule."
 
-    def add_arguments(self, parser: Any) -> None:
+    def add_arguments(self: Command, parser: CommandParser) -> None:
         parser.add_argument(
             "--username",
             default=os.getenv("EVALUATION_USER_USERNAME", "evaluation_temp"),
@@ -25,17 +25,14 @@ class Command(BaseCommand):
             default=os.getenv("EVALUATION_USER_PASSWORD"),
         )
 
-    def handle(self, *args: Any, **options: Any) -> None:
-        username = options["username"]
-        email = options["email"]
-        password = options["password"]
+    def handle(self: Command, *args: Any, **options: Any) -> None:
+        username = cast(str, options["username"])
+        email = cast(str, options["email"])
+        password = cast(str | None, options["password"])
 
         if not password:
             self.stdout.write(
-                self.style.WARNING(
-                    "Aucun mot de passe fourni. "
-                    "Compte d'évaluation non configuré."
-                )
+                self.style.WARNING("Aucun mot de passe fourni. Compte d'évaluation non configuré.")
             )
             return
 
@@ -49,9 +46,7 @@ class Command(BaseCommand):
         user.is_superuser = False
         user.user_permissions.clear()
 
-        group, group_created = Group.objects.get_or_create(
-            name="Evaluation lecture seule"
-        )
+        group, group_created = Group.objects.get_or_create(name="Evaluation lecture seule")
         group.permissions.clear()
 
         view_creation = Permission.objects.get(
