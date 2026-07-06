@@ -2,13 +2,21 @@
 
 ## Objectif du document
 
-Ce document présente les pistes techniques et fonctionnelles envisagées pendant le développement du projet **Frostia Games**, mais qui n'ont pas été intégrées dans la V1.
+Ce document présente les pistes techniques et fonctionnelles envisagées pendant le développement du projet **Frostia Games**, ainsi que leur état actuel.
 
-L'objectif est de montrer que les choix réalisés ne sont pas dus au hasard. Plusieurs solutions ont été réfléchies, comparées, puis certaines ont été volontairement retenues, reportées ou abandonnées afin de conserver une première version stable, livrable, documentée et déployée.
+L'objectif est de montrer que les choix réalisés ne sont pas dus au hasard.
+
+Plusieurs solutions ont été réfléchies, comparées, puis certaines ont été :
+
+* retenues ;
+* intégrées de manière limitée ;
+* reportées ;
+* abandonnées ;
+* conservées comme pistes futures.
 
 Le principe retenu pour ce projet est le suivant :
 
-```txt
+```text
 Toutes les pistes intéressantes peuvent être envisagées et explorées, mais seules les fonctionnalités utiles à une V1 stable doivent être intégrées immédiatement.
 ```
 
@@ -16,9 +24,18 @@ Une V1 évolue constamment.
 
 Certaines idées peuvent rester dans la roadmap, tandis que d'autres peuvent être abandonnées pendant la phase de stabilisation si elles ne servent plus réellement le projet.
 
+Ce document a été mis à jour après le renforcement du dossier projet afin de ne plus présenter comme absents certains éléments désormais ajoutés :
+
+* le compte temporaire de lecture seule ;
+* TinyDB ;
+* les fichiers SQL natifs documentaires ;
+* la documentation JavaScript ;
+* la documentation de conception ;
+* la documentation backend et frontend complémentaire.
+
 ---
 
-## Principe général
+# 1. Principe général
 
 Au début du projet, plusieurs pistes étaient possibles.
 
@@ -30,7 +47,10 @@ Le projet aurait pu évoluer vers :
 * une interface d'administration personnalisée ;
 * un espace privé complet ;
 * un système de gestion de projets plus dynamique ;
-* une plateforme permettant plus tard d'intégrer des projets jouables.
+* une plateforme permettant plus tard d'intégrer des projets jouables ;
+* une base NoSQL plus avancée ;
+* des graphiques de suivi ;
+* un système d'upload serveur.
 
 Cependant, l'objectif de cette V1 n'était pas de tout faire immédiatement.
 
@@ -44,11 +64,11 @@ L'objectif était de créer une base :
 * évolutive ;
 * maîtrisable.
 
-Certaines pistes ont donc été écartées, reportées ou pourront être abandonnées afin d'éviter de transformer la V1 en projet trop lourd.
+Certaines pistes ont donc été écartées, reportées ou limitées afin d'éviter de transformer la V1 en projet trop lourd.
 
 ---
 
-## Méthode de décision
+# 2. Méthode de décision
 
 Avant d'ajouter une technologie ou une fonctionnalité, plusieurs questions ont été utilisées :
 
@@ -67,9 +87,11 @@ Si une piste n'était pas indispensable, elle a été reportée.
 
 Si une idée risquait de fragiliser la V1 ou d'ajouter trop de complexité, elle pouvait aussi être abandonnée.
 
+Si une piste pouvait renforcer le dossier sans alourdir fortement le projet, elle a pu être intégrée de manière limitée.
+
 ---
 
-# 1. Piste C# / ASP.NET Core / Razor
+# 3. Piste C# / ASP.NET Core / Razor
 
 ## Description
 
@@ -87,7 +109,7 @@ C# offre plusieurs qualités :
 * meilleure détection de certaines erreurs avant l'exécution ;
 * organisation adaptée aux projets applicatifs plus structurés.
 
-C# reste un langage que je considère comme très intéressant pour mes futurs projets, notamment parce qu'il impose une discipline plus forte que Python.
+C# reste un langage intéressant pour mes futurs projets, notamment parce qu'il impose une discipline plus forte que Python.
 
 ---
 
@@ -120,7 +142,7 @@ La V1 reste donc développée avec Python et Django.
 
 ---
 
-# 2. Choix final : Python et Django
+# 4. Choix final : Python et Django
 
 ## Description
 
@@ -190,10 +212,12 @@ Pour compenser la souplesse de Python, plusieurs garde-fous ont été mis en pla
 * journal de bord ;
 * changelog ;
 * vérification avec `python manage.py check` ;
+* test TinyDB avec `python -m scripts.demo_tinydb_notes` ;
 * utilisation d'un environnement virtuel `.venv` ;
 * séparation entre templates, vues et fichiers statiques ;
 * migrations Django ;
 * administration Django contrôlée ;
+* compte temporaire de lecture seule ;
 * variables d'environnement pour les informations sensibles ;
 * déploiement Render documenté ;
 * tests manuels des pages ;
@@ -205,7 +229,7 @@ Ces garde-fous permettent de rendre le projet plus fiable malgré la permissivit
 
 ---
 
-# 3. PostgreSQL
+# 5. PostgreSQL
 
 ## Description
 
@@ -240,40 +264,66 @@ La V1 conserve SQLite afin de rester simple et stable.
 
 ---
 
-# 4. Compte jury temporaire
+# 6. Compte temporaire de lecture seule
 
 ## Description
 
-Un compte temporaire pour le jury ou l'évaluateur a été envisagé.
+Un compte temporaire pour le jury ou l'évaluateur avait été envisagé.
 
-Ce compte permettrait de consulter l'administration Django sans utiliser le vrai compte administrateur.
+Ce compte devait permettre de consulter l'administration Django sans utiliser le vrai compte administrateur.
 
 ---
 
-## Pourquoi cette piste n'a pas été intégrée
+## Évolution de la décision
 
-Créer un compte jury demande une gestion supplémentaire :
+Cette piste n'est plus seulement reportée.
 
-* identifiant temporaire ;
-* mot de passe temporaire ;
-* droits limités ;
-* risque de donner trop d'accès ;
-* suppression du compte après évaluation ;
-* transmission sécurisée des identifiants.
+Un compte temporaire de lecture seule a finalement été créé de manière limitée et contrôlée.
 
-Pour la V1, les captures d'écran et la documentation suffisent à prouver que l'administration Django fonctionne.
+Ce compte permet de consulter certaines parties de l'administration Django sans donner les droits complets d'un administrateur.
+
+Il peut consulter :
+
+* les créations ;
+* les projets jouables.
+
+Il ne doit pas donner accès :
+
+* aux utilisateurs ;
+* aux groupes ;
+* aux permissions sensibles ;
+* aux réglages internes ;
+* aux secrets du projet.
+
+---
+
+## Pourquoi cette intégration reste limitée
+
+Le compte temporaire reste une solution simple.
+
+Il ne s'agit pas :
+
+* d'un espace privé complet ;
+* d'un système de rôles avancé ;
+* d'une interface jury personnalisée ;
+* d'un accès public ;
+* d'un compte administrateur complet.
+
+Les identifiants réels de ce compte ne doivent pas être écrits dans la documentation publique.
+
+Ils peuvent être transmis séparément uniquement si l'évaluateur les demande.
 
 ---
 
 ## Décision
 
-Le compte jury temporaire est reporté.
+La piste du compte temporaire est retenue sous une forme limitée.
 
-Il pourra être créé plus tard uniquement si le projet est validé comme second projet ou si l'évaluateur demande explicitement un accès direct.
+Le système de rôles avancé reste reporté.
 
 ---
 
-# 5. Administration personnalisée
+# 7. Administration personnalisée
 
 ## Description
 
@@ -317,7 +367,7 @@ La V1 utilise l'administration Django native.
 
 ---
 
-# 6. Upload serveur réel
+# 8. Upload serveur réel
 
 ## Description
 
@@ -353,7 +403,7 @@ La V1 conserve uniquement une interface préparatoire honnête.
 
 ---
 
-# 7. Jeu jouable dans le navigateur
+# 9. Jeu jouable dans le navigateur
 
 ## Description
 
@@ -390,7 +440,7 @@ La V1 prépare seulement l'idée avec une page dédiée.
 
 ---
 
-# 8. Plotly.js et graphiques
+# 10. Plotly.js et graphiques
 
 ## Description
 
@@ -430,7 +480,7 @@ Il pourra être intégré plus tard comme amélioration visuelle ou fonctionnell
 
 ---
 
-# 9. Espace privé complet
+# 11. Espace privé complet
 
 ## Description
 
@@ -475,7 +525,7 @@ La V1 s'appuie sur l'administration Django native.
 
 ---
 
-# 10. Sauvegardes automatiques
+# 12. Sauvegardes automatiques
 
 ## Description
 
@@ -510,7 +560,7 @@ Elles pourront être ajoutées plus tard si le projet évolue vers une vraie pla
 
 ---
 
-# 11. Refonte graphique complète
+# 13. Refonte graphique complète
 
 ## Description
 
@@ -549,7 +599,7 @@ La V1 conserve un design simple et améliorable.
 
 ---
 
-# 12. Tests automatisés complets
+# 14. Tests automatisés complets
 
 ## Description
 
@@ -563,17 +613,27 @@ Ils pourraient couvrir :
 * administration ;
 * formulaires ;
 * sécurité ;
-* comportements attendus.
+* comportements attendus ;
+* accès du compte lecture seule ;
+* TinyDB.
 
 ---
 
 ## Pourquoi cette piste n'a pas été intégrée
 
-La V1 a été vérifiée manuellement et avec les commandes Django principales.
+La V1 a été vérifiée manuellement et avec les commandes principales.
+
+Commandes utilisées ou prévues :
+
+```powershell
+python manage.py check
+python -m scripts.demo_tinydb_notes
+git status
+```
 
 Mettre en place une vraie suite de tests automatisés aurait demandé du temps supplémentaire.
 
-Pour cette version, les vérifications manuelles et `python manage.py check` suffisent à valider le périmètre actuel.
+Pour cette version, les vérifications manuelles et les commandes de contrôle suffisent à valider le périmètre actuel.
 
 ---
 
@@ -585,7 +645,7 @@ Ils pourront être ajoutés dans une prochaine version plus stabilisée.
 
 ---
 
-# 13. Gestion complète des médias
+# 15. Gestion complète des médias
 
 ## Description
 
@@ -618,7 +678,221 @@ La V1 conserve une gestion simple des fichiers statiques.
 
 ---
 
-# 14. Pistes reportées ou abandonnées pendant la stabilisation
+# 16. NoSQL avancé
+
+## Description
+
+Une base NoSQL plus avancée a été envisagée pour stocker des contenus flexibles.
+
+Exemples possibles :
+
+* notes de conception ;
+* journaux de développement ;
+* métadonnées de projet ;
+* contenus variables selon les jeux ;
+* données de progression.
+
+MongoDB aurait pu être étudié dans une version plus avancée.
+
+---
+
+## Ce qui a été intégré
+
+Une solution NoSQL légère a finalement été ajoutée avec TinyDB.
+
+TinyDB permet de stocker des notes de progression dans un fichier JSON.
+
+Fichiers concernés :
+
+```text
+core/services/nosql_notes.py
+scripts/demo_tinydb_notes.py
+data/nosql/project_notes_db.json
+docs/nosql/tinydb-integration.md
+```
+
+TinyDB permet de démontrer une logique NoSQL sans installer une base distante.
+
+---
+
+## Pourquoi MongoDB n'a pas été intégré
+
+MongoDB aurait demandé :
+
+* une base externe ;
+* une configuration dédiée ;
+* des variables d'environnement supplémentaires ;
+* une gestion de connexion ;
+* une réflexion de production plus avancée ;
+* une documentation supplémentaire ;
+* des tests supplémentaires.
+
+Ce niveau de complexité n'était pas nécessaire pour la V1.
+
+---
+
+## Décision
+
+TinyDB est retenu comme expérimentation NoSQL légère.
+
+MongoDB ou une base NoSQL avancée sont reportés.
+
+---
+
+# 17. SQL natif
+
+## Description
+
+Le projet utilise Django ORM et les migrations pour gérer les tables.
+
+Cependant, des fichiers SQL natifs ont été envisagés pour mieux montrer la compréhension de la base de données.
+
+---
+
+## Ce qui a été intégré
+
+Des fichiers SQL natifs documentaires ont été ajoutés.
+
+Fichiers concernés :
+
+```text
+docs/sql/create_tables_creations.sql
+docs/sql/create_tables_playable.sql
+docs/sql/exemples_insert.sql
+docs/sql/sql-natif.md
+```
+
+Ils montrent :
+
+* des exemples `CREATE TABLE` ;
+* des exemples `INSERT INTO` ;
+* le lien entre modèles Django, migrations, ORM et SQL.
+
+---
+
+## Limite
+
+Le SQL natif reste documentaire.
+
+Le projet ne repose pas sur des scripts SQL manuels pour créer les tables.
+
+Les migrations Django restent la source réelle de création et de mise à jour de la base.
+
+---
+
+## Décision
+
+La piste SQL natif documentaire est retenue.
+
+L'utilisation de SQL brut dans les vues Django reste non retenue pour la V1.
+
+---
+
+# 18. JavaScript avancé ou framework frontend
+
+## Description
+
+Une interface plus dynamique aurait pu être développée avec un framework frontend ou davantage de JavaScript.
+
+Exemples possibles :
+
+* React ;
+* Vue ;
+* Angular ;
+* tableaux de bord dynamiques ;
+* animations avancées ;
+* filtres complexes ;
+* composants réactifs.
+
+---
+
+## Pourquoi cette piste n'a pas été intégrée
+
+Un framework frontend aurait ajouté une couche supplémentaire.
+
+Il aurait fallu gérer :
+
+* installation ;
+* build frontend ;
+* organisation des composants ;
+* communication avec Django ;
+* tests supplémentaires ;
+* documentation supplémentaire.
+
+Pour la V1, ce n'était pas nécessaire.
+
+---
+
+## Ce qui a été intégré
+
+Un JavaScript léger a été conservé pour le menu mobile.
+
+Fichier concerné :
+
+```text
+static/js/menu.js
+```
+
+Ce JavaScript suffit pour :
+
+* ouvrir le menu ;
+* fermer le menu ;
+* gérer l'état `aria-expanded` ;
+* améliorer l'expérience mobile.
+
+---
+
+## Décision
+
+Le framework frontend est reporté.
+
+Le JavaScript léger du menu mobile est retenu.
+
+---
+
+# 19. Documentation de conception
+
+## Description
+
+Des documents de conception plus complets ont été envisagés pour renforcer le dossier projet.
+
+Ils pouvaient inclure :
+
+* MCD ;
+* cas d'utilisation ;
+* diagramme de séquence ;
+* documentation des modèles ;
+* documentation des vues.
+
+---
+
+## Ce qui a été intégré
+
+Une documentation complémentaire a été ajoutée dans le dossier `docs/`.
+
+Fichiers concernés :
+
+```text
+docs/conception/mcd.md
+docs/conception/cas-utilisation.md
+docs/conception/diagramme-sequence.md
+docs/backend/modeles-django.md
+docs/backend/vues-et-routes.md
+```
+
+Ces fichiers renforcent la présentation du projet sans modifier lourdement le code.
+
+---
+
+## Décision
+
+La documentation de conception est retenue.
+
+Les diagrammes plus avancés restent optionnels pour une version future.
+
+---
+
+# 20. Pistes reportées ou abandonnées pendant la stabilisation
 
 ## Description
 
@@ -676,28 +950,37 @@ L'objectif est de garder uniquement les choix qui renforcent :
 
 ---
 
-# Tableau récapitulatif
+# 21. Tableau récapitulatif
 
-| Piste explorée              | Décision         | Raison principale                 |
-| --------------------------- | ---------------- | --------------------------------- |
-| C# / ASP.NET Core / Razor   | Reporté          | Risque de complexité pour la V1   |
-| Django                      | Retenu           | Adapté à une V1 stable et rapide  |
-| PostgreSQL                  | Reporté          | Trop tôt pour le périmètre actuel |
-| Compte jury temporaire      | Reporté          | Sécurité et droits à limiter      |
-| Admin personnalisée         | Reporté          | Trop complexe pour une V1         |
-| Upload serveur réel         | Reporté          | Fonction sensible                 |
-| Jeu jouable navigateur      | Reporté          | Hors périmètre immédiat           |
-| Plotly.js                   | Reporté          | Non indispensable                 |
-| Espace privé complet        | Reporté          | Trop large                        |
-| Sauvegardes automatiques    | Reporté          | Architecture plus avancée         |
-| Refonte graphique complète  | Reporté          | Priorité à la stabilité           |
-| Tests automatisés complets  | Reporté          | Temps supplémentaire              |
-| Gestion complète des médias | Reporté          | Trop lourd pour la V1             |
-| Certaines idées secondaires | Abandon possible | Stabilisation de la V1            |
+| Piste explorée                 | Décision actuelle | Raison principale |
+| ------------------------------ | ----------------- | ----------------- |
+| C# / ASP.NET Core / Razor      | Reporté | Risque de complexité pour la V1 |
+| Django                         | Retenu | Adapté à une V1 stable et rapide |
+| SQLite                         | Retenu | Suffisant pour une V1 de portfolio |
+| PostgreSQL                     | Reporté | Trop tôt pour le périmètre actuel |
+| Compte temporaire lecture seule | Retenu de manière limitée | Utile pour consultation contrôlée |
+| Système de rôles avancé        | Reporté | Trop large pour la V1 |
+| Admin personnalisée            | Reporté | Trop complexe pour une V1 |
+| Upload serveur réel            | Reporté | Fonction sensible |
+| Jeu jouable navigateur         | Reporté | Hors périmètre immédiat |
+| Plotly.js                      | Reporté | Non indispensable |
+| Espace privé complet           | Reporté | Trop large |
+| Sauvegardes automatiques       | Reporté | Architecture plus avancée |
+| Refonte graphique complète     | Reporté | Priorité à la stabilité |
+| Tests automatisés complets     | Reporté | Temps supplémentaire |
+| Gestion complète des médias    | Reporté | Trop lourd pour la V1 |
+| TinyDB                         | Retenu de manière limitée | Preuve NoSQL légère |
+| MongoDB                        | Reporté | Trop avancé pour la V1 |
+| SQL natif documentaire         | Retenu | Renforce la compréhension base de données |
+| SQL brut dans les vues         | Non retenu | ORM Django plus sûr et adapté |
+| Framework frontend lourd       | Reporté | Complexité inutile pour la V1 |
+| JavaScript menu mobile         | Retenu | Utile et limité |
+| Documentation de conception    | Retenue | Renforce le dossier projet |
+| Certaines idées secondaires    | Abandon possible | Stabilisation de la V1 |
 
 ---
 
-## Ce que montre cette démarche
+# 22. Ce que montre cette démarche
 
 Cette démarche montre que le projet a été pensé avec plusieurs directions possibles.
 
@@ -709,13 +992,14 @@ Les choix réalisés montrent :
 * une volonté d'éviter le scope creep ;
 * une priorité donnée à la stabilité ;
 * une volonté de produire une V1 terminée plutôt qu'un projet trop ambitieux ;
-* une capacité à abandonner certaines idées si elles ne servent plus réellement le projet.
+* une capacité à abandonner certaines idées si elles ne servent plus réellement le projet ;
+* une capacité à intégrer certaines pistes de manière limitée quand elles renforcent le dossier.
 
 Cette approche permet de préserver un projet clair, livrable et défendable.
 
 ---
 
-## Bilan
+# 23. Bilan
 
 Les pistes explorées ne sont pas des oublis.
 
@@ -725,6 +1009,14 @@ Certaines pistes sont reportées, car elles restent intéressantes pour une vers
 
 D'autres pourront être abandonnées si elles ne servent plus réellement le projet ou si elles risquent de fragiliser la V1.
 
+Certaines pistes ont été retenues de manière limitée, notamment :
+
+* TinyDB ;
+* compte temporaire de lecture seule ;
+* SQL natif documentaire ;
+* JavaScript du menu mobile ;
+* documentation de conception.
+
 La V1 de Frostia Games reste centrée sur l'essentiel :
 
 * un projet Django fonctionnel ;
@@ -733,8 +1025,11 @@ La V1 de Frostia Games reste centrée sur l'essentiel :
 * une interface publique ;
 * un déploiement Render ;
 * une documentation complète ;
+* une expérimentation NoSQL légère ;
 * une architecture évolutive.
 
 Les fonctionnalités non intégrées ne sont donc pas des échecs.
 
 Elles sont volontairement écartées, reportées ou abandonnées afin de protéger la qualité, la stabilité et la lisibilité de la V1.
+
+À ce stade, la priorité reste la finalisation des captures, des preuves, des annexes et du dossier projet final.

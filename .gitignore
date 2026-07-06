@@ -14,3 +14,6 @@ media/
 .vscode/
 .DS_Store
 Thumbs.db
+IDENTIFIANTS-EVALUATION*.md
+
+.venv/

@@ -14,7 +14,19 @@ Il permet de conserver une trace claire :
 * des choix techniques importants ;
 * des éléments volontairement reportés ;
 * du déploiement en ligne ;
-* des fichiers de documentation ajoutés au projet.
+* des fichiers de documentation ajoutés au projet ;
+* des ajouts réalisés après le retour formateur ;
+* des preuves à préparer pour le dossier final.
+
+Ce changelog a été mis à jour après le renforcement du dossier projet afin d’intégrer :
+
+* la conception complémentaire ;
+* les extraits SQL natifs ;
+* le JavaScript dynamique documenté ;
+* TinyDB ;
+* l’affichage des notes TinyDB sur l’accueil ;
+* le compte temporaire de lecture seule ;
+* les captures et preuves à préparer.
 
 ---
 
@@ -127,8 +139,8 @@ Pages testées :
 
 ```text
 /
- /mes-creations/
- /projets-jouables/
+/mes-creations/
+/projets-jouables/
 ```
 
 ## Statut
@@ -480,11 +492,11 @@ Validé.
 
 ---
 
-# 13. Ajout de la réflexion NoSQL
+# 13. Ajout de la réflexion NoSQL initiale
 
 ## Résumé
 
-Ajout d’un document expliquant la place du NoSQL dans les évolutions futures du projet.
+Ajout d’un document expliquant la place du NoSQL dans les évolutions possibles du projet.
 
 ## Fichiers concernés
 
@@ -492,14 +504,20 @@ Ajout d’un document expliquant la place du NoSQL dans les évolutions futures 
 
 ## Modifications réalisées
 
-* Explication du choix de ne pas intégrer NoSQL dans la V1.
+* Explication du choix initial de ne pas intégrer NoSQL dans la première V1.
 * Présentation des usages possibles du NoSQL.
 * Exemple de document MongoDB théorique.
 * Ajout du NoSQL dans la roadmap.
 
+## Évolution ultérieure
+
+Cette réflexion a ensuite été complétée par une expérimentation réelle avec TinyDB.
+
+Le NoSQL n’est donc plus uniquement une piste théorique : une intégration légère existe maintenant dans le projet.
+
 ## Statut
 
-Validé.
+Validé, puis complété par TinyDB.
 
 ---
 
@@ -1008,11 +1026,11 @@ Validé.
 
 ---
 
-# 30. État actuel de la V1
+# 30. État actuel de la V1 avant renforcement
 
 ## Résumé
 
-La V1 actuelle contient :
+La V1 contenait déjà :
 
 * pages principales fonctionnelles ;
 * backend Django fonctionnel ;
@@ -1024,7 +1042,7 @@ La V1 actuelle contient :
 * Docker ;
 * déploiement Render ;
 * documentation SQL ;
-* réflexion NoSQL ;
+* réflexion NoSQL initiale ;
 * documentation de sécurité ;
 * manuel utilisateur ;
 * changelog ;
@@ -1043,7 +1061,692 @@ V1 fonctionnelle, documentée et déployée.
 
 ---
 
-# 31. Prochaines étapes
+# 31. Création d’une branche de renforcement
+
+## Résumé
+
+Création d’une branche dédiée pour renforcer le dossier projet sans casser la version principale.
+
+## Branche concernée
+
+```text
+v3-renforcement-dossier
+```
+
+## Objectif
+
+Travailler sur les ajouts demandés après retour formateur de manière contrôlée.
+
+## Modifications préparées
+
+* ajout de documentation complémentaire ;
+* ajout de preuves techniques ;
+* ajout d’éléments de conception ;
+* ajout de SQL natif ;
+* ajout de NoSQL léger ;
+* ajout de documentation frontend et backend.
+
+## Statut
+
+Validé.
+
+---
+
+# 32. Ajout de la structure `docs/`
+
+## Résumé
+
+Création d’une structure documentaire complémentaire pour renforcer le dossier projet.
+
+## Dossiers ajoutés
+
+```text
+docs/
+├─ backend/
+├─ conception/
+├─ frontend/
+├─ nosql/
+├─ preuves/
+└─ sql/
+```
+
+## Objectif
+
+Séparer les documents de renforcement des documents historiques du dossier `doc/`.
+
+Le dossier `doc/` reste la documentation principale du projet.
+
+Le dossier `docs/` sert à ajouter des preuves et documents techniques complémentaires.
+
+## Statut
+
+Validé.
+
+---
+
+# 33. Ajout des livrables de conception
+
+## Résumé
+
+Ajout des documents de conception demandés pour mieux défendre le projet.
+
+## Fichiers concernés
+
+* `docs/conception/mcd.md`
+* `docs/conception/cas-utilisation.md`
+* `docs/conception/diagramme-sequence.md`
+
+## Modifications réalisées
+
+* Création d’un MCD complémentaire.
+* Création d’un diagramme de cas d’utilisation.
+* Création d’un diagramme de séquence.
+* Documentation des acteurs.
+* Documentation du parcours visiteur.
+* Documentation du rôle de l’administration.
+
+## Statut
+
+Validé.
+
+---
+
+# 34. Ajout des extraits SQL natifs
+
+## Résumé
+
+Ajout de fichiers SQL natifs pour répondre aux attendus du dossier projet.
+
+## Fichiers concernés
+
+* `docs/sql/create_tables_creations.sql`
+* `docs/sql/create_tables_playable.sql`
+* `docs/sql/exemples_insert.sql`
+* `docs/sql/sql-natif.md`
+
+## Modifications réalisées
+
+* Ajout d’un fichier `CREATE TABLE` pour les créations.
+* Ajout d’un fichier `CREATE TABLE` pour les projets jouables.
+* Ajout d’exemples `INSERT INTO`.
+* Ajout d’un document expliquant le rôle du SQL natif.
+* Clarification du lien entre modèles Django, migrations, ORM et SQL.
+
+## Statut
+
+Validé.
+
+---
+
+# 35. Documentation du JavaScript dynamique
+
+## Résumé
+
+Ajout d’une documentation dédiée au JavaScript du menu mobile.
+
+## Fichiers concernés
+
+* `static/js/menu.js`
+* `templates/base.html`
+* `docs/frontend/javascript-menu-mobile.md`
+
+## Modifications réalisées
+
+* Documentation du rôle de `menu.js`.
+* Explication de `querySelector`.
+* Explication de `addEventListener`.
+* Explication de `classList.toggle`.
+* Explication de `aria-expanded`.
+* Explication de la fermeture du menu après clic sur un lien.
+* Préparation des preuves à intégrer dans le dossier.
+
+## Statut
+
+Validé.
+
+---
+
+# 36. Ajout de TinyDB dans les dépendances
+
+## Résumé
+
+Ajout de TinyDB pour créer une expérimentation NoSQL légère.
+
+## Fichier concerné
+
+* `requirements.txt`
+
+## Modification réalisée
+
+Ajout de la dépendance :
+
+```text
+tinydb==4.8.2
+```
+
+## Objectif
+
+Permettre au projet de stocker des notes de progression dans un fichier JSON.
+
+TinyDB ne remplace pas SQLite.
+
+Il sert uniquement à démontrer une logique NoSQL simple.
+
+## Statut
+
+Validé.
+
+---
+
+# 37. Création du service NoSQL TinyDB
+
+## Résumé
+
+Création d’un service Python dédié à TinyDB.
+
+## Fichier concerné
+
+* `core/services/nosql_notes.py`
+
+## Modifications réalisées
+
+* Définition du chemin vers la base TinyDB.
+* Création automatique du dossier `data/nosql`.
+* Ouverture de la base TinyDB.
+* Création de notes de démonstration.
+* Lecture de toutes les notes.
+* Recherche de notes par code projet.
+* Fermeture propre de la base après utilisation.
+
+## Statut
+
+Validé.
+
+---
+
+# 38. Création du script de démonstration TinyDB
+
+## Résumé
+
+Création d’un script permettant de tester TinyDB depuis le terminal.
+
+## Fichiers concernés
+
+* `scripts/__init__.py`
+* `scripts/demo_tinydb_notes.py`
+
+## Commande de test
+
+```powershell
+python -m scripts.demo_tinydb_notes
+```
+
+## Validation
+
+Le script affiche les notes de progression dans le terminal.
+
+Il sert de preuve technique pour la partie NoSQL.
+
+## Statut
+
+Validé.
+
+---
+
+# 39. Génération de la base TinyDB
+
+## Résumé
+
+Création de la base JSON TinyDB utilisée pour les notes de progression.
+
+## Fichier concerné
+
+* `data/nosql/project_notes_db.json`
+
+## Rôle
+
+Ce fichier contient les notes de progression du projet.
+
+Il sert de base NoSQL documentaire.
+
+Il ne doit pas contenir de données sensibles.
+
+## Statut
+
+Validé.
+
+---
+
+# 40. Affichage des notes TinyDB sur l’accueil
+
+## Résumé
+
+Connexion de TinyDB à la page d’accueil.
+
+## Fichiers concernés
+
+* `core/views.py`
+* `templates/pages/home.html`
+* `core/services/nosql_notes.py`
+* `data/nosql/project_notes_db.json`
+
+## Modifications réalisées
+
+* Import du service NoSQL dans `core/views.py`.
+* Initialisation des notes TinyDB.
+* Recherche des notes liées à Frostia Games.
+* Passage des notes au template d’accueil.
+* Ajout d’une section de notes de progression dans `home.html`.
+
+## Chaîne technique
+
+```text
+TinyDB
+→ core/services/nosql_notes.py
+→ core/views.py
+→ templates/pages/home.html
+→ affichage sur la page d'accueil
+```
+
+## Validation
+
+Commandes utilisées :
+
+```powershell
+python manage.py check
+python -m scripts.demo_tinydb_notes
+```
+
+## Statut
+
+Validé.
+
+---
+
+# 41. Documentation NoSQL TinyDB
+
+## Résumé
+
+Ajout d’une documentation dédiée à l’intégration TinyDB.
+
+## Fichier concerné
+
+* `docs/nosql/tinydb-integration.md`
+
+## Modifications réalisées
+
+* Explication du rôle de TinyDB.
+* Explication de la différence entre SQLite et TinyDB.
+* Explication du service Python NoSQL.
+* Explication du script de démonstration.
+* Explication de l’affichage sur la page d’accueil.
+* Clarification des limites de cette intégration.
+
+## Statut
+
+Validé.
+
+---
+
+# 42. Documentation des modèles Django
+
+## Résumé
+
+Ajout d’un document complémentaire sur les modèles Django.
+
+## Fichier concerné
+
+* `docs/backend/modeles-django.md`
+
+## Modifications réalisées
+
+* Documentation du modèle `Creation`.
+* Documentation du modèle `PlayableProject`.
+* Explication des champs.
+* Explication du lien avec SQLite.
+* Explication du rôle de l’administration.
+* Explication du rôle de l’ORM.
+
+## Statut
+
+Validé.
+
+---
+
+# 43. Documentation des vues et routes Django
+
+## Résumé
+
+Ajout d’un document complémentaire sur les vues et routes Django.
+
+## Fichier concerné
+
+* `docs/backend/vues-et-routes.md`
+
+## Modifications réalisées
+
+* Documentation des vues principales.
+* Documentation de la récupération des données SQLite.
+* Documentation de la récupération des notes TinyDB.
+* Documentation de l’envoi des données vers les templates.
+* Documentation des routes publiques.
+
+## Statut
+
+Validé.
+
+---
+
+# 44. Création du compte temporaire de lecture seule
+
+## Résumé
+
+Création d’un compte limité pour permettre une consultation de l’administration Django sans accès complet.
+
+## Éléments concernés
+
+* groupe `Evaluation lecture seule` ;
+* utilisateur temporaire d’évaluation ;
+* permissions de consultation.
+
+## Modifications réalisées
+
+* Création d’un groupe de lecture seule.
+* Ajout des permissions de consultation sur les créations.
+* Ajout des permissions de consultation sur les projets jouables.
+* Création d’un compte actif et membre de l’équipe.
+* Vérification que le compte n’est pas superutilisateur.
+* Vérification que le compte ne voit que les sections autorisées.
+
+## Sécurité
+
+Les identifiants réels du compte ne doivent pas être écrits dans le dossier projet public.
+
+## Statut
+
+Validé.
+
+---
+
+# 45. Mise à jour de l’index documentaire après renforcement
+
+## Résumé
+
+Mise à jour de l’index documentaire principal pour intégrer les nouvelles parties.
+
+## Fichier concerné
+
+* `doc/00-index-documentation.md`
+
+## Modifications réalisées
+
+* Ajout de `19-renforcement-dossier-projet.md`.
+* Ajout des mentions de TinyDB.
+* Ajout des mentions du compte lecture seule.
+* Ajout des mentions du SQL natif complémentaire.
+* Ajout des mentions de la documentation frontend et backend.
+* Mise à jour des limites et fonctionnalités implantées.
+
+## Statut
+
+Validé.
+
+---
+
+# 46. Mise à jour du journal de bord après renforcement
+
+## Résumé
+
+Mise à jour complète du journal de bord avec les étapes récentes.
+
+## Fichier concerné
+
+* `doc/02-journal-de-bord.md`
+
+## Modifications réalisées
+
+* Ajout de la branche de renforcement.
+* Ajout de la conception complémentaire.
+* Ajout du SQL natif.
+* Ajout du JavaScript documenté.
+* Ajout de TinyDB.
+* Ajout de l’affichage TinyDB.
+* Ajout du compte lecture seule.
+* Ajout de l’état actuel après renforcement.
+
+## Statut
+
+Validé.
+
+---
+
+# 47. Mise à jour de la modélisation backend après renforcement
+
+## Résumé
+
+Mise à jour du document de modélisation backend pour intégrer les nouvelles parties.
+
+## Fichier concerné
+
+* `doc/03-modelisation-backend.md`
+
+## Modifications réalisées
+
+* Ajout de TinyDB.
+* Ajout du compte lecture seule.
+* Ajout des nouveaux diagrammes de séquence.
+* Ajout du lien avec les documents de conception.
+* Ajout du lien avec la documentation SQL native.
+* Ajout du lien avec la documentation frontend et backend.
+* Mise à jour des limites et évolutions.
+
+## Statut
+
+Validé.
+
+---
+
+# 48. Mise à jour de la documentation Docker après TinyDB
+
+## Résumé
+
+Mise à jour de la documentation Docker pour intégrer TinyDB dans les dépendances et les tests.
+
+## Fichier concerné
+
+* `doc/04-docker-et-lancement.md`
+
+## Modifications réalisées
+
+* Ajout de TinyDB dans les technologies utilisées.
+* Ajout de TinyDB dans les dépendances.
+* Ajout du test local `python -m scripts.demo_tinydb_notes`.
+* Ajout du test Docker `docker compose exec web python -m scripts.demo_tinydb_notes`.
+* Ajout des fichiers NoSQL concernés.
+* Ajout des preuves à préparer.
+
+## Statut
+
+Validé.
+
+---
+
+# 49. Mise à jour de la sécurité backend après renforcement
+
+## Résumé
+
+Mise à jour de la documentation sécurité pour intégrer les ajouts récents.
+
+## Fichier concerné
+
+* `doc/05-securite-backend.md`
+
+## Modifications réalisées
+
+* Ajout du compte temporaire de lecture seule.
+* Ajout de la sécurité liée à TinyDB.
+* Ajout de la règle : aucune donnée sensible dans TinyDB.
+* Ajout de la distinction entre SQL natif documentaire et ORM Django.
+* Ajout des preuves de sécurité à préparer.
+* Mise à jour des limites de sécurité.
+
+## Statut
+
+Validé.
+
+---
+
+# 50. Mise à jour du manuel utilisateur après renforcement
+
+## Résumé
+
+Mise à jour du manuel utilisateur pour intégrer les nouveautés visibles et testables.
+
+## Fichier concerné
+
+* `doc/06-manuel-utilisateur.md`
+
+## Modifications réalisées
+
+* Ajout de TinyDB.
+* Ajout des notes de progression sur l’accueil.
+* Ajout du compte temporaire de lecture seule.
+* Ajout de la commande `python -m scripts.demo_tinydb_notes`.
+* Mise à jour des fonctionnalités disponibles.
+* Mise à jour des fonctionnalités non disponibles.
+* Ajout des preuves à préparer.
+
+## Statut
+
+Validé.
+
+---
+
+# 51. Mise à jour de la documentation base de données après renforcement
+
+## Résumé
+
+Mise à jour de la documentation base de données pour intégrer TinyDB et le SQL natif complémentaire.
+
+## Fichier concerné
+
+* `doc/07-base-de-donnees.md`
+
+## Modifications réalisées
+
+* Ajout de TinyDB.
+* Ajout de la base JSON `data/nosql/project_notes_db.json`.
+* Ajout des fichiers SQL complémentaires dans `docs/sql/`.
+* Ajout d’un exemple d’insertion SQL.
+* Ajout de la différence entre SQLite et TinyDB.
+* Ajout du compte temporaire de lecture seule.
+* Mise à jour des limites et évolutions.
+
+## Statut
+
+Validé.
+
+---
+
+# 52. Mise à jour du changelog après renforcement
+
+## Résumé
+
+Mise à jour du présent changelog pour intégrer les ajouts récents.
+
+## Fichier concerné
+
+* `doc/08-changelog.md`
+
+## Modifications réalisées
+
+* Ajout des étapes de renforcement.
+* Ajout de TinyDB.
+* Ajout de l’affichage TinyDB.
+* Ajout du compte lecture seule.
+* Ajout des documents complémentaires.
+* Mise à jour des éléments reportés.
+* Mise à jour de l’état actuel du projet.
+
+## Statut
+
+Validé.
+
+---
+
+# 53. Vérifications techniques finales
+
+## Résumé
+
+Vérifications techniques après intégration des nouveaux éléments.
+
+## Commandes utilisées
+
+```powershell
+python manage.py check
+python -m scripts.demo_tinydb_notes
+git status
+```
+
+## Résultats attendus
+
+```text
+System check identified no issues
+```
+
+et :
+
+```text
+nothing to commit, working tree clean
+```
+
+## Statut
+
+Validé.
+
+---
+
+# 54. État actuel de la V1 renforcée
+
+## Résumé
+
+La V1 renforcée contient maintenant :
+
+* pages principales fonctionnelles ;
+* backend Django fonctionnel ;
+* base SQLite ;
+* modèles Django ;
+* administration Django ;
+* compte temporaire de lecture seule ;
+* données dynamiques ;
+* interface préparatoire de projet jouable ;
+* menu mobile JavaScript ;
+* Docker ;
+* déploiement Render ;
+* documentation SQL ;
+* SQL natif complémentaire ;
+* TinyDB ;
+* affichage des notes TinyDB sur l’accueil ;
+* documentation NoSQL ;
+* documentation de sécurité ;
+* manuel utilisateur ;
+* changelog ;
+* journal de bord ;
+* documentation de modernisation ;
+* documentation d’architecture ;
+* documentation de tests ;
+* documentation de déploiement ;
+* README racine ;
+* fichier de choix techniques ;
+* fichier `.env.example`.
+
+## Statut général
+
+V1 fonctionnelle, documentée, déployée et renforcée.
+
+---
+
+# 55. Prochaines étapes
 
 Les prochaines étapes prévues sont limitées à la finalisation :
 
@@ -1052,20 +1755,23 @@ Les prochaines étapes prévues sont limitées à la finalisation :
 3. Vérifier le fichier `CHOIX_TECHNIQUES.md`.
 4. Tester le site en ligne sur Render.
 5. Tester l’administration Django.
-6. Vérifier le responsive mobile.
-7. Préparer les captures d’écran.
-8. Préparer les extraits de code à intégrer au dossier.
-9. Préparer la présentation du projet.
-10. Effectuer un dernier commit si des corrections sont faites.
+6. Tester le compte temporaire de lecture seule.
+7. Tester TinyDB avec `python -m scripts.demo_tinydb_notes`.
+8. Vérifier l’affichage des notes TinyDB sur l’accueil.
+9. Vérifier le responsive mobile.
+10. Préparer les captures d’écran.
+11. Préparer les extraits de code à intégrer au dossier.
+12. Préparer les annexes.
+13. Préparer la présentation du projet.
+14. Effectuer un dernier commit si des corrections sont faites.
 
 ---
 
-# 32. Éléments volontairement reportés
+# 56. Éléments volontairement reportés
 
 Les éléments suivants sont reportés à une version future :
 
 * PostgreSQL ;
-* compte jury temporaire ;
 * administration personnalisée ;
 * upload serveur réel ;
 * jeu jouable dans le navigateur ;
@@ -1073,26 +1779,86 @@ Les éléments suivants sont reportés à une version future :
 * fiches projet détaillées ;
 * API REST ;
 * comptes utilisateurs publics ;
-* rôles avancés ;
-* base NoSQL connectée ;
+* rôles publics avancés ;
+* base NoSQL avancée comme MongoDB ;
 * graphiques Plotly.js ;
 * tests automatisés complets ;
-* système de sauvegarde automatique.
+* système de sauvegarde automatique ;
+* mini-jeu intégré ;
+* système de score ;
+* téléchargement public de projet jouable.
 
 Ces éléments ne sont pas oubliés.
 
 Ils sont volontairement reportés afin de conserver une V1 stable, maintenable et présentable.
 
+Certains éléments initialement reportés ont finalement été intégrés de manière limitée et contrôlée :
+
+* compte temporaire de lecture seule ;
+* TinyDB ;
+* affichage des notes TinyDB ;
+* SQL natif documentaire.
+
 ---
 
-# 33. Conclusion
+# 57. Captures et preuves à préparer
 
-Le projet Frostia Games a évolué d’un simple site statique vers une V1 Django complète, documentée et déployée.
+Pour le dossier projet, il faut préparer des preuves pour les parties importantes.
+
+## Code et backend
+
+* modèles Django ;
+* vues Django ;
+* routes ;
+* service TinyDB ;
+* script TinyDB.
+
+## Base de données
+
+* migrations ;
+* SQL natif ;
+* exemples `INSERT INTO` ;
+* base TinyDB ;
+* affichage NoSQL sur l’accueil.
+
+## Interface
+
+* page d’accueil ;
+* page Mes créations ;
+* page Projets jouables ;
+* menu mobile fermé ;
+* menu mobile ouvert.
+
+## Administration
+
+* administration Django ;
+* modèles visibles ;
+* compte temporaire de lecture seule ;
+* absence d’accès aux utilisateurs et groupes avec le compte limité.
+
+## Déploiement
+
+* Render ;
+* GitHub ;
+* commandes de vérification ;
+* site en ligne.
+
+Aucune capture ne doit afficher de mot de passe, clé secrète ou variable sensible.
+
+---
+
+# 58. Conclusion
+
+Le projet Frostia Games a évolué d’un simple site statique vers une V1 Django complète, documentée, déployée et renforcée.
 
 Le backend reste volontairement simple, mais il est fonctionnel, administrable, relié à une base SQLite, lançable avec Docker et disponible en ligne via Render.
+
+Le projet contient maintenant aussi une expérimentation NoSQL légère avec TinyDB, un affichage des notes sur l’accueil, des extraits SQL natifs et un compte temporaire de lecture seule.
 
 Les technologies mises de côté ont été identifiées et expliquées.
 
 Le choix de conserver Django/Python dans cette V1 permet de protéger la stabilité du projet et d’éviter de repartir de zéro.
 
-Cette approche permet de présenter un projet stable, maintenable, documenté, déployé et évolutif.
+Cette approche permet de présenter un projet stable, maintenable, documenté, déployé, renforcé et évolutif.
+
+À ce stade, l’objectif principal est de finaliser les captures, les annexes et le dossier projet final, sans ajouter de nouvelles fonctionnalités lourdes.

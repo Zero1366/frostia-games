@@ -10,7 +10,9 @@ L'objectif est de fournir une procédure claire permettant :
 * de reproduire l'environnement de développement avec Docker ;
 * de tester le projet ;
 * de comprendre le rôle des fichiers liés au lancement ;
-* de distinguer le lancement local, le lancement Docker et le déploiement Render.
+* de distinguer le lancement local, le lancement Docker et le déploiement Render ;
+* de vérifier les dépendances ajoutées récemment, notamment TinyDB ;
+* de tester l'expérimentation NoSQL légère du projet.
 
 La V1 du projet peut être lancée localement avec Python, mais aussi avec Docker et Docker Compose.
 
@@ -25,6 +27,7 @@ Le projet utilise :
 * Python ;
 * Django ;
 * SQLite ;
+* TinyDB ;
 * HTML ;
 * CSS ;
 * JavaScript ;
@@ -41,7 +44,9 @@ Django est utilisé pour :
 * l'administration ;
 * les templates.
 
-SQLite est utilisé comme base de données pour la V1.
+SQLite est utilisé comme base de données principale pour la V1.
+
+TinyDB est utilisé comme expérimentation NoSQL légère afin de stocker des notes de progression dans un fichier JSON.
 
 Docker est ajouté afin de rendre le lancement plus reproductible et de montrer que le projet peut fonctionner dans un environnement isolé.
 
@@ -62,6 +67,17 @@ Le projet peut être exécuté de plusieurs manières.
 Docker ne remplace pas Render dans cette V1.
 
 Docker sert surtout à prouver que le projet peut être lancé dans un environnement contrôlé, sans dépendre uniquement de la configuration locale de la machine.
+
+Le lancement local et le lancement Docker doivent permettre de vérifier :
+
+* le fonctionnement de Django ;
+* les migrations ;
+* les pages publiques ;
+* l'administration Django ;
+* le menu mobile ;
+* l'affichage des données SQLite ;
+* l'expérimentation NoSQL TinyDB ;
+* l'affichage des notes TinyDB sur la page d'accueil.
 
 ---
 
@@ -85,6 +101,18 @@ requirements.txt
 build.sh
 README.md
 CHOIX_TECHNIQUES.md
+```
+
+Elle peut aussi contenir :
+
+```text
+data/
+scripts/
+core/
+templates/
+static/
+doc/
+docs/
 ```
 
 ---
@@ -113,6 +141,12 @@ Si les dépendances ne sont pas encore installées :
 pip install -r requirements.txt
 ```
 
+ou :
+
+```powershell
+python -m pip install -r requirements.txt
+```
+
 Le fichier `requirements.txt` contient les dépendances nécessaires au lancement du projet.
 
 Il peut notamment contenir :
@@ -121,11 +155,14 @@ Il peut notamment contenir :
 Django
 gunicorn
 whitenoise
+tinydb
 ```
 
 Django sert au fonctionnement principal du projet.
 
 Gunicorn et WhiteNoise sont utilisés pour le déploiement en ligne sur Render.
+
+TinyDB est utilisé pour l'expérimentation NoSQL légère et l'affichage des notes de progression sur la page d'accueil.
 
 ---
 
@@ -138,6 +175,10 @@ python manage.py migrate
 ```
 
 Cette commande crée ou met à jour les tables nécessaires dans la base SQLite.
+
+Elle concerne les modèles Django et la base SQL principale.
+
+TinyDB n'utilise pas les migrations Django, car il fonctionne avec un fichier JSON.
 
 ---
 
@@ -159,7 +200,28 @@ Cette commande permet de vérifier que la configuration Django ne contient pas d
 
 ---
 
-## 3.6 Lancer le serveur local
+## 3.6 Tester TinyDB en local
+
+Après l'installation des dépendances, il est possible de tester la lecture TinyDB avec :
+
+```powershell
+python -m scripts.demo_tinydb_notes
+```
+
+Cette commande permet de vérifier que :
+
+* TinyDB est installé ;
+* le service NoSQL fonctionne ;
+* les notes de progression sont créées ou lues correctement ;
+* le fichier JSON TinyDB est accessible.
+
+Le script affiche les notes de progression dans le terminal.
+
+Il sert de preuve technique pour la partie NoSQL du projet.
+
+---
+
+## 3.7 Lancer le serveur local
 
 Commande :
 
@@ -186,6 +248,23 @@ Administration Django :
 ```text
 http://127.0.0.1:8000/admin/
 ```
+
+---
+
+## 3.8 Vérifications après lancement local
+
+Après le lancement local, vérifier :
+
+* la page d'accueil ;
+* l'affichage des notes TinyDB sur l'accueil ;
+* la page **Mes créations** ;
+* la page **Projets jouables** ;
+* le menu mobile ;
+* l'administration Django ;
+* l'affichage des données SQLite ;
+* l'absence d'erreur dans le terminal.
+
+La page d'accueil doit afficher les notes de progression si TinyDB est correctement initialisé.
 
 ---
 
@@ -216,9 +295,36 @@ En production sur Render, la création du superutilisateur peut être automatis�
 
 ---
 
-# 5. Lancement avec Docker
+# 5. Compte temporaire de lecture seule
 
-## 5.1 Objectif de Docker
+Un compte temporaire de lecture seule peut être utilisé pour l'évaluation.
+
+Ce compte n'est pas un superutilisateur.
+
+Il permet uniquement de consulter certaines données dans l'administration Django.
+
+Le groupe associé donne uniquement accès en lecture à :
+
+* Créations ;
+* Projets jouables.
+
+Le compte ne doit pas donner accès à :
+
+* la gestion des utilisateurs ;
+* la gestion des groupes ;
+* les permissions sensibles ;
+* les variables d'environnement ;
+* les secrets du projet.
+
+Les identifiants réels ne doivent pas être écrits dans la documentation publique.
+
+Ils peuvent être transmis séparément uniquement si nécessaire.
+
+---
+
+# 6. Lancement avec Docker
+
+## 6.1 Objectif de Docker
 
 Docker permet de lancer le projet dans un environnement isolé.
 
@@ -236,7 +342,7 @@ Ce n'est pas la solution de production utilisée pour la mise en ligne actuelle.
 
 ---
 
-## 5.2 Fichiers Docker utilisés
+## 6.2 Fichiers Docker utilisés
 
 Les fichiers utilisés sont :
 
@@ -249,9 +355,11 @@ requirements.txt
 
 Ces fichiers se trouvent à la racine du projet.
 
+Le fichier `requirements.txt` doit contenir les dépendances nécessaires, dont TinyDB.
+
 ---
 
-# 6. Rôle du fichier Dockerfile
+# 7. Rôle du fichier Dockerfile
 
 Le fichier `Dockerfile` décrit comment construire l'image Docker du projet.
 
@@ -286,7 +394,7 @@ CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
 * `ENV PYTHONDONTWRITEBYTECODE=1` : évite la création de fichiers `.pyc`.
 * `ENV PYTHONUNBUFFERED=1` : améliore l'affichage des logs.
 * `COPY requirements.txt /app/` : copie le fichier des dépendances.
-* `RUN pip install` : installe Django et les dépendances nécessaires.
+* `RUN pip install` : installe Django, TinyDB et les dépendances nécessaires.
 * `COPY . /app/` : copie le projet dans le conteneur.
 * `EXPOSE 8000` : indique le port utilisé.
 * `CMD` : lance le serveur Django.
@@ -295,7 +403,7 @@ Cette configuration est adaptée au développement local avec Docker.
 
 ---
 
-# 7. Rôle du fichier docker-compose.yml
+# 8. Rôle du fichier docker-compose.yml
 
 Le fichier `docker-compose.yml` permet de lancer le service web plus facilement.
 
@@ -326,9 +434,11 @@ services:
 
 Le volume `.:/app` permet de modifier le code localement et de voir les changements dans le conteneur.
 
+Il permet aussi de conserver les fichiers créés localement, comme la base SQLite ou la base JSON TinyDB, selon la configuration choisie.
+
 ---
 
-# 8. Rôle du fichier .dockerignore
+# 9. Rôle du fichier .dockerignore
 
 Le fichier `.dockerignore` indique les fichiers à ne pas copier dans l'image Docker.
 
@@ -373,9 +483,11 @@ Ce fichier permet :
 
 Le fichier `.env` ne doit pas être copié dans l'image Docker car il peut contenir des valeurs sensibles.
 
+Selon le besoin de test, le dossier `data/nosql/` peut être conservé dans le projet local pour générer ou lire la base TinyDB.
+
 ---
 
-# 9. Construire et lancer le projet avec Docker
+# 10. Construire et lancer le projet avec Docker
 
 Depuis la racine du projet :
 
@@ -408,7 +520,7 @@ http://127.0.0.1:8000/admin/
 
 ---
 
-# 10. Arrêter Docker
+# 11. Arrêter Docker
 
 Pour arrêter le serveur Docker depuis le terminal :
 
@@ -424,7 +536,7 @@ docker compose down
 
 ---
 
-# 11. Vérifier Django dans Docker
+# 12. Vérifier Django dans Docker
 
 Une fois le conteneur lancé, il est possible d'exécuter une commande Django dans Docker :
 
@@ -442,7 +554,28 @@ Cette commande permet de vérifier que Django fonctionne correctement dans le co
 
 ---
 
-# 12. Appliquer les migrations dans Docker
+# 13. Tester TinyDB dans Docker
+
+Une fois le conteneur lancé, il est aussi possible de tester TinyDB dans Docker :
+
+```powershell
+docker compose exec web python -m scripts.demo_tinydb_notes
+```
+
+Cette commande permet de vérifier que :
+
+* TinyDB est bien installé dans l'image Docker ;
+* le script de démonstration est disponible ;
+* le service NoSQL fonctionne dans le conteneur ;
+* les notes peuvent être lues ou créées.
+
+Ce test complète la vérification Django.
+
+Il permet de prouver que l'expérimentation NoSQL n'est pas seulement fonctionnelle en local, mais aussi dans l'environnement Docker.
+
+---
+
+# 14. Appliquer les migrations dans Docker
 
 Si nécessaire :
 
@@ -452,9 +585,13 @@ docker compose exec web python manage.py migrate
 
 Cette commande applique les migrations depuis l'environnement Docker.
 
+Elle concerne la base SQLite.
+
+TinyDB ne dépend pas des migrations Django.
+
 ---
 
-# 13. Créer un administrateur dans Docker
+# 15. Créer un administrateur dans Docker
 
 Si le projet est lancé avec Docker et qu'aucun administrateur n'existe encore :
 
@@ -466,7 +603,7 @@ Django demandera ensuite un nom d'utilisateur, une adresse e-mail et un mot de p
 
 ---
 
-# 14. Problèmes rencontrés pendant la mise en place Docker
+# 16. Problèmes rencontrés pendant la mise en place Docker
 
 Plusieurs problèmes ont été rencontrés et corrigés :
 
@@ -479,9 +616,21 @@ Plusieurs problèmes ont été rencontrés et corrigés :
 
 Ces problèmes ont été corrigés progressivement.
 
+Après l'ajout de TinyDB, une vérification supplémentaire doit être faite avec le script :
+
+```powershell
+python -m scripts.demo_tinydb_notes
+```
+
+ou dans Docker :
+
+```powershell
+docker compose exec web python -m scripts.demo_tinydb_notes
+```
+
 ---
 
-# 15. Validation Docker
+# 17. Validation Docker
 
 La validation Docker a été faite avec la commande :
 
@@ -509,11 +658,17 @@ Résultat attendu :
 System check identified no issues (0 silenced).
 ```
 
-Le lancement Docker est donc considéré comme validé pour la V1.
+La validation TinyDB peut ensuite être faite avec :
+
+```powershell
+docker compose exec web python -m scripts.demo_tinydb_notes
+```
+
+Le lancement Docker est donc considéré comme validé pour la V1 si Django et TinyDB répondent correctement.
 
 ---
 
-# 16. Limites de la configuration Docker actuelle
+# 18. Limites de la configuration Docker actuelle
 
 La configuration Docker actuelle est adaptée au développement local.
 
@@ -536,7 +691,7 @@ Dans cette V1, le déploiement en ligne est réalisé avec Render, sans utiliser
 
 ---
 
-# 17. Déploiement Render
+# 19. Déploiement Render
 
 Le projet est déployé en ligne sur Render.
 
@@ -569,9 +724,11 @@ Le fichier `build.sh` permet notamment :
 
 Docker reste utile pour le développement local, mais Render est la solution retenue pour la mise en ligne actuelle.
 
+TinyDB doit aussi faire partie des dépendances installées par Render via `requirements.txt`.
+
 ---
 
-# 18. Rôle du fichier build.sh
+# 20. Rôle du fichier build.sh
 
 Le fichier `build.sh` est utilisé par Render pendant le déploiement.
 
@@ -600,9 +757,11 @@ Ce fichier ne remplace pas Docker.
 
 Il sert uniquement à préparer l'application lors du déploiement Render.
 
+Comme TinyDB est installé via `requirements.txt`, Render peut aussi charger le code lié à l'expérimentation NoSQL.
+
 ---
 
-# 19. Variables d'environnement importantes
+# 21. Variables d'environnement importantes
 
 Le projet utilise des variables d'environnement pour éviter d'écrire les secrets directement dans le code.
 
@@ -622,9 +781,44 @@ Le fichier `.env.example` sert uniquement de modèle.
 
 Les vraies valeurs ne doivent pas être publiées sur GitHub.
 
+Les identifiants du compte temporaire de lecture seule ne doivent pas non plus être écrits dans un document public.
+
 ---
 
-# 20. Commandes récapitulatives
+# 22. Fichiers liés à TinyDB
+
+L'expérimentation NoSQL légère repose sur plusieurs fichiers.
+
+```text
+core/services/nosql_notes.py
+scripts/demo_tinydb_notes.py
+data/nosql/project_notes_db.json
+docs/nosql/tinydb-integration.md
+```
+
+## `core/services/nosql_notes.py`
+
+Ce fichier contient le service Python qui ouvre TinyDB, crée les notes de démonstration et lit les notes du projet.
+
+## `scripts/demo_tinydb_notes.py`
+
+Ce script permet de tester TinyDB depuis le terminal.
+
+## `data/nosql/project_notes_db.json`
+
+Ce fichier est la base JSON générée ou utilisée par TinyDB.
+
+## `docs/nosql/tinydb-integration.md`
+
+Ce document explique la logique NoSQL dans la documentation complémentaire.
+
+TinyDB reste une expérimentation limitée.
+
+Il ne remplace pas la base SQLite principale.
+
+---
+
+# 23. Commandes récapitulatives
 
 ## Lancement local
 
@@ -632,6 +826,7 @@ Les vraies valeurs ne doivent pas être publiées sur GitHub.
 .\.venv\Scripts\Activate.ps1
 python manage.py migrate
 python manage.py check
+python -m scripts.demo_tinydb_notes
 python manage.py runserver
 ```
 
@@ -645,6 +840,12 @@ docker compose up --build
 
 ```powershell
 docker compose exec web python manage.py check
+```
+
+## Vérification TinyDB dans Docker
+
+```powershell
+docker compose exec web python -m scripts.demo_tinydb_notes
 ```
 
 ## Migrations dans Docker
@@ -676,7 +877,28 @@ git push
 
 ---
 
-# 21. Bilan
+# 24. Vérifications à conserver comme preuves
+
+Pour le dossier projet, plusieurs captures peuvent être utiles :
+
+* capture du fichier `Dockerfile` ;
+* capture du fichier `docker-compose.yml` ;
+* capture du terminal avec `docker compose up --build` ;
+* capture du terminal avec `python manage.py check` ;
+* capture du terminal avec `python -m scripts.demo_tinydb_notes` ;
+* capture du site lancé en local ;
+* capture du site lancé avec Docker ;
+* capture du site déployé sur Render ;
+* capture du fichier `requirements.txt` montrant les dépendances ;
+* capture de la page d'accueil montrant les notes TinyDB.
+
+Ces preuves doivent montrer que le projet peut être lancé, testé et expliqué.
+
+Aucune capture ne doit afficher de secret, de mot de passe ou de variable sensible.
+
+---
+
+# 25. Bilan
 
 Le projet Frostia Games peut être lancé de trois manières selon le besoin :
 
@@ -695,3 +917,15 @@ La configuration Docker actuelle est suffisante pour la V1 et pour une démonstr
 Elle n'est pas destinée à être une configuration Docker de production complète.
 
 Les éléments avancés comme Nginx, PostgreSQL, HTTPS, serveur média ou orchestration Docker sont volontairement reportés afin de conserver une V1 stable, documentée et présentable.
+
+Depuis le renforcement du dossier projet, les tests doivent aussi prendre en compte TinyDB.
+
+La V1 doit donc être validée avec :
+
+* `python manage.py check` ;
+* `python -m scripts.demo_tinydb_notes` ;
+* une vérification du site dans le navigateur ;
+* une vérification des notes TinyDB sur la page d'accueil ;
+* une vérification du déploiement Render.
+
+L'objectif n'est plus d'ajouter de nouvelles fonctionnalités lourdes à cette V1, mais de finaliser les preuves, les captures et la documentation du dossier projet.

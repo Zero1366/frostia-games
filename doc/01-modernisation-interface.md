@@ -4,7 +4,7 @@
 
 Cette étape avait pour objectif de transformer la première maquette wireframe du portfolio **Frostia Games** en une interface plus moderne, plus lisible et plus professionnelle, sans utiliser de template Django lourd ni créer d’éléments graphiques avancés dans Krita.
 
-Le but était de conserver une structure simple, mais de donner au site une identité visuelle plus forte, cohérente et exploitable pour une V1 Django.
+Le but était de conserver une structure simple, tout en donnant au site une identité visuelle plus forte, cohérente et exploitable pour une V1 Django.
 
 L’objectif n’était pas de créer une interface définitive, mais de mettre en place une base visuelle stable, maintenable, responsive et compatible avec les futures évolutions du projet.
 
@@ -20,9 +20,9 @@ La structure du site a été volontairement limitée à trois pages principales 
 
 Le nom **Frostia Games** est utilisé comme nom temporaire de présentation du projet.
 
-Le logo actuel est également temporaire et pourra être remplacé lors d’une future mise à jour.
+Le logo actuel est également temporaire. Il pourra être remplacé lors d’une future mise à jour.
 
-La direction visuelle retenue repose sur une identité bleue moderne, froide et cohérente avec le nom Frostia.
+La direction visuelle retenue repose sur une identité bleue moderne, froide et cohérente avec le nom **Frostia**.
 
 L’objectif est d’obtenir un rendu sérieux et professionnel sans dépendre d’illustrations personnalisées ou d’un template externe.
 
@@ -32,7 +32,7 @@ Cette décision permet de garder le contrôle sur la structure HTML, le CSS, le 
 
 ## Choix d’interface
 
-L’interface repose sur une structure avec :
+L’interface repose sur une structure composée de :
 
 * une barre supérieure contenant le nom temporaire du site ;
 * une sidebar à gauche pour la navigation desktop ;
@@ -55,7 +55,7 @@ Ce choix permet d’avoir une interface simple à comprendre, sans ajouter de d�
 
 ## Travail réalisé
 
-Le fichier CSS principal a été retravaillé pour obtenir une interface plus propre et plus cohérente.
+Le fichier CSS principal a été retravaillé afin d’obtenir une interface plus propre et plus cohérente.
 
 Les améliorations principales sont :
 
@@ -65,13 +65,13 @@ Les améliorations principales sont :
 * ajout d’ombres plus modernes ;
 * ajout de dégradés sur le fond principal ;
 * meilleure distinction de l’élément actif dans la navigation ;
-* correction du footer pour qu’il s’intègre mieux à la page ;
+* correction du footer afin qu’il s’intègre mieux à la page ;
 * préparation du responsive mobile ;
 * création d’une interface cohérente sur les trois pages principales ;
 * ajout d’une zone préparatoire pour les projets jouables ;
 * ajout d’un affichage visuel pour les données provenant du backend.
 
-L’interface a également été adaptée pour afficher certaines données provenant des modèles Django, ce qui permet à la V1 de ne plus être uniquement statique.
+L’interface a également été adaptée pour afficher certaines données provenant des modèles Django. Cela permet à la V1 de ne plus être uniquement statique.
 
 ---
 
@@ -96,17 +96,17 @@ Le fichier JavaScript lié au menu mobile est :
 
 ## Page Accueil
 
-La page d’accueil dispose maintenant :
+La page d’accueil dispose maintenant de :
 
-* d’un hero clair ;
-* de trois cartes principales ;
-* d’un bloc d’actualité du projet ;
-* d’un bloc “À propos du site” ;
-* d’un footer propre ;
-* d’une navigation active ;
-* d’une base responsive.
+* un hero clair ;
+* trois cartes principales ;
+* un bloc d’actualité du projet ;
+* un bloc “À propos du site” ;
+* un footer propre ;
+* une navigation active ;
+* une base responsive.
 
-Cette page sert de point d’entrée du portfolio.
+Cette page sert de point d’entrée au portfolio.
 
 Elle présente le site, son objectif et les sections principales sans surcharger l’utilisateur.
 
@@ -120,14 +120,14 @@ Elle contient :
 
 * une introduction ;
 * un lexique alphabétique ;
-* une lettre disponible pour afficher KryonCore ;
+* une lettre disponible permettant d’afficher KryonCore ;
 * une section reliée aux données enregistrées en base ;
 * une indication claire sur les futures fiches détaillées ;
 * une section expliquant les contenus prévus pour plus tard.
 
 Cette page prépare l’évolution future vers des fiches projet détaillées, sans les ajouter trop tôt dans la V1.
 
-Elle permet aussi de montrer que certains contenus peuvent être affichés depuis Django plutôt que d’être uniquement écrits en dur dans les templates.
+Elle permet aussi de montrer que certains contenus peuvent être affichés depuis Django, plutôt que d’être uniquement écrits en dur dans les templates.
 
 ---
 
@@ -157,10 +157,10 @@ La page permet donc de montrer une intention d’évolution sans exposer le proj
 
 Plusieurs problèmes sont apparus pendant l’intégration :
 
-* certains styles ne s’appliquaient pas car le HTML ne contenait pas encore les bonnes classes ;
+* certains styles ne s’appliquaient pas, car le HTML ne contenait pas encore les bonnes classes ;
 * le fichier CSS contenait des erreurs de variables et de placement ;
 * certains ajustements avaient été placés par erreur dans le bloc mobile ;
-* le footer ne s’affichait pas comme prévu car il était contenu dans le padding principal ;
+* le footer ne s’affichait pas comme prévu, car il était contenu dans le padding principal ;
 * l’état actif du menu n’était pas assez visible ;
 * certaines alertes VS Code étaient liées à des faux positifs de typage Django ;
 * certaines parties de l’interface ont dû être adaptées après l’ajout du backend.
@@ -204,7 +204,7 @@ Les pages concernées sont :
 * Mes créations ;
 * Projets jouables.
 
-Les données sont ajoutées dans l’administration Django puis affichées dans les templates.
+Les données sont ajoutées dans l’administration Django, puis affichées dans les templates.
 
 Ce fonctionnement permet de modifier certains contenus sans toucher directement au code HTML.
 
@@ -286,4 +286,4 @@ Cela permet de garder le contrôle sur :
 
 La modernisation lourde de l’interface est reportée à une version future afin de conserver une V1 stable, documentée et déployée.
 
-Cette étape valide donc la base visuelle du projet Frostia Games pour la V1.
+Cette étape valide donc la base visuelle du projet **Frostia Games** pour la V1.

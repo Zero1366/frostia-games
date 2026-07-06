@@ -8,11 +8,22 @@ L'objectif est d'expliquer comment le projet est organisé, quel est le rôle de
 
 Le projet est une application web développée avec **Django**.
 
-Il sert de portfolio pour présenter des projets de jeux vidéo actuels ou futurs, avec une interface publique simple, une base SQLite, une administration Django, une documentation technique et un déploiement en ligne sur Render.
+Il sert de portfolio pour présenter des projets de jeux vidéo actuels ou futurs, avec une interface publique simple, une base SQLite, une expérimentation NoSQL légère avec TinyDB, une administration Django, une documentation technique et un déploiement en ligne sur Render.
+
+Ce document a été mis à jour après le renforcement du dossier projet afin d'intégrer :
+
+* TinyDB ;
+* les notes de progression affichées sur l'accueil ;
+* le compte temporaire de lecture seule ;
+* les fichiers SQL natifs complémentaires ;
+* la documentation `docs/` ;
+* la documentation JavaScript ;
+* la documentation backend complémentaire ;
+* les nouvelles preuves à préparer.
 
 ---
 
-## Vue d'ensemble du projet
+# 1. Vue d'ensemble du projet
 
 Frostia Games est organisé autour d'une architecture Django simple et volontairement limitée.
 
@@ -22,13 +33,18 @@ Le projet contient :
 * une application dédiée aux pages principales ;
 * une application dédiée aux créations ;
 * une application dédiée aux futurs projets jouables ;
+* des services internes Python ;
+* des scripts de démonstration ;
 * des templates HTML ;
 * des fichiers statiques CSS, JavaScript et images ;
-* une base de données SQLite pour la V1 ;
+* une base de données SQLite pour les données principales ;
+* une base NoSQL TinyDB pour des notes de progression ;
 * une administration Django ;
+* un compte temporaire de lecture seule ;
 * des fichiers Docker ;
 * des fichiers de déploiement Render ;
-* une documentation technique complète.
+* une documentation technique principale ;
+* une documentation complémentaire de conception, SQL, NoSQL, frontend et backend.
 
 Cette structure permet de garder un projet lisible, maintenable et évolutif.
 
@@ -36,11 +52,11 @@ L'objectif de la V1 n'est pas de créer une plateforme complète, mais de produi
 
 ---
 
-## Structure générale du projet
+# 2. Structure générale du projet
 
 Structure simplifiée du projet :
 
-```txt
+```text
 frostia-games/
 ├── frostia_config/
 │   ├── settings.py
@@ -49,6 +65,8 @@ frostia-games/
 │   └── asgi.py
 │
 ├── core/
+│   ├── services/
+│   │   └── nosql_notes.py
 │   ├── urls.py
 │   ├── views.py
 │   ├── apps.py
@@ -69,6 +87,14 @@ frostia-games/
 │   ├── models.py
 │   ├── tests.py
 │   └── views.py
+│
+├── scripts/
+│   ├── __init__.py
+│   └── demo_tinydb_notes.py
+│
+├── data/
+│   └── nosql/
+│       └── project_notes_db.json
 │
 ├── templates/
 │   ├── base.html
@@ -109,7 +135,27 @@ frostia-games/
 │   ├── 15-limites-et-évolutions.md
 │   ├── 16-presentation-projet-2.md
 │   ├── 17-pistes-explorees-et-non-retenues.md
-│   └── 18-plan-finalisation-v1.md
+│   ├── 18-plan-finalisation-v1.md
+│   └── 19-renforcement-dossier-projet.md
+│
+├── docs/
+│   ├── backend/
+│   │   ├── modeles-django.md
+│   │   └── vues-et-routes.md
+│   ├── conception/
+│   │   ├── cas-utilisation.md
+│   │   ├── diagramme-sequence.md
+│   │   └── mcd.md
+│   ├── frontend/
+│   │   └── javascript-menu-mobile.md
+│   ├── nosql/
+│   │   └── tinydb-integration.md
+│   ├── preuves/
+│   └── sql/
+│       ├── create_tables_creations.sql
+│       ├── create_tables_playable.sql
+│       ├── exemples_insert.sql
+│       └── sql-natif.md
 │
 ├── .dockerignore
 ├── .env.example
@@ -127,7 +173,7 @@ frostia-games/
 
 ---
 
-## Rôle des dossiers principaux
+# 3. Rôle des dossiers principaux
 
 ## `frostia_config`
 
@@ -146,7 +192,7 @@ Il représente le cœur technique du projet.
 
 ---
 
-## `settings.py`
+# 4. `settings.py`
 
 Le fichier `settings.py` contient la configuration principale du projet.
 
@@ -173,9 +219,13 @@ Les applications internes du projet sont notamment :
 
 Ces applications séparent les responsabilités du projet.
 
+Les données TinyDB ne sont pas gérées par une application Django dédiée.
+
+Elles sont gérées par un service Python placé dans `core/services/`.
+
 ---
 
-## `urls.py`
+# 5. `urls.py`
 
 Le fichier `urls.py` définit les routes principales du projet.
 
@@ -183,13 +233,13 @@ Il permet de connecter les URL du site aux vues Django.
 
 Il contient également l'accès à l'administration Django via :
 
-```txt
+```text
 /admin/
 ```
 
 Fonctionnement simplifié :
 
-```txt
+```text
 URL demandée par le visiteur
         ↓
 frostia_config/urls.py
@@ -205,7 +255,7 @@ page affichée
 
 ---
 
-## `wsgi.py`
+# 6. `wsgi.py`
 
 Le fichier `wsgi.py` sert de point d'entrée pour lancer le projet Django en production.
 
@@ -219,11 +269,13 @@ Cette commande indique à Gunicorn d'utiliser l'application Django définie dans
 
 ---
 
-# Application `core`
+# 7. Application `core`
 
 L'application `core` gère les pages principales du site.
 
 Elle contient principalement les vues et les routes publiques du portfolio.
+
+Elle contient aussi le service utilisé pour l'expérimentation NoSQL TinyDB.
 
 ## Rôle de `core`
 
@@ -233,20 +285,22 @@ L'application `core` sert à organiser :
 * la page Mes créations ;
 * la page Projets jouables ;
 * les routes publiques ;
-* les vues qui récupèrent les données nécessaires aux templates.
+* les vues qui récupèrent les données nécessaires aux templates ;
+* la récupération des notes TinyDB sur l'accueil.
 
 ## Fichiers importants
 
-| Fichier         | Rôle                                    |
-| --------------- | --------------------------------------- |
-| `core/views.py` | Contient les vues des pages principales |
-| `core/urls.py`  | Contient les routes publiques du site   |
-| `core/apps.py`  | Configuration de l'application          |
-| `core/tests.py` | Fichier prévu pour les tests            |
+| Fichier                         | Rôle                                         |
+| ------------------------------- | -------------------------------------------- |
+| `core/views.py`                 | Contient les vues des pages principales      |
+| `core/urls.py`                  | Contient les routes publiques du site        |
+| `core/apps.py`                  | Configuration de l'application               |
+| `core/tests.py`                 | Fichier prévu pour les tests                 |
+| `core/services/nosql_notes.py`  | Service Python lié à TinyDB                  |
 
 ---
 
-## `core/views.py`
+# 8. `core/views.py`
 
 Le fichier `core/views.py` contient les vues Django.
 
@@ -258,16 +312,19 @@ Les vues permettent notamment :
 * d'afficher la page Mes créations ;
 * d'afficher la page Projets jouables ;
 * de récupérer certaines données depuis les modèles Django ;
+* de récupérer les notes TinyDB ;
 * d'envoyer ces données aux templates.
 
 Exemple de fonctionnement :
 
-```txt
+```text
 Requête visiteur
    ↓
 Vue Django
    ↓
-Récupération éventuelle de données
+Récupération éventuelle de données SQLite
+   ↓
+Récupération éventuelle de notes TinyDB
    ↓
 Template HTML
    ↓
@@ -276,7 +333,7 @@ Réponse envoyée au navigateur
 
 ---
 
-## `core/urls.py`
+# 9. `core/urls.py`
 
 Le fichier `core/urls.py` contient les routes publiques du site.
 
@@ -284,17 +341,49 @@ Il permet de relier les adresses du site aux vues.
 
 Pages principales :
 
-```txt
+```text
 /
- /mes-creations/
- /projets-jouables/
+/mes-creations/
+/projets-jouables/
 ```
 
 Ces routes permettent d'accéder aux trois pages principales de la V1.
 
 ---
 
-# Application `creations`
+# 10. Service NoSQL `nosql_notes.py`
+
+Le fichier suivant gère l'expérimentation NoSQL :
+
+```text
+core/services/nosql_notes.py
+```
+
+Ce service permet :
+
+* de définir l'emplacement de la base TinyDB ;
+* de créer le dossier `data/nosql/` si nécessaire ;
+* d'ouvrir la base TinyDB ;
+* de créer des notes de démonstration ;
+* de lister les notes ;
+* de rechercher les notes liées à un projet ;
+* de fermer la base proprement.
+
+TinyDB est utilisé pour stocker des notes de progression dans un fichier JSON.
+
+Fichier de données :
+
+```text
+data/nosql/project_notes_db.json
+```
+
+TinyDB ne remplace pas SQLite.
+
+Il sert uniquement de complément documentaire pour démontrer une logique NoSQL légère.
+
+---
+
+# 11. Application `creations`
 
 L'application `creations` gère les créations affichées dans la page **Mes créations**.
 
@@ -320,7 +409,7 @@ Le contenu peut être ajouté ou modifié depuis l'administration Django.
 
 ---
 
-## Modèle `Creation`
+# 12. Modèle `Creation`
 
 Le modèle `Creation` représente une création ou un projet présenté dans le portfolio.
 
@@ -340,7 +429,7 @@ Ce modèle permet d'afficher dynamiquement certaines créations dans la page **M
 
 ---
 
-## Administration de `Creation`
+# 13. Administration de `Creation`
 
 Le fichier `creations/admin.py` permet d'afficher le modèle `Creation` dans l'administration Django.
 
@@ -352,9 +441,11 @@ L'administration permet notamment :
 * de rendre une création visible ;
 * de gérer les données sans modifier directement le HTML.
 
+Le compte temporaire de lecture seule peut uniquement consulter ce modèle si la permission de lecture est accordée.
+
 ---
 
-# Application `playable`
+# 14. Application `playable`
 
 L'application `playable` gère les futurs projets jouables ou contenus prévus dans la page **Projets jouables**.
 
@@ -386,7 +477,7 @@ L'application permet simplement de préparer la structure future tout en gardant
 
 ---
 
-## Modèle `PlayableProject`
+# 15. Modèle `PlayableProject`
 
 Le modèle `PlayableProject` représente un futur contenu jouable ou une démonstration prévue.
 
@@ -406,7 +497,7 @@ Ce modèle permet d'afficher des informations sur les futurs contenus jouables s
 
 ---
 
-## Administration de `PlayableProject`
+# 16. Administration de `PlayableProject`
 
 Le fichier `playable/admin.py` permet d'afficher le modèle `PlayableProject` dans l'administration Django.
 
@@ -417,9 +508,11 @@ L'administration permet notamment :
 * de modifier son message de disponibilité ;
 * de masquer ou afficher l'entrée sur le site.
 
+Le compte temporaire de lecture seule peut uniquement consulter ce modèle si la permission de lecture est accordée.
+
 ---
 
-# Templates Django
+# 17. Templates Django
 
 Le dossier `templates` contient les fichiers HTML utilisés par Django.
 
@@ -427,7 +520,7 @@ Il permet de séparer la structure des pages du code Python.
 
 Structure utilisée :
 
-```txt
+```text
 templates/
 ├── base.html
 ├── pages/
@@ -439,7 +532,7 @@ templates/
 
 ---
 
-## `base.html`
+# 18. `base.html`
 
 Le fichier `base.html` sert de modèle principal.
 
@@ -458,7 +551,7 @@ Les autres pages héritent de ce fichier afin d'éviter de répéter le même co
 
 Principe :
 
-```txt
+```text
 base.html
    ↑
 pages/home.html
@@ -466,29 +559,37 @@ pages/creation.html
 pages/projet_jouable.html
 ```
 
+Le fichier `base.html` charge aussi le script :
+
+```text
+static/js/menu.js
+```
+
 ---
 
-## `templates/pages`
+# 19. `templates/pages`
 
 Le dossier `pages` contient les pages principales du site.
 
-| Page                  | Rôle                        |
-| --------------------- | --------------------------- |
-| `home.html`           | Page d'accueil du portfolio |
-| `creation.html`       | Page Mes créations          |
-| `projet_jouable.html` | Page Projets jouables       |
+| Page                  | Rôle                                      |
+| --------------------- | ----------------------------------------- |
+| `home.html`           | Page d'accueil du portfolio               |
+| `creation.html`       | Page Mes créations                        |
+| `projet_jouable.html` | Page Projets jouables                     |
 
 Ces pages représentent le contenu visible par les visiteurs.
 
+La page `home.html` affiche également les notes de progression issues de TinyDB.
+
 ---
 
-## `templates/partials`
+# 20. `templates/partials`
 
 Le dossier `partials` est prévu pour contenir des morceaux de templates réutilisables.
 
 Exemples possibles :
 
-```txt
+```text
 header.html
 footer.html
 sidebar.html
@@ -499,13 +600,13 @@ Dans une évolution future, cela permettra de mieux organiser l'interface et d'�
 
 ---
 
-# Fichiers statiques
+# 21. Fichiers statiques
 
 Le dossier `static` contient les fichiers utilisés côté navigateur.
 
 Structure :
 
-```txt
+```text
 static/
 ├── css/
 │   └── main.css
@@ -516,7 +617,7 @@ static/
 
 ---
 
-## `static/css/main.css`
+# 22. `static/css/main.css`
 
 Le fichier `main.css` contient le style principal du site.
 
@@ -535,17 +636,29 @@ Pour la V1, le style est volontairement centralisé afin de faciliter les modifi
 
 ---
 
-## `static/js/menu.js`
+# 23. `static/js/menu.js`
 
-Le fichier `menu.js` contient le JavaScript lié au comportement du menu.
+Le fichier `menu.js` contient le JavaScript lié au comportement du menu mobile.
 
-Il sert notamment à gérer le menu mobile.
+Il sert notamment à :
+
+* détecter le bouton de menu ;
+* détecter la sidebar ;
+* ouvrir ou fermer le menu ;
+* mettre à jour l'attribut `aria-expanded` ;
+* fermer le menu après un clic sur un lien.
 
 Le JavaScript reste limité afin de garder un projet simple et maintenable.
 
+Il est documenté dans :
+
+```text
+docs/frontend/javascript-menu-mobile.md
+```
+
 ---
 
-## `static/images`
+# 24. `static/images`
 
 Le dossier `images` est prévu pour stocker les images du site.
 
@@ -559,7 +672,7 @@ Il peut contenir :
 
 ---
 
-# Dossier `staticfiles`
+# 25. Dossier `staticfiles`
 
 Le dossier `staticfiles` est généré par Django lors de la commande :
 
@@ -577,13 +690,13 @@ Il peut être ignoré par Git, car il est généré automatiquement.
 
 ---
 
-# Base de données
+# 26. Base de données SQLite
 
-Pour la V1, le projet utilise SQLite.
+Pour la V1, le projet utilise SQLite comme base principale.
 
 Fichier utilisé :
 
-```txt
+```text
 db.sqlite3
 ```
 
@@ -594,15 +707,16 @@ La base contient actuellement les données liées :
 * aux créations ;
 * aux futurs projets jouables ;
 * aux tables internes de Django ;
-* à l'administration Django.
+* à l'administration Django ;
+* aux utilisateurs et permissions Django.
 
 ---
 
-## Tables principales
+# 27. Tables principales
 
 Les deux tables principales liées au projet sont :
 
-```txt
+```text
 creations_creation
 playable_playableproject
 ```
@@ -617,7 +731,7 @@ Une future version pourra ajouter des relations entre créations, médias, versi
 
 ---
 
-## Limite de SQLite
+# 28. Limite de SQLite
 
 SQLite est adapté à une V1 simple.
 
@@ -629,19 +743,81 @@ Ce choix est reporté afin de conserver une V1 simple et maîtrisable.
 
 ---
 
-# Administration Django
+# 29. Base NoSQL TinyDB
+
+Le projet contient également une expérimentation NoSQL légère avec TinyDB.
+
+Fichier de données :
+
+```text
+data/nosql/project_notes_db.json
+```
+
+Fichiers Python concernés :
+
+```text
+core/services/nosql_notes.py
+scripts/demo_tinydb_notes.py
+```
+
+TinyDB sert à stocker des notes de progression sous forme de documents JSON.
+
+Exemple logique :
+
+```json
+{
+  "project_code": "frostia-games",
+  "title": "Renforcement du dossier projet",
+  "status": "in_progress",
+  "tags": ["dossier-projet", "conception", "sql", "nosql"]
+}
+```
+
+TinyDB ne remplace pas SQLite.
+
+SQLite reste la base principale du projet.
+
+TinyDB sert uniquement de preuve NoSQL légère dans le cadre de la V1 renforcée.
+
+---
+
+# 30. Fonctionnement TinyDB
+
+La chaîne technique TinyDB est la suivante :
+
+```text
+TinyDB
+→ core/services/nosql_notes.py
+→ core/views.py
+→ templates/pages/home.html
+→ affichage sur la page d'accueil
+```
+
+Commande de test :
+
+```powershell
+python -m scripts.demo_tinydb_notes
+```
+
+Cette commande affiche les notes de progression dans le terminal.
+
+Elle permet de vérifier que TinyDB fonctionne.
+
+---
+
+# 31. Administration Django
 
 Le projet utilise l'administration intégrée de Django.
 
 Adresse locale :
 
-```txt
+```text
 http://127.0.0.1:8000/admin/
 ```
 
 Adresse en ligne :
 
-```txt
+```text
 https://frostia-games.onrender.com/admin/
 ```
 
@@ -658,11 +834,30 @@ Elle permet notamment :
 
 Pour des raisons de sécurité, les identifiants administrateur ne sont pas publiés dans GitHub ni dans la documentation.
 
-Un compte jury temporaire pourra être créé plus tard uniquement si le projet est validé comme second projet ou si un accès direct est demandé.
+---
+
+# 32. Compte temporaire de lecture seule
+
+Un compte temporaire de lecture seule a été ajouté pour permettre une consultation limitée de l'administration Django.
+
+Ce compte :
+
+* est actif ;
+* peut accéder à l'administration ;
+* n'est pas superutilisateur ;
+* appartient à un groupe de lecture seule ;
+* peut consulter les créations ;
+* peut consulter les projets jouables ;
+* ne doit pas modifier les données ;
+* ne doit pas accéder aux utilisateurs, groupes ou permissions sensibles.
+
+Les identifiants réels de ce compte ne doivent pas être écrits dans la documentation publique.
+
+Ils peuvent être transmis séparément uniquement si nécessaire.
 
 ---
 
-# Documentation du projet
+# 33. Documentation du projet
 
 Le dossier `doc` contient la documentation technique, fonctionnelle et organisationnelle du projet.
 
@@ -686,7 +881,8 @@ Il contient notamment :
 * les limites et évolutions ;
 * la présentation du projet 2 ;
 * les pistes explorées et non retenues ;
-* le plan de finalisation V1.
+* le plan de finalisation V1 ;
+* le renforcement du dossier projet.
 
 Le dossier `doc/sql` contient :
 
@@ -695,11 +891,85 @@ Le dossier `doc/sql` contient :
 
 Le fichier `schema.sql` sert à documenter la structure SQL de la base.
 
-Le fichier `nosql.md` explique pourquoi NoSQL n'est pas intégré dans la V1 et dans quels cas il pourrait être envisagé plus tard.
+Le fichier `nosql.md` explique la réflexion NoSQL initiale et les usages possibles.
 
 ---
 
-# Fichiers importants à la racine
+# 34. Documentation complémentaire `docs/`
+
+Le dossier `docs/` contient les documents techniques ajoutés lors du renforcement du dossier projet.
+
+Structure :
+
+```text
+docs/
+├── backend/
+├── conception/
+├── frontend/
+├── nosql/
+├── preuves/
+└── sql/
+```
+
+## `docs/backend/`
+
+Contient :
+
+```text
+modeles-django.md
+vues-et-routes.md
+```
+
+Ces fichiers expliquent les modèles, les vues et les routes.
+
+## `docs/conception/`
+
+Contient :
+
+```text
+mcd.md
+cas-utilisation.md
+diagramme-sequence.md
+```
+
+Ces fichiers renforcent la partie conception.
+
+## `docs/frontend/`
+
+Contient :
+
+```text
+javascript-menu-mobile.md
+```
+
+Ce fichier documente le JavaScript du menu mobile.
+
+## `docs/nosql/`
+
+Contient :
+
+```text
+tinydb-integration.md
+```
+
+Ce fichier explique l'intégration TinyDB.
+
+## `docs/sql/`
+
+Contient :
+
+```text
+create_tables_creations.sql
+create_tables_playable.sql
+exemples_insert.sql
+sql-natif.md
+```
+
+Ces fichiers documentent le SQL natif.
+
+---
+
+# 35. Fichiers importants à la racine
 
 ## `README.md`
 
@@ -728,7 +998,7 @@ Il présente notamment :
 * pourquoi Django a été retenu ;
 * pourquoi C# / ASP.NET / Razor a été envisagé mais reporté ;
 * pourquoi PostgreSQL est reporté ;
-* pourquoi NoSQL n'est pas implanté artificiellement ;
+* pourquoi TinyDB est utilisé de manière limitée ;
 * pourquoi certaines fonctionnalités sont volontairement limitées.
 
 Ce fichier permet de montrer que les choix techniques sont réfléchis.
@@ -741,7 +1011,7 @@ Le fichier `.env.example` documente les variables d'environnement nécessaires s
 
 Exemple :
 
-```txt
+```text
 DJANGO_DEBUG=False
 DJANGO_SECRET_KEY=change-me
 DJANGO_SUPERUSER_USERNAME=admin
@@ -772,6 +1042,8 @@ Il peut ignorer notamment :
 
 Ce fichier participe à la sécurité du projet.
 
+Le fichier TinyDB peut être conservé uniquement s'il contient des données de démonstration non sensibles.
+
 ---
 
 ## `requirements.txt`
@@ -780,10 +1052,11 @@ Le fichier `requirements.txt` contient les dépendances Python du projet.
 
 Dépendances importantes :
 
-```txt
+```text
 Django
 gunicorn
 whitenoise
+tinydb
 ```
 
 | Dépendance | Rôle                                         |
@@ -791,6 +1064,7 @@ whitenoise
 | Django     | Framework web principal                      |
 | gunicorn   | Serveur utilisé pour Render                  |
 | whitenoise | Gestion des fichiers statiques en production |
+| tinydb     | Expérimentation NoSQL légère                 |
 
 ---
 
@@ -846,11 +1120,11 @@ Il peut être utilisé par certains outils modernes liés à Python, au formatag
 
 ---
 
-# Fonctionnement général du site
+# 36. Fonctionnement général du site
 
 Le fonctionnement général du site suit le cycle classique d'une application Django.
 
-```txt
+```text
 Visiteur
    ↓
 URL demandée
@@ -865,6 +1139,8 @@ modèles Django si nécessaire
    ↓
 base SQLite si nécessaire
    ↓
+service TinyDB si nécessaire
+   ↓
 templates/pages/*.html
    ↓
 base.html
@@ -876,11 +1152,11 @@ Page affichée dans le navigateur
 
 ---
 
-# Exemple de parcours utilisateur
+# 37. Exemple de parcours utilisateur
 
 Un visiteur arrive sur la page d'accueil :
 
-```txt
+```text
 https://frostia-games.onrender.com
 ```
 
@@ -890,13 +1166,15 @@ La route correspondante est trouvée dans `urls.py`.
 
 La vue associée dans `core/views.py` est exécutée.
 
+La vue peut récupérer les notes TinyDB.
+
 Django charge le template correspondant.
 
 La page HTML est envoyée au navigateur.
 
 Le navigateur charge ensuite les fichiers statiques :
 
-```txt
+```text
 main.css
 menu.js
 images
@@ -906,11 +1184,11 @@ La page complète s'affiche à l'utilisateur.
 
 ---
 
-# Parcours avec données dynamiques
+# 38. Parcours avec données SQLite
 
-Pour la page **Mes créations**, le fonctionnement est différent car certaines données viennent de la base.
+Pour la page **Mes créations**, le fonctionnement est le suivant :
 
-```txt
+```text
 Visiteur
    ↓
 /mes-creations/
@@ -930,7 +1208,7 @@ Page affichée
 
 Pour la page **Projets jouables**, le principe est similaire :
 
-```txt
+```text
 Visiteur
    ↓
 /projets-jouables/
@@ -952,7 +1230,37 @@ Cela montre que le site n'est pas uniquement statique.
 
 ---
 
-# Architecture front-end
+# 39. Parcours avec données TinyDB
+
+Pour la page d'accueil, le fonctionnement TinyDB est le suivant :
+
+```text
+Visiteur
+   ↓
+/
+   ↓
+core/urls.py
+   ↓
+core/views.py
+   ↓
+seed_project_notes()
+   ↓
+find_notes_by_project("frostia-games")
+   ↓
+data/nosql/project_notes_db.json
+   ↓
+templates/pages/home.html
+   ↓
+Notes affichées sur l'accueil
+```
+
+Cette partie démontre une logique NoSQL simple.
+
+Elle reste volontairement limitée.
+
+---
+
+# 40. Architecture front-end
 
 La partie front-end repose sur :
 
@@ -968,7 +1276,7 @@ La modernisation graphique avancée est reportée à une version future.
 
 ---
 
-# Architecture back-end
+# 41. Architecture back-end
 
 La partie back-end repose sur Django.
 
@@ -987,15 +1295,17 @@ Le backend reste volontairement simple dans cette V1.
 
 L'objectif n'est pas encore de créer une plateforme complète, mais une base stable et extensible.
 
+TinyDB est ajouté comme service complémentaire, sans transformer l'architecture principale.
+
 ---
 
-# Architecture de déploiement
+# 42. Architecture de déploiement
 
 Le projet est déployé avec Render.
 
 Fonctionnement :
 
-```txt
+```text
 GitHub
    ↓
 Render
@@ -1017,13 +1327,13 @@ Site accessible en ligne
 
 URL de production :
 
-```txt
+```text
 https://frostia-games.onrender.com
 ```
 
 ---
 
-# Docker dans l'architecture
+# 43. Docker dans l'architecture
 
 Docker est présent dans le projet, mais il n'est pas utilisé comme mode de production principal.
 
@@ -1037,31 +1347,41 @@ docker compose up --build
 
 Le site est ensuite accessible localement :
 
-```txt
+```text
 http://127.0.0.1:8000/
+```
+
+Tests utiles dans Docker :
+
+```powershell
+docker compose exec web python manage.py check
+docker compose exec web python -m scripts.demo_tinydb_notes
 ```
 
 Docker permet de montrer que le projet peut être lancé dans un environnement isolé.
 
 La documentation Docker est détaillée dans le fichier :
 
-```txt
+```text
 04-docker-et-lancement.md
 ```
 
 ---
 
-# Sécurité dans l'architecture
+# 44. Sécurité dans l'architecture
 
 Pour cette V1, plusieurs règles de sécurité sont appliquées :
 
 * la clé secrète Django est stockée dans Render ;
 * les mots de passe ne sont pas publiés ;
 * les identifiants administrateur ne sont pas présents dans GitHub ;
+* les identifiants du compte temporaire ne sont pas écrits dans la documentation publique ;
 * le mode debug est désactivé sur Render ;
 * les variables sensibles sont placées dans les variables d'environnement ;
 * l'accès admin reste privé ;
-* l'ORM Django est utilisé au lieu de SQL brut ;
+* un compte lecture seule limite les droits de consultation ;
+* l'ORM Django est utilisé au lieu de SQL brut dans les vues ;
+* TinyDB ne doit contenir aucune donnée sensible ;
 * aucun vrai upload serveur n'est implanté dans la V1 ;
 * `.env.example` documente les variables sans exposer les vraies valeurs.
 
@@ -1071,7 +1391,7 @@ Elle pourra être renforcée dans une version future.
 
 ---
 
-# Choix d'architecture
+# 45. Choix d'architecture
 
 Le projet utilise une architecture simple pour plusieurs raisons :
 
@@ -1087,23 +1407,31 @@ Le projet utilise une architecture simple pour plusieurs raisons :
 Le choix a été fait de ne pas intégrer immédiatement :
 
 * PostgreSQL ;
-* un compte jury temporaire ;
 * une interface d'administration personnalisée ;
 * un vrai upload serveur ;
 * un jeu jouable dans le navigateur ;
 * un tableau de bord avancé ;
 * une API REST ;
-* un espace privé complet.
+* un espace privé complet ;
+* une base NoSQL avancée comme MongoDB.
 
 Ces éléments sont reportés volontairement.
 
+Certains éléments ont été ajoutés de manière limitée et contrôlée :
+
+* compte temporaire de lecture seule ;
+* TinyDB ;
+* SQL natif documentaire ;
+* documentation frontend et backend complémentaire.
+
 ---
 
-# Limites actuelles
+# 46. Limites actuelles
 
 L'architecture actuelle présente plusieurs limites :
 
 * la base de données reste en SQLite ;
+* TinyDB reste une expérimentation légère ;
 * l'administration Django n'est pas personnalisée ;
 * les fiches projet détaillées ne sont pas encore intégrées ;
 * les médias ne sont pas encore gérés dynamiquement ;
@@ -1111,7 +1439,8 @@ L'architecture actuelle présente plusieurs limites :
 * la partie responsive peut encore être améliorée ;
 * le site ne propose pas encore de projet jouable directement dans le navigateur ;
 * aucun vrai upload serveur n'est implanté ;
-* les tests automatisés complets ne sont pas encore présents.
+* les tests automatisés complets ne sont pas encore présents ;
+* le compte lecture seule n'est pas un système de rôles avancé complet.
 
 Ces limites sont acceptées dans le cadre de la V1.
 
@@ -1119,7 +1448,7 @@ Elles sont documentées afin de distinguer ce qui est réalisé de ce qui est pr
 
 ---
 
-# Évolutions possibles
+# 47. Évolutions possibles
 
 L'architecture actuelle permet plusieurs évolutions :
 
@@ -1128,7 +1457,6 @@ L'architecture actuelle permet plusieurs évolutions :
 * ajout d'une table de médias ;
 * ajout d'une table de versions ;
 * relation entre une création et un projet jouable ;
-* ajout d'un compte jury temporaire en lecture seule ;
 * amélioration du responsive ;
 * ajout de graphiques avec Plotly.js ;
 * intégration future de démos jouables ;
@@ -1136,13 +1464,46 @@ L'architecture actuelle permet plusieurs évolutions :
 * amélioration de la gestion des médias ;
 * ajout de tests automatisés ;
 * ajout d'un système de sauvegarde automatique ;
-* ajout d'un système de restauration des contenus.
+* ajout d'un système de restauration des contenus ;
+* étude d'une base NoSQL plus avancée si les contenus deviennent très variables.
 
 Ces évolutions pourront être ajoutées progressivement si le projet devient un second projet validé ou une base plus avancée.
 
 ---
 
-# Bilan
+# 48. Captures et preuves utiles
+
+Pour justifier l'architecture dans le dossier projet, plusieurs preuves peuvent être préparées :
+
+* structure du projet dans VS Code ;
+* fichier `settings.py` ;
+* fichier `urls.py` ;
+* fichier `core/views.py` ;
+* modèles `Creation` et `PlayableProject` ;
+* fichiers `admin.py` ;
+* fichier `static/js/menu.js` ;
+* fichier `core/services/nosql_notes.py` ;
+* script `scripts/demo_tinydb_notes.py` ;
+* fichier `requirements.txt` ;
+* fichiers SQL natifs ;
+* documentation de conception ;
+* page d'accueil avec notes TinyDB ;
+* administration Django ;
+* compte temporaire de lecture seule ;
+* terminal avec `python manage.py check` ;
+* terminal avec `python -m scripts.demo_tinydb_notes`.
+
+Aucune capture ne doit afficher :
+
+* mot de passe ;
+* clé secrète ;
+* vraie variable d'environnement ;
+* identifiant sensible ;
+* information privée inutile.
+
+---
+
+# 49. Bilan
 
 L'architecture actuelle de Frostia Games est simple, claire et adaptée à une V1.
 
@@ -1154,11 +1515,16 @@ Elle permet :
 * de charger des fichiers statiques ;
 * d'utiliser une base SQLite ;
 * d'afficher des données dynamiques ;
+* d'utiliser TinyDB comme expérimentation NoSQL légère ;
+* d'afficher des notes de progression sur l'accueil ;
 * d'accéder à l'administration Django ;
+* de proposer un compte temporaire de lecture seule ;
 * de lancer le projet localement ;
 * de lancer le projet avec Docker ;
 * de déployer le projet sur Render ;
 * de documenter facilement le fonctionnement du projet ;
 * de préparer des évolutions futures sans repartir de zéro.
 
-Cette architecture correspond à l'objectif actuel : obtenir une base stable, déployée, documentée et défendable.
+Cette architecture correspond à l'objectif actuel : obtenir une base stable, déployée, documentée, renforcée et défendable.
+
+À ce stade, la priorité n'est plus d'élargir l'architecture, mais de finaliser les captures, les preuves et le dossier projet final.

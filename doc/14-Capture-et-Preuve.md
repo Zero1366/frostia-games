@@ -8,29 +8,43 @@ L'objectif est de montrer que la V1 du projet est fonctionnelle, testée, docume
 
 Ces captures pourront être utilisées dans le dossier projet, dans une présentation ou comme preuve de validation technique.
 
+Ce document a été mis à jour après le renforcement du dossier projet afin d’intégrer :
+
+* les captures TinyDB ;
+* les captures du compte temporaire de lecture seule ;
+* les captures SQL natives ;
+* les captures JavaScript ;
+* les captures des documents de conception ;
+* les captures de la documentation complémentaire `docs/` ;
+* les captures de validation technique récentes.
+
 ---
 
-## Organisation des preuves
+# 1. Organisation des preuves
 
-Un fichier de preuve sera ajouté afin de regrouper et présenter les captures importantes du projet **Frostia Games**.
+Un fichier de preuve peut être ajouté afin de regrouper et présenter les captures importantes du projet **Frostia Games**.
 
-Ce fichier de preuve servira à montrer visuellement :
+Ce fichier de preuve sert à montrer visuellement :
 
 * les captures des maquettes Figma ;
 * les captures du site public ;
 * les captures responsive ;
 * les captures de l'administration Django ;
+* les captures du compte temporaire de lecture seule ;
 * les captures du déploiement Render ;
 * les captures du code ;
+* les captures SQL ;
+* les captures NoSQL TinyDB ;
+* les captures JavaScript ;
 * les captures des commandes de validation ;
 * les captures du dépôt GitHub ;
 * les captures de la documentation.
 
-Toutes les images utilisées comme preuves seront regroupées dans un répertoire dédié.
+Toutes les images utilisées comme preuves doivent être regroupées dans un répertoire dédié.
 
 Organisation prévue :
 
-```txt
+```text
 doc/
 └── preuves/
     ├── preuves-frostia-games.md
@@ -39,24 +53,38 @@ doc/
         ├── figma-mes-creations.png
         ├── figma-projets-jouables.png
         ├── site-accueil-desktop.png
+        ├── site-accueil-notes-tinydb.png
         ├── site-mes-creations.png
         ├── site-projets-jouables.png
         ├── site-accueil-mobile.png
+        ├── site-menu-mobile-ouvert.png
         ├── site-mes-creations-mobile.png
         ├── admin-connexion.png
         ├── admin-tableau-de-bord.png
         ├── admin-creations.png
         ├── admin-projets-jouables.png
+        ├── admin-compte-lecture-seule.png
+        ├── admin-permissions-lecture-seule.png
         ├── render-service-live.png
         ├── render-build-start-command.png
+        ├── render-variables-masquees.png
         ├── django-check.png
+        ├── tinydb-demo-terminal.png
         ├── git-status-clean.png
-        └── github-depot.png
+        ├── github-depot.png
+        ├── code-modeles-django.png
+        ├── code-vues-django.png
+        ├── code-menu-js.png
+        ├── code-tinydb-service.png
+        ├── code-tinydb-script.png
+        ├── sql-create-tables.png
+        ├── sql-insert-exemples.png
+        └── docs-structure.png
 ```
 
-Le fichier `preuves-frostia-games.md` servira à présenter les captures avec un court commentaire pour expliquer ce que chaque image prouve.
+Le fichier `preuves-frostia-games.md` sert à présenter les captures avec un court commentaire pour expliquer ce que chaque image prouve.
 
-Le dossier `images/` contiendra toutes les captures utilisées comme preuves.
+Le dossier `images/` contient toutes les captures utilisées comme preuves.
 
 Cette organisation permet de faciliter :
 
@@ -67,21 +95,9 @@ Cette organisation permet de faciliter :
 * la présentation du projet à l'évaluateur ;
 * la séparation entre la documentation écrite et les fichiers images.
 
-Les captures ne doivent pas contenir d'informations sensibles.
-
-Avant d'ajouter une image dans le dossier de preuves, il faut vérifier que la capture ne montre pas :
-
-* de mot de passe ;
-* de clé secrète Django ;
-* de valeur `DJANGO_SECRET_KEY` ;
-* de valeur `DJANGO_SUPERUSER_PASSWORD` ;
-* de variable d'environnement sensible ;
-* d'information personnelle inutile ;
-* d'identifiants administrateur complets.
-
 ---
 
-## Règles de sécurité pour les captures
+# 2. Règles de sécurité pour les captures
 
 Avant de prendre une capture d'écran, il faut vérifier qu'aucune information sensible n'est visible.
 
@@ -93,14 +109,41 @@ Ne jamais afficher dans une capture :
 * valeur de `DJANGO_SUPERUSER_PASSWORD` ;
 * jeton privé ;
 * clé API ;
+* vraie valeur de variable d'environnement ;
+* identifiants administrateur complets ;
+* identifiants complets du compte temporaire ;
 * information personnelle inutile ;
 * lien privé de déploiement non destiné au public.
 
 Les captures doivent montrer le fonctionnement du projet sans exposer les secrets.
 
+Les identifiants du compte temporaire de lecture seule doivent être transmis séparément uniquement si cela est demandé.
+
+Ils ne doivent pas être présents dans le dossier public.
+
 ---
 
-## Liste des captures recommandées
+# 3. Règle des trois preuves
+
+Pour chaque élément important, il est recommandé de préparer trois preuves :
+
+1. une capture du code ;
+2. une explication courte dans la documentation ;
+3. une capture du résultat visible ou de la commande de test.
+
+Exemple pour TinyDB :
+
+| Type de preuve | Exemple |
+| -------------- | ------- |
+| Code | `core/services/nosql_notes.py` |
+| Documentation | `docs/nosql/tinydb-integration.md` |
+| Résultat | page d'accueil avec notes ou terminal avec `python -m scripts.demo_tinydb_notes` |
+
+Cette méthode permet de montrer qu'une fonctionnalité n'est pas seulement déclarée, mais aussi codée, expliquée et vérifiée.
+
+---
+
+# 4. Liste des catégories de captures
 
 Les captures à conserver sont réparties en plusieurs catégories :
 
@@ -108,14 +151,19 @@ Les captures à conserver sont réparties en plusieurs catégories :
 * captures du site public ;
 * captures responsive ;
 * captures de l'administration Django ;
+* captures du compte temporaire de lecture seule ;
 * captures Render ;
 * captures du code ;
-* captures de la documentation ;
-* captures de validation technique.
+* captures SQL ;
+* captures NoSQL TinyDB ;
+* captures JavaScript ;
+* captures de documentation ;
+* captures de validation technique ;
+* captures Git et GitHub.
 
 ---
 
-# 0. Captures des maquettes Figma
+# 5. Captures des maquettes Figma
 
 ## Capture 00 - Maquettes Figma du projet
 
@@ -142,13 +190,13 @@ Montrer que l'interface du projet a été préparée visuellement avant ou penda
 
 ### Statut
 
-```txt
+```text
 À capturer
 ```
 
 ---
 
-# 1. Captures du site public
+# 6. Captures du site public
 
 ## Capture 01 - Page d'accueil desktop
 
@@ -158,7 +206,7 @@ Montrer que la page d'accueil du site Frostia Games est accessible et correcteme
 
 ### Élément à capturer
 
-```txt
+```text
 https://frostia-games.onrender.com
 ```
 
@@ -173,13 +221,47 @@ https://frostia-games.onrender.com
 
 ### Statut
 
-```txt
+```text
 À capturer
 ```
 
 ---
 
-## Capture 02 - Page Mes créations
+## Capture 02 - Page d'accueil avec notes TinyDB
+
+### Objectif
+
+Montrer que les notes de progression issues de TinyDB sont affichées sur la page d'accueil.
+
+### Élément à capturer
+
+```text
+https://frostia-games.onrender.com
+```
+
+### À montrer sur la capture
+
+* section des notes de progression ;
+* titres des notes ;
+* statuts ;
+* tags ;
+* intégration visuelle dans la page d'accueil.
+
+### Attention
+
+Ne pas afficher de donnée sensible.
+
+TinyDB doit contenir uniquement des données de démonstration.
+
+### Statut
+
+```text
+À capturer
+```
+
+---
+
+## Capture 03 - Page Mes créations
 
 ### Objectif
 
@@ -187,7 +269,7 @@ Montrer la page dédiée aux créations et futurs projets.
 
 ### Élément à capturer
 
-```txt
+```text
 https://frostia-games.onrender.com/mes-creations/
 ```
 
@@ -201,13 +283,13 @@ https://frostia-games.onrender.com/mes-creations/
 
 ### Statut
 
-```txt
+```text
 À capturer
 ```
 
 ---
 
-## Capture 03 - Page Projets jouables à venir
+## Capture 04 - Page Projets jouables à venir
 
 ### Objectif
 
@@ -215,7 +297,7 @@ Montrer la page prévue pour les futurs projets jouables.
 
 ### Élément à capturer
 
-```txt
+```text
 https://frostia-games.onrender.com/projets-jouables/
 ```
 
@@ -229,15 +311,15 @@ https://frostia-games.onrender.com/projets-jouables/
 
 ### Statut
 
-```txt
+```text
 À capturer
 ```
 
 ---
 
-# 2. Captures responsive
+# 7. Captures responsive
 
-## Capture 04 - Page d'accueil mobile
+## Capture 05 - Page d'accueil mobile
 
 ### Objectif
 
@@ -249,21 +331,50 @@ Page d'accueil en largeur mobile dans l'inspecteur du navigateur.
 
 ### À montrer sur la capture
 
-* menu mobile ;
 * contenu lisible ;
 * absence de débordement important ;
 * cartes adaptées ;
-* navigation accessible.
+* navigation accessible ;
+* rendu mobile cohérent.
 
 ### Statut
 
-```txt
+```text
 À capturer
 ```
 
 ---
 
-## Capture 05 - Page Mes créations mobile
+## Capture 06 - Menu mobile ouvert
+
+### Objectif
+
+Montrer que le menu mobile JavaScript fonctionne.
+
+### À montrer sur la capture
+
+* bouton de menu ;
+* sidebar ouverte ;
+* liens de navigation visibles ;
+* affichage adapté au mobile.
+
+### Fichiers liés
+
+```text
+static/js/menu.js
+templates/base.html
+static/css/main.css
+```
+
+### Statut
+
+```text
+À capturer
+```
+
+---
+
+## Capture 07 - Page Mes créations mobile
 
 ### Objectif
 
@@ -278,15 +389,15 @@ Montrer que la page des créations reste lisible sur mobile.
 
 ### Statut
 
-```txt
-À capturer
+```text
+À capturer si nécessaire
 ```
 
 ---
 
-# 3. Captures de l'administration Django
+# 8. Captures de l'administration Django
 
-## Capture 06 - Page de connexion admin Django
+## Capture 08 - Page de connexion admin Django
 
 ### Objectif
 
@@ -294,7 +405,7 @@ Montrer que l'administration Django est accessible en ligne.
 
 ### Élément à capturer
 
-```txt
+```text
 https://frostia-games.onrender.com/admin/
 ```
 
@@ -306,13 +417,13 @@ https://frostia-games.onrender.com/admin/
 
 ### Statut
 
-```txt
+```text
 À capturer
 ```
 
 ---
 
-## Capture 07 - Tableau de bord admin Django
+## Capture 09 - Tableau de bord admin Django
 
 ### Objectif
 
@@ -330,13 +441,13 @@ Ne pas afficher de mot de passe ou de donnée sensible.
 
 ### Statut
 
-```txt
+```text
 À capturer
 ```
 
 ---
 
-## Capture 08 - Modèle Creation dans l'admin
+## Capture 10 - Modèle Creation dans l'admin
 
 ### Objectif
 
@@ -351,13 +462,13 @@ Montrer que les créations peuvent être gérées depuis l'administration Django
 
 ### Statut
 
-```txt
+```text
 À capturer
 ```
 
 ---
 
-## Capture 09 - Modèle PlayableProject dans l'admin
+## Capture 11 - Modèle PlayableProject dans l'admin
 
 ### Objectif
 
@@ -372,15 +483,67 @@ Montrer que les projets jouables à venir sont gérés depuis l'administration D
 
 ### Statut
 
-```txt
+```text
 À capturer
 ```
 
 ---
 
-# 4. Captures Render
+# 9. Captures du compte temporaire de lecture seule
 
-## Capture 10 - Service Render actif
+## Capture 12 - Tableau de bord avec compte lecture seule
+
+### Objectif
+
+Montrer que le compte temporaire peut accéder à l'administration avec des droits limités.
+
+### À montrer sur la capture
+
+* tableau de bord admin ;
+* seulement les sections autorisées ;
+* accès aux créations ;
+* accès aux projets jouables.
+
+### Attention
+
+Ne pas afficher les identifiants du compte.
+
+### Statut
+
+```text
+À capturer
+```
+
+---
+
+## Capture 13 - Permissions limitées du compte lecture seule
+
+### Objectif
+
+Montrer que le compte temporaire n'a pas les droits complets.
+
+### À montrer sur la capture
+
+* absence d'accès aux utilisateurs ;
+* absence d'accès aux groupes ;
+* absence d'accès aux permissions sensibles ;
+* affichage limité aux éléments utiles.
+
+### Attention
+
+Ne pas afficher de mot de passe.
+
+### Statut
+
+```text
+À capturer avec prudence
+```
+
+---
+
+# 10. Captures Render
+
+## Capture 14 - Service Render actif
 
 ### Objectif
 
@@ -396,13 +559,13 @@ Montrer que le service Render est bien en ligne.
 
 ### Statut
 
-```txt
+```text
 À capturer
 ```
 
 ---
 
-## Capture 11 - Logs Render avec service live
+## Capture 15 - Logs Render avec service live
 
 ### Objectif
 
@@ -412,25 +575,25 @@ Montrer que le déploiement a réussi.
 
 Message Render :
 
-```txt
+```text
 Your service is live
 ```
 
 Si visible, montrer aussi :
 
-```txt
+```text
 Listening at: http://0.0.0.0:10000
 ```
 
 ### Statut
 
-```txt
+```text
 À capturer
 ```
 
 ---
 
-## Capture 12 - Build Command et Start Command
+## Capture 16 - Build Command et Start Command
 
 ### Objectif
 
@@ -456,13 +619,13 @@ Ne pas afficher de variables secrètes.
 
 ### Statut
 
-```txt
+```text
 À capturer
 ```
 
 ---
 
-## Capture 13 - Variables d'environnement Render
+## Capture 17 - Variables d'environnement Render masquées
 
 ### Objectif
 
@@ -472,7 +635,7 @@ Montrer que les variables d'environnement sont utilisées sans exposer leurs val
 
 Uniquement les noms des variables :
 
-```txt
+```text
 DJANGO_DEBUG
 DJANGO_SECRET_KEY
 DJANGO_SUPERUSER_USERNAME
@@ -486,15 +649,15 @@ Les valeurs doivent être masquées.
 
 ### Statut
 
-```txt
+```text
 À capturer avec prudence
 ```
 
 ---
 
-# 5. Captures du code
+# 11. Captures du code
 
-## Capture 14 - Structure du projet dans VS Code
+## Capture 18 - Structure du projet dans VS Code
 
 ### Objectif
 
@@ -506,9 +669,12 @@ Montrer l'organisation générale du projet.
 * dossier `core` ;
 * dossier `creations` ;
 * dossier `playable` ;
+* dossier `scripts` ;
+* dossier `data/nosql` ;
 * dossier `templates` ;
 * dossier `static` ;
 * dossier `doc` ;
+* dossier `docs` ;
 * fichier `manage.py` ;
 * fichier `requirements.txt` ;
 * fichier `build.sh` ;
@@ -517,13 +683,13 @@ Montrer l'organisation générale du projet.
 
 ### Statut
 
-```txt
+```text
 À capturer
 ```
 
 ---
 
-## Capture 15 - Fichier settings.py
+## Capture 19 - Fichier settings.py
 
 ### Objectif
 
@@ -543,13 +709,13 @@ Ne pas afficher la vraie clé secrète.
 
 ### Statut
 
-```txt
+```text
 À capturer avec prudence
 ```
 
 ---
 
-## Capture 16 - Fichier models.py
+## Capture 20 - Fichiers models.py
 
 ### Objectif
 
@@ -566,13 +732,13 @@ Montrer les modèles Django utilisés dans le projet.
 
 ### Statut
 
-```txt
+```text
 À capturer
 ```
 
 ---
 
-## Capture 17 - Fichier admin.py
+## Capture 21 - Fichiers admin.py
 
 ### Objectif
 
@@ -588,13 +754,13 @@ Montrer la configuration de l'administration Django.
 
 ### Statut
 
-```txt
+```text
 À capturer
 ```
 
 ---
 
-## Capture 18 - Fichier views.py
+## Capture 22 - Fichier views.py
 
 ### Objectif
 
@@ -603,19 +769,20 @@ Montrer la liaison entre le backend Django et les templates.
 ### À montrer sur la capture
 
 * vues principales ;
-* récupération des données ;
+* récupération des données SQLite ;
+* récupération des notes TinyDB ;
 * `render` vers les templates ;
 * logique simple et lisible.
 
 ### Statut
 
-```txt
+```text
 À capturer
 ```
 
 ---
 
-## Capture 19 - Fichier build.sh
+## Capture 23 - Fichier build.sh
 
 ### Objectif
 
@@ -632,15 +799,251 @@ python manage.py createsuperuser --noinput || true
 
 ### Statut
 
-```txt
+```text
 À capturer
 ```
 
 ---
 
-# 6. Captures de validation technique
+# 12. Captures SQL
 
-## Capture 20 - Commande python manage.py check
+## Capture 24 - Fichiers SQL natifs
+
+### Objectif
+
+Montrer que le projet possède des fichiers SQL documentaires.
+
+### Fichiers à capturer
+
+```text
+docs/sql/create_tables_creations.sql
+docs/sql/create_tables_playable.sql
+docs/sql/exemples_insert.sql
+docs/sql/sql-natif.md
+```
+
+### À montrer sur la capture
+
+* structure `CREATE TABLE` ;
+* exemple `INSERT INTO` ;
+* lien entre SQL natif et modèles Django ;
+* documentation du rôle du SQL.
+
+### Statut
+
+```text
+À capturer
+```
+
+---
+
+## Capture 25 - Fichier schema.sql
+
+### Objectif
+
+Montrer le schéma SQL documentaire initial.
+
+### Fichier à capturer
+
+```text
+doc/sql/schema.sql
+```
+
+### À montrer sur la capture
+
+* tables principales ;
+* champs ;
+* commentaires ;
+* exemples si visibles.
+
+### Statut
+
+```text
+À capturer si utile
+```
+
+---
+
+# 13. Captures NoSQL TinyDB
+
+## Capture 26 - Service TinyDB
+
+### Objectif
+
+Montrer le code Python utilisé pour gérer TinyDB.
+
+### Fichier à capturer
+
+```text
+core/services/nosql_notes.py
+```
+
+### À montrer sur la capture
+
+* chemin de la base JSON ;
+* ouverture TinyDB ;
+* création des notes ;
+* recherche par projet ;
+* fermeture de la base.
+
+### Statut
+
+```text
+À capturer
+```
+
+---
+
+## Capture 27 - Script de démonstration TinyDB
+
+### Objectif
+
+Montrer le script utilisé pour tester TinyDB.
+
+### Fichier à capturer
+
+```text
+scripts/demo_tinydb_notes.py
+```
+
+### À montrer sur la capture
+
+* import du service TinyDB ;
+* appel de `seed_project_notes()` ;
+* appel de `find_notes_by_project()`;
+* affichage des notes dans le terminal.
+
+### Statut
+
+```text
+À capturer
+```
+
+---
+
+## Capture 28 - Résultat terminal TinyDB
+
+### Objectif
+
+Montrer que TinyDB fonctionne réellement.
+
+### Commande à lancer
+
+```powershell
+python -m scripts.demo_tinydb_notes
+```
+
+### Résultat attendu
+
+```text
+Preuve NoSQL TinyDB — Frostia Games
+```
+
+### À montrer sur la capture
+
+* titres des notes ;
+* statuts ;
+* tags ;
+* contenu ;
+* absence d'erreur.
+
+### Statut
+
+```text
+À capturer
+```
+
+---
+
+## Capture 29 - Base JSON TinyDB
+
+### Objectif
+
+Montrer que TinyDB stocke des documents JSON.
+
+### Fichier à capturer
+
+```text
+data/nosql/project_notes_db.json
+```
+
+### À montrer sur la capture
+
+* documents JSON ;
+* champs `project_code`, `title`, `content`, `tags`, `status`, `created_at`.
+
+### Attention
+
+Ne pas afficher de donnée sensible.
+
+### Statut
+
+```text
+À capturer si utile
+```
+
+---
+
+# 14. Captures JavaScript
+
+## Capture 30 - Fichier menu.js
+
+### Objectif
+
+Montrer que le projet contient du JavaScript dynamique.
+
+### Fichier à capturer
+
+```text
+static/js/menu.js
+```
+
+### À montrer sur la capture
+
+* `querySelector` ;
+* `addEventListener` ;
+* `classList.toggle` ;
+* `aria-expanded` ;
+* fermeture du menu après clic sur un lien.
+
+### Statut
+
+```text
+À capturer
+```
+
+---
+
+## Capture 31 - Documentation JavaScript
+
+### Objectif
+
+Montrer que le JavaScript est documenté.
+
+### Fichier à capturer
+
+```text
+docs/frontend/javascript-menu-mobile.md
+```
+
+### À montrer sur la capture
+
+* objectif du fichier ;
+* fonctionnement du menu ;
+* explication des événements ;
+* limites.
+
+### Statut
+
+```text
+À capturer si utile
+```
+
+---
+
+# 15. Captures de validation technique
+
+## Capture 32 - Commande python manage.py check
 
 ### Objectif
 
@@ -654,19 +1057,19 @@ python manage.py check
 
 ### Résultat attendu
 
-```txt
+```text
 System check identified no issues (0 silenced).
 ```
 
 ### Statut
 
-```txt
+```text
 À capturer
 ```
 
 ---
 
-## Capture 21 - Commande git status propre
+## Capture 33 - Commande git status propre
 
 ### Objectif
 
@@ -680,19 +1083,19 @@ git status
 
 ### Résultat attendu
 
-```txt
+```text
 nothing to commit, working tree clean
 ```
 
 ### Statut
 
-```txt
+```text
 À capturer après commit final
 ```
 
 ---
 
-## Capture 22 - Dépôt GitHub
+## Capture 34 - Dépôt GitHub
 
 ### Objectif
 
@@ -707,15 +1110,15 @@ Montrer que le projet est versionné et disponible dans un dépôt GitHub.
 
 ### Statut
 
-```txt
+```text
 À capturer
 ```
 
 ---
 
-# 7. Captures de documentation
+# 16. Captures de documentation
 
-## Capture 23 - Dossier doc
+## Capture 35 - Dossier doc
 
 ### Objectif
 
@@ -725,7 +1128,7 @@ Montrer que le projet est documenté.
 
 Fichiers du dossier `doc` :
 
-```txt
+```text
 00-index-documentation.md
 01-modernisation-interface.md
 02-journal-de-bord.md
@@ -745,17 +1148,43 @@ Fichiers du dossier `doc` :
 16-presentation-projet-2.md
 17-pistes-explorees-et-non-retenues.md
 18-plan-finalisation-v1.md
+19-renforcement-dossier-projet.md
 ```
 
 ### Statut
 
-```txt
+```text
 À capturer
 ```
 
 ---
 
-## Capture 24 - Documentation de déploiement Render
+## Capture 36 - Dossier docs
+
+### Objectif
+
+Montrer la documentation complémentaire ajoutée pendant le renforcement du dossier.
+
+### À montrer sur la capture
+
+```text
+docs/backend/
+docs/conception/
+docs/frontend/
+docs/nosql/
+docs/preuves/
+docs/sql/
+```
+
+### Statut
+
+```text
+À capturer
+```
+
+---
+
+## Capture 37 - Documentation de déploiement Render
 
 ### Objectif
 
@@ -772,13 +1201,13 @@ Montrer que le déploiement est documenté.
 
 ### Statut
 
-```txt
+```text
 À capturer
 ```
 
 ---
 
-## Capture 25 - Bilan V1
+## Capture 38 - Bilan V1
 
 ### Objectif
 
@@ -793,13 +1222,13 @@ Montrer que l'état du projet est évalué avec un bilan clair.
 
 ### Statut
 
-```txt
+```text
 À capturer
 ```
 
 ---
 
-## Capture 26 - Fichier de preuve
+## Capture 39 - Fichier de preuve
 
 ### Objectif
 
@@ -814,88 +1243,128 @@ Montrer que les captures sont organisées dans un fichier de preuve dédié.
 
 ### Statut
 
-```txt
+```text
 À capturer après création du fichier de preuve
 ```
 
 ---
 
-# Tableau récapitulatif des captures
+# 17. Tableau récapitulatif des captures
 
 | N° | Capture                            | Priorité | Statut                 |
 | -: | ---------------------------------- | -------- | ---------------------- |
 | 00 | Maquettes Figma                    | Haute    | À faire                |
 | 01 | Page d'accueil desktop             | Haute    | À faire                |
-| 02 | Page Mes créations                 | Haute    | À faire                |
-| 03 | Page Projets jouables              | Haute    | À faire                |
-| 04 | Page d'accueil mobile              | Haute    | À faire                |
-| 05 | Page Mes créations mobile          | Moyenne  | À faire                |
-| 06 | Connexion admin Django             | Haute    | À faire                |
-| 07 | Tableau de bord admin Django       | Haute    | À faire                |
-| 08 | Modèle Creation admin              | Moyenne  | À faire                |
-| 09 | Modèle PlayableProject admin       | Moyenne  | À faire                |
-| 10 | Service Render actif               | Haute    | À faire                |
-| 11 | Logs Render service live           | Haute    | À faire                |
-| 12 | Build Command / Start Command      | Haute    | À faire                |
-| 13 | Variables d'environnement masquées | Moyenne  | À faire avec prudence  |
-| 14 | Structure du projet VS Code        | Haute    | À faire                |
-| 15 | settings.py sans secret            | Moyenne  | À faire avec prudence  |
-| 16 | models.py                          | Haute    | À faire                |
-| 17 | admin.py                           | Moyenne  | À faire                |
-| 18 | views.py                           | Moyenne  | À faire                |
-| 19 | build.sh                           | Haute    | À faire                |
-| 20 | python manage.py check             | Haute    | À faire                |
-| 21 | git status propre                  | Haute    | À faire                |
-| 22 | dépôt GitHub                       | Moyenne  | À faire                |
-| 23 | dossier doc                        | Haute    | À faire                |
-| 24 | documentation Render               | Moyenne  | À faire                |
-| 25 | bilan V1                           | Moyenne  | À faire                |
-| 26 | fichier de preuve                  | Moyenne  | À faire après création |
+| 02 | Page d'accueil avec notes TinyDB   | Haute    | À faire                |
+| 03 | Page Mes créations                 | Haute    | À faire                |
+| 04 | Page Projets jouables              | Haute    | À faire                |
+| 05 | Page d'accueil mobile              | Haute    | À faire                |
+| 06 | Menu mobile ouvert                 | Haute    | À faire                |
+| 07 | Page Mes créations mobile          | Moyenne  | À faire si nécessaire  |
+| 08 | Connexion admin Django             | Haute    | À faire                |
+| 09 | Tableau de bord admin Django       | Haute    | À faire                |
+| 10 | Modèle Creation admin              | Moyenne  | À faire                |
+| 11 | Modèle PlayableProject admin       | Moyenne  | À faire                |
+| 12 | Admin compte lecture seule         | Haute    | À faire                |
+| 13 | Permissions lecture seule          | Haute    | À faire avec prudence  |
+| 14 | Service Render actif               | Haute    | À faire                |
+| 15 | Logs Render service live           | Haute    | À faire                |
+| 16 | Build Command / Start Command      | Haute    | À faire                |
+| 17 | Variables d'environnement masquées | Moyenne  | À faire avec prudence  |
+| 18 | Structure du projet VS Code        | Haute    | À faire                |
+| 19 | settings.py sans secret            | Moyenne  | À faire avec prudence  |
+| 20 | models.py                          | Haute    | À faire                |
+| 21 | admin.py                           | Moyenne  | À faire                |
+| 22 | views.py                           | Moyenne  | À faire                |
+| 23 | build.sh                           | Haute    | À faire                |
+| 24 | SQL natif                          | Haute    | À faire                |
+| 25 | schema.sql                         | Moyenne  | À faire si utile       |
+| 26 | Service TinyDB                     | Haute    | À faire                |
+| 27 | Script TinyDB                      | Haute    | À faire                |
+| 28 | Résultat terminal TinyDB           | Haute    | À faire                |
+| 29 | Base JSON TinyDB                   | Moyenne  | À faire si utile       |
+| 30 | menu.js                            | Haute    | À faire                |
+| 31 | Documentation JavaScript           | Moyenne  | À faire si utile       |
+| 32 | python manage.py check             | Haute    | À faire                |
+| 33 | git status propre                  | Haute    | À faire                |
+| 34 | dépôt GitHub                       | Moyenne  | À faire                |
+| 35 | dossier doc                        | Haute    | À faire                |
+| 36 | dossier docs                       | Haute    | À faire                |
+| 37 | documentation Render               | Moyenne  | À faire                |
+| 38 | bilan V1                           | Moyenne  | À faire                |
+| 39 | fichier de preuve                  | Moyenne  | À faire après création |
 
 ---
 
-## Captures prioritaires minimum
+# 18. Captures prioritaires minimum
 
 Si le temps est limité, les captures indispensables sont :
 
-```txt
+```text
 00 - Maquettes Figma
 01 - Page d'accueil desktop
-02 - Page Mes créations
-03 - Page Projets jouables
-04 - Page d'accueil mobile
-06 - Connexion admin Django
-07 - Tableau de bord admin Django
-10 - Service Render actif
-11 - Logs Render service live
-12 - Build Command / Start Command
-14 - Structure du projet VS Code
-20 - python manage.py check
-21 - git status propre
-23 - dossier doc
+02 - Page d'accueil avec notes TinyDB
+03 - Page Mes créations
+04 - Page Projets jouables
+05 - Page d'accueil mobile
+06 - Menu mobile ouvert
+08 - Connexion admin Django
+09 - Tableau de bord admin Django
+12 - Admin compte lecture seule
+14 - Service Render actif
+15 - Logs Render service live
+16 - Build Command / Start Command
+18 - Structure du projet VS Code
+24 - SQL natif
+26 - Service TinyDB
+28 - Résultat terminal TinyDB
+30 - menu.js
+32 - python manage.py check
+33 - git status propre
+35 - dossier doc
+36 - dossier docs
 ```
 
-Ces captures suffisent à prouver que la V1 est fonctionnelle, déployée et documentée.
+Ces captures suffisent à prouver que la V1 est fonctionnelle, déployée, documentée et renforcée.
 
 ---
 
-## Captures non nécessaires pour l'instant
+# 19. Captures non nécessaires pour l'instant
 
 Certaines captures ne sont pas indispensables pour la V1 :
 
-* création d'un compte jury temporaire ;
 * configuration PostgreSQL ;
 * interface d'administration personnalisée ;
 * graphiques Plotly ;
 * upload serveur réel ;
 * jeu jouable dans le navigateur ;
-* espace privé complet.
+* espace privé complet ;
+* API REST ;
+* MongoDB ;
+* mini-jeu intégré ;
+* système de score.
 
 Ces éléments ne font pas partie du périmètre actuel.
 
 ---
 
-## Bilan
+# 20. Vérification finale avant intégration au dossier
+
+Avant d’intégrer les captures au dossier, vérifier :
+
+* que chaque image est lisible ;
+* que les noms de fichiers sont clairs ;
+* que les images sont rangées dans le bon dossier ;
+* qu’aucune image ne montre de secret ;
+* que les captures techniques correspondent bien à l’état actuel du projet ;
+* que les captures Render ne montrent pas les valeurs des variables ;
+* que les captures du compte lecture seule ne montrent pas le mot de passe ;
+* que les captures TinyDB ne montrent pas de donnée sensible ;
+* que les captures GitHub ne montrent pas d’information privée inutile.
+
+---
+
+# 21. Bilan
 
 Les captures listées dans ce document permettent de préparer une preuve claire du fonctionnement du projet Frostia Games.
 
@@ -904,12 +1373,19 @@ Elles montrent :
 * les maquettes Figma ;
 * l'interface publique ;
 * le responsive ;
+* le menu mobile ;
 * l'administration Django ;
+* le compte temporaire de lecture seule ;
 * le déploiement Render ;
 * la configuration technique ;
+* le SQL natif ;
+* TinyDB ;
+* le JavaScript ;
 * les tests réalisés ;
 * la documentation produite ;
 * l'organisation des preuves dans un fichier dédié ;
 * le regroupement des images dans un répertoire prévu.
 
 Ce document sert de checklist pour préparer le dossier projet et vérifier que la V1 est correctement présentée.
+
+À ce stade, la priorité est de préparer les captures utiles et d’éviter d’ajouter de nouvelles fonctionnalités lourdes.

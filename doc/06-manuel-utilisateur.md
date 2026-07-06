@@ -11,13 +11,24 @@ Il présente :
 * l'accès au site en ligne sur Render ;
 * les pages principales ;
 * l'accès à l'administration Django ;
+* l'accès avec un compte temporaire de lecture seule ;
 * l'ajout d'une création ;
 * l'ajout d'un projet jouable ;
+* l'affichage des notes TinyDB sur l'accueil ;
 * les fonctionnalités disponibles ;
 * les limites de la V1 ;
-* les vérifications à effectuer avant une démonstration.
+* les vérifications à effectuer avant une démonstration ;
+* les captures à préparer pour le dossier projet.
 
 L'objectif est de fournir un guide simple pour utiliser, tester et présenter le projet.
+
+Ce document a été mis à jour après le renforcement du dossier projet afin d'intégrer :
+
+* TinyDB ;
+* les notes de progression affichées sur l'accueil ;
+* le compte temporaire de lecture seule ;
+* les nouvelles commandes de vérification ;
+* les preuves à préparer pour le dossier final.
 
 ---
 
@@ -42,6 +53,10 @@ Le site utilise Django pour gérer :
 * l'administration ;
 * la base SQLite ;
 * l'affichage dynamique de certaines données.
+
+La V1 utilise aussi TinyDB pour une expérimentation NoSQL légère.
+
+TinyDB sert à stocker et afficher des notes de progression liées au projet.
 
 La V1 peut être utilisée :
 
@@ -77,6 +92,8 @@ https://frostia-games.onrender.com/admin/
 
 L'administration est protégée par un compte administrateur.
 
+Un compte temporaire de lecture seule peut aussi être utilisé pour permettre une consultation limitée de certaines parties de l'administration.
+
 Aucun identifiant ni mot de passe ne doit être publié dans le dépôt GitHub ou dans la documentation publique.
 
 ---
@@ -101,6 +118,20 @@ CHOIX_TECHNIQUES.md
 Dockerfile
 docker-compose.yml
 build.sh
+```
+
+Elle peut aussi contenir :
+
+```text
+core/
+creations/
+playable/
+templates/
+static/
+data/
+scripts/
+doc/
+docs/
 ```
 
 ---
@@ -129,15 +160,24 @@ Si les dépendances ne sont pas encore installées :
 pip install -r requirements.txt
 ```
 
+ou :
+
+```powershell
+python -m pip install -r requirements.txt
+```
+
 Le fichier `requirements.txt` contient les dépendances nécessaires au projet, notamment :
 
 * Django ;
 * Gunicorn ;
-* WhiteNoise.
+* WhiteNoise ;
+* TinyDB.
 
 Django sert au fonctionnement principal du projet.
 
 Gunicorn et WhiteNoise sont utilisés pour le déploiement en ligne sur Render.
+
+TinyDB sert à l'expérimentation NoSQL légère et à l'affichage des notes de progression sur la page d'accueil.
 
 ---
 
@@ -151,11 +191,18 @@ python manage.py migrate
 
 Cette commande crée ou met à jour les tables nécessaires dans la base SQLite.
 
+Elle concerne les modèles Django comme :
+
+* `Creation` ;
+* `PlayableProject`.
+
+TinyDB ne dépend pas des migrations Django, car il utilise un fichier JSON.
+
 ---
 
 ## 3.5 Vérifier le projet
 
-Commande de vérification :
+Commande de vérification Django :
 
 ```powershell
 python manage.py check
@@ -171,7 +218,27 @@ Cette commande permet de vérifier que la configuration Django ne contient pas d
 
 ---
 
-## 3.6 Lancer le serveur local
+## 3.6 Vérifier TinyDB
+
+Commande de vérification TinyDB :
+
+```powershell
+python -m scripts.demo_tinydb_notes
+```
+
+Cette commande permet de vérifier que :
+
+* TinyDB est bien installé ;
+* le service NoSQL fonctionne ;
+* les notes de progression sont créées ou lues ;
+* le fichier JSON TinyDB est accessible ;
+* les données peuvent être affichées dans le terminal.
+
+Cette commande sert aussi de preuve technique pour le dossier projet.
+
+---
+
+## 3.7 Lancer le serveur local
 
 Commande :
 
@@ -198,6 +265,21 @@ Administration Django locale :
 ```text
 http://127.0.0.1:8000/admin/
 ```
+
+---
+
+## 3.8 Vérifications après lancement local
+
+Après le lancement local, vérifier :
+
+* la page d'accueil ;
+* les notes de progression TinyDB sur l'accueil ;
+* la page **Mes créations** ;
+* la page **Projets jouables** ;
+* le menu mobile ;
+* l'administration Django ;
+* l'affichage des données SQLite ;
+* l'absence d'erreur dans le terminal.
 
 ---
 
@@ -259,7 +341,19 @@ System check identified no issues (0 silenced).
 
 ---
 
-## 4.3 Créer un administrateur dans Docker
+## 4.3 Vérifier TinyDB dans Docker
+
+Commande :
+
+```powershell
+docker compose exec web python -m scripts.demo_tinydb_notes
+```
+
+Cette commande permet de vérifier que l'expérimentation NoSQL fonctionne aussi dans l'environnement Docker.
+
+---
+
+## 4.4 Créer un administrateur dans Docker
 
 Si aucun administrateur n'existe dans l'environnement Docker :
 
@@ -276,7 +370,7 @@ Django demandera ensuite :
 
 ---
 
-## 4.4 Arrêter Docker
+## 4.5 Arrêter Docker
 
 Pour arrêter le serveur Docker depuis le terminal :
 
@@ -314,13 +408,44 @@ La page d'accueil présente :
 * l'objectif du portfolio ;
 * les sections principales ;
 * l'état général de la V1 ;
-* une introduction au projet.
+* une introduction au projet ;
+* les notes de progression provenant de TinyDB.
 
 Cette page sert de point d'entrée au site.
 
 ---
 
-## 5.2 Page Mes créations
+## 5.2 Notes TinyDB sur l'accueil
+
+La page d'accueil affiche maintenant des notes de progression issues de TinyDB.
+
+Ces notes servent à montrer une expérimentation NoSQL légère.
+
+Elles peuvent contenir :
+
+* un titre ;
+* un statut ;
+* des tags ;
+* un contenu descriptif ;
+* une date de création.
+
+La chaîne technique est la suivante :
+
+```text
+TinyDB
+→ core/services/nosql_notes.py
+→ core/views.py
+→ templates/pages/home.html
+→ affichage sur la page d'accueil
+```
+
+L'utilisateur n'a rien à saisir dans l'interface publique.
+
+Les notes sont préparées par le service Python NoSQL.
+
+---
+
+## 5.3 Page Mes créations
 
 Adresse locale :
 
@@ -350,7 +475,7 @@ Cela permet de masquer une création sans la supprimer de la base.
 
 ---
 
-## 5.3 Page Projets jouables
+## 5.4 Page Projets jouables
 
 Adresse locale :
 
@@ -396,7 +521,7 @@ https://frostia-games.onrender.com/admin/
 
 L'administration Django permet de gérer les contenus dynamiques du site.
 
-Elle nécessite un compte administrateur.
+Elle nécessite un compte autorisé.
 
 Pour créer un compte administrateur local si nécessaire :
 
@@ -416,7 +541,34 @@ Les identifiants administrateur ne doivent jamais être écrits dans la document
 
 ---
 
-# 7. Ajouter une création
+# 7. Accès avec un compte temporaire de lecture seule
+
+Un compte temporaire de lecture seule peut être utilisé pour l'évaluation.
+
+Ce compte permet de consulter certaines données dans l'administration Django sans donner un accès complet.
+
+Le compte peut voir :
+
+* les créations ;
+* les projets jouables.
+
+Le compte ne doit pas voir :
+
+* les utilisateurs ;
+* les groupes ;
+* les permissions sensibles ;
+* les réglages internes ;
+* les secrets du projet.
+
+Ce compte est utile pour montrer l'administration Django à un évaluateur sans transmettre un compte superutilisateur.
+
+Les identifiants réels ne doivent pas être écrits dans ce manuel public.
+
+Ils peuvent être transmis séparément uniquement si nécessaire.
+
+---
+
+# 8. Ajouter une création
 
 Depuis l'administration Django :
 
@@ -454,7 +606,7 @@ Une fois enregistrée, la création peut apparaître sur la page **Mes création
 
 ---
 
-# 8. Modifier une création
+# 9. Modifier une création
 
 Depuis l'administration :
 
@@ -473,7 +625,7 @@ La création reste en base mais n'apparaît plus sur le site public.
 
 ---
 
-# 9. Ajouter un projet jouable
+# 10. Ajouter un projet jouable
 
 Depuis l'administration Django :
 
@@ -510,7 +662,7 @@ Une fois enregistré, le projet peut apparaître sur la page **Projets jouables*
 
 ---
 
-# 10. Modifier un projet jouable
+# 11. Modifier un projet jouable
 
 Depuis l'administration :
 
@@ -525,7 +677,7 @@ Il ne lance pas encore de vraie démo, vidéo ou version jouable.
 
 ---
 
-# 11. Fonctionnement de l'interface préparatoire d'upload
+# 12. Fonctionnement de l'interface préparatoire d'upload
 
 La page **Projets jouables** contient une interface de sélection de fichier.
 
@@ -548,7 +700,7 @@ Cette interface sert uniquement à préparer une future fonctionnalité.
 
 ---
 
-# 12. Données dynamiques
+# 13. Données dynamiques
 
 Les pages récupèrent les données via les vues Django.
 
@@ -566,9 +718,13 @@ Les données sont ensuite envoyées aux templates HTML pour être affichées.
 
 Cela permet de modifier certains contenus depuis l'administration sans modifier directement le code HTML.
 
+Les notes TinyDB sont récupérées avec un service Python séparé.
+
+Elles sont ensuite envoyées à la page d'accueil pour être affichées.
+
 ---
 
-# 13. Fonctionnalités disponibles dans la V1
+# 14. Fonctionnalités disponibles dans la V1
 
 La V1 permet :
 
@@ -577,18 +733,21 @@ La V1 permet :
 * de consulter le site en ligne sur Render ;
 * de consulter les trois pages principales ;
 * d'accéder à l'administration Django ;
+* d'utiliser un compte temporaire de lecture seule ;
 * d'ajouter une création ;
 * de modifier une création ;
 * d'ajouter un projet jouable ;
 * de modifier un projet jouable ;
 * d'afficher des données depuis la base SQLite ;
+* d'afficher des notes de progression depuis TinyDB ;
 * de masquer ou afficher des contenus ;
 * de tester une interface préparatoire pour les projets jouables ;
-* de vérifier le projet avec `python manage.py check`.
+* de vérifier le projet avec `python manage.py check` ;
+* de vérifier TinyDB avec `python -m scripts.demo_tinydb_notes`.
 
 ---
 
-# 14. Fonctionnalités non disponibles dans la V1
+# 15. Fonctionnalités non disponibles dans la V1
 
 La V1 ne contient pas encore :
 
@@ -598,21 +757,29 @@ La V1 ne contient pas encore :
 * de jeu jouable dans le navigateur ;
 * de système de compte utilisateur public ;
 * d'API REST ;
-* de rôles avancés ;
-* de base NoSQL connectée ;
+* de rôles publics avancés ;
 * de base PostgreSQL ;
-* de compte jury temporaire ;
 * d'administration personnalisée ;
 * de graphiques Plotly.js ;
-* de tests automatisés complets.
+* de tests automatisés complets ;
+* de mini-jeu intégré ;
+* de système de score ;
+* de téléchargement public de projet jouable.
 
 Ces fonctionnalités sont prévues comme évolutions possibles.
 
 Elles ne sont pas ajoutées maintenant afin de conserver une V1 stable, maîtrisable et présentable.
 
+Certains éléments initialement reportés ont finalement été ajoutés de manière limitée et contrôlée :
+
+* compte temporaire de lecture seule ;
+* TinyDB ;
+* affichage des notes TinyDB ;
+* SQL natif documentaire.
+
 ---
 
-# 15. Fichiers utiles pour l'utilisateur ou l'évaluateur
+# 16. Fichiers utiles pour l'utilisateur ou l'évaluateur
 
 Plusieurs fichiers facilitent la compréhension du projet.
 
@@ -662,14 +829,34 @@ Il permet notamment :
 * d'appliquer les migrations ;
 * de créer un superutilisateur si les variables d'environnement sont présentes.
 
+## `requirements.txt`
+
+Le fichier `requirements.txt` liste les dépendances nécessaires au projet.
+
+Il contient notamment :
+
+* Django ;
+* Gunicorn ;
+* WhiteNoise ;
+* TinyDB.
+
+## `core/services/nosql_notes.py`
+
+Ce fichier contient le service Python utilisé pour lire les notes TinyDB.
+
+## `scripts/demo_tinydb_notes.py`
+
+Ce fichier permet de tester TinyDB depuis le terminal.
+
 ---
 
-# 16. Vérifications à faire avant une démonstration
+# 17. Vérifications à faire avant une démonstration
 
 Avant de présenter le projet, vérifier en local :
 
 ```powershell
 python manage.py check
+python -m scripts.demo_tinydb_notes
 ```
 
 Puis tester :
@@ -694,9 +881,12 @@ Points à vérifier :
 * les pages se chargent correctement ;
 * le CSS est bien appliqué ;
 * la navigation fonctionne ;
+* le menu mobile fonctionne ;
 * les données SQL apparaissent ;
+* les notes TinyDB apparaissent sur l'accueil ;
 * la lettre `K` affiche KryonCore si le projet est enregistré et visible ;
 * l'administration est accessible ;
+* le compte temporaire de lecture seule montre uniquement les sections prévues ;
 * la page Projets jouables affiche le message de disponibilité ;
 * le bouton de sélection de fichier affiche bien le nom du fichier choisi ;
 * aucun vrai upload serveur n'est déclenché ;
@@ -704,20 +894,26 @@ Points à vérifier :
 
 ---
 
-# 17. Conseils pour les captures d'écran
+# 18. Conseils pour les captures d'écran
 
 Pour le dossier projet, il est utile de conserver des captures de :
 
 * la page d'accueil ;
+* les notes TinyDB sur la page d'accueil ;
 * la page **Mes créations** ;
 * la page **Projets jouables** ;
 * l'administration Django ;
+* le compte temporaire de lecture seule ;
 * la liste des créations dans l'admin ;
 * la liste des projets jouables dans l'admin ;
 * le déploiement Render ;
 * le terminal avec `python manage.py check` ;
+* le terminal avec `python -m scripts.demo_tinydb_notes` ;
 * le dépôt GitHub ;
-* la documentation du projet.
+* la documentation du projet ;
+* le fichier `requirements.txt` ;
+* le service `core/services/nosql_notes.py` ;
+* le fichier JavaScript `static/js/menu.js`.
 
 Il ne faut pas capturer :
 
@@ -725,11 +921,36 @@ Il ne faut pas capturer :
 * la vraie valeur de `DJANGO_SECRET_KEY` ;
 * les variables d'environnement sensibles ;
 * les identifiants administrateur complets ;
+* les identifiants complets du compte temporaire ;
 * les informations privées inutiles.
 
 ---
 
-# 18. Conclusion
+# 19. Règle des trois piliers pour le dossier projet
+
+Pour chaque compétence importante, il faut idéalement préparer :
+
+1. une capture du code ou un extrait de code ;
+2. une explication du fonctionnement ;
+3. une capture du rendu final si la fonctionnalité produit un résultat visible.
+
+Cette règle concerne notamment :
+
+* les modèles Django ;
+* les vues Django ;
+* l'administration Django ;
+* le compte temporaire de lecture seule ;
+* le SQL natif ;
+* TinyDB ;
+* l'affichage des notes TinyDB ;
+* le JavaScript dynamique ;
+* Docker ;
+* Render ;
+* GitHub.
+
+---
+
+# 20. Conclusion
 
 La V1 de Frostia Games permet de présenter un portfolio Django simple, fonctionnel, documenté et déployé.
 
@@ -738,7 +959,10 @@ Le site dispose :
 * d'une structure de pages claire ;
 * d'un backend Django minimal ;
 * d'une base SQLite ;
+* d'une expérimentation NoSQL TinyDB ;
+* d'un affichage des notes TinyDB sur l'accueil ;
 * d'une administration ;
+* d'un compte temporaire de lecture seule ;
 * d'un lancement local ;
 * d'un lancement Docker ;
 * d'un déploiement Render ;
@@ -750,3 +974,5 @@ Le site dispose :
 Le projet reste volontairement limité afin de conserver une base stable, testable, maintenable et présentable.
 
 Les fonctionnalités avancées sont reportées à une version future.
+
+À ce stade, l'objectif principal est de préparer les captures, les preuves et l'intégration propre dans le dossier projet final.

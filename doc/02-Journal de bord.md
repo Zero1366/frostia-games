@@ -1408,3 +1408,804 @@ Le choix de ne pas changer de technologie en cours de route est une décision im
 Même si certaines technologies auraient pu correspondre davantage à des préférences personnelles, la priorité a été donnée à une V1 terminée, stable, documentée, déployée et présentable.
 
 L’objectif est maintenant de finaliser les captures, relire les textes, vérifier le responsive et préparer la présentation du projet.
+---
+
+# Mise à jour du journal — Renforcement après retour formateur
+
+Cette partie complète le journal de bord initial.
+
+Elle ne remplace pas les étapes précédentes : elle ajoute les corrections, renforcements et validations réalisés après la première V1 documentée.
+
+L'objectif de cette mise à jour est de garder une trace des ajouts récents sans effacer l'historique du projet.
+
+---
+
+# Étape 19 — Création d'une branche de renforcement du dossier
+
+**Date :** 30/06/2026  
+**Statut :** validé
+
+## Objectif
+
+Créer une branche dédiée afin de renforcer le projet sans modifier directement la branche principale.
+
+L'objectif était de pouvoir ajouter les éléments demandés après le retour formateur tout en conservant une trace claire du travail effectué.
+
+---
+
+## Actions réalisées
+
+* Création d'une branche dédiée au renforcement du dossier.
+* Séparation entre la V1 déjà fonctionnelle et les ajouts de preuve.
+* Travail progressif sur les documents, les captures et les compléments techniques.
+* Vérification régulière avec Git.
+
+---
+
+## Commandes utilisées
+
+```powershell
+git status
+git checkout -b v3-renforcement-dossier
+```
+
+---
+
+## Décision prise
+
+Le renforcement ne devait pas transformer Frostia Games en nouveau projet.
+
+La branche avait pour objectif de compléter les preuves, pas d'ouvrir un nouveau chantier fonctionnel.
+
+---
+
+## Validation
+
+Le travail a été réalisé sur une branche séparée, avec des commits réguliers.
+
+Le projet est resté stable pendant les ajouts.
+
+---
+
+# Étape 20 — Création d'une documentation complémentaire de renforcement
+
+**Date :** 30/06/2026  
+**Statut :** validé
+
+## Objectif
+
+Ajouter une documentation complémentaire pour répondre aux remarques du retour formateur.
+
+Le dossier projet devait mieux montrer :
+
+* la conception ;
+* le SQL natif ;
+* le JavaScript dynamique ;
+* les extraits de code ;
+* les preuves visuelles ;
+* les annexes ;
+* la règle des trois piliers.
+
+---
+
+## Dossiers créés
+
+```text
+docs/
+├─ backend/
+├─ conception/
+├─ frontend/
+├─ nosql/
+├─ preuves/
+└─ sql/
+```
+
+---
+
+## Rôle de ces dossiers
+
+Le dossier `doc/` reste la documentation principale historique du projet.
+
+Le dossier `docs/` sert de documentation complémentaire de renforcement.
+
+Cette séparation permet d'éviter de casser l'organisation déjà en place.
+
+---
+
+## Décision prise
+
+La documentation principale n'a pas été renommée.
+
+Les nouveaux documents ont été ajoutés comme compléments pour le dossier projet final.
+
+---
+
+# Étape 21 — Ajout des livrables de conception
+
+**Date :** 30/06/2026  
+**Statut :** validé
+
+## Objectif
+
+Répondre au manque de conception signalé dans le retour formateur.
+
+Les éléments attendus étaient :
+
+* un MCD ;
+* un diagramme de cas d'utilisation ;
+* un diagramme de séquence.
+
+---
+
+## Documents créés
+
+```text
+docs/conception/mcd.md
+docs/conception/cas-utilisation.md
+docs/conception/diagramme-sequence.md
+```
+
+---
+
+## Contenu ajouté
+
+Le MCD présente les entités principales :
+
+* `Creation` ;
+* `PlayableProject`.
+
+Le diagramme de cas d'utilisation présente les acteurs :
+
+* visiteur ;
+* administrateur ;
+* compte temporaire de lecture seule.
+
+Le diagramme de séquence présente le parcours d'un visiteur :
+
+* ouverture d'une page ;
+* appel d'une route Django ;
+* traitement par une vue ;
+* récupération des données ;
+* rendu du template ;
+* affichage dans le navigateur.
+
+---
+
+## Validation
+
+Ces documents renforcent la partie conception du dossier projet.
+
+Ils montrent que le projet n'est pas seulement codé, mais aussi pensé et structuré.
+
+---
+
+# Étape 22 — Ajout des extraits SQL natifs
+
+**Date :** 30/06/2026  
+**Statut :** validé
+
+## Objectif
+
+Répondre à la demande de mieux montrer le SQL dans le dossier projet.
+
+Le projet utilise l'ORM Django, mais le dossier devait aussi présenter des extraits SQL natifs.
+
+---
+
+## Documents créés
+
+```text
+docs/sql/create_tables_creations.sql
+docs/sql/create_tables_playable.sql
+docs/sql/exemples_insert.sql
+docs/sql/sql-natif.md
+```
+
+---
+
+## Actions réalisées
+
+* Génération ou récupération des instructions SQL liées aux migrations Django.
+* Ajout d'exemples `CREATE TABLE`.
+* Ajout d'exemples `INSERT INTO`.
+* Explication du lien entre les modèles Django et les tables SQL.
+* Explication de la différence entre ORM Django et SQL natif documentaire.
+
+---
+
+## Exemples de contenu
+
+Le dossier SQL contient notamment :
+
+* une table liée aux créations ;
+* une table liée aux projets jouables ;
+* des exemples d'insertion de données ;
+* une explication du rôle des migrations.
+
+---
+
+## Validation
+
+Les extraits SQL permettent maintenant de mieux prouver la compétence base de données.
+
+Ils complètent le fichier `doc/sql/schema.sql` déjà présent.
+
+---
+
+# Étape 23 — Renforcement du JavaScript dynamique
+
+**Date :** 30/06/2026  
+**Statut :** validé
+
+## Objectif
+
+Valoriser le JavaScript dynamique déjà présent dans le projet.
+
+Le menu mobile existait, mais il n'était pas assez expliqué dans le dossier projet.
+
+---
+
+## Fichiers vérifiés
+
+```text
+static/js/menu.js
+templates/base.html
+```
+
+---
+
+## Document créé
+
+```text
+docs/frontend/javascript-menu-mobile.md
+```
+
+---
+
+## Fonctionnement documenté
+
+Le JavaScript :
+
+* récupère le bouton du menu ;
+* récupère la sidebar ;
+* écoute le clic utilisateur ;
+* ajoute ou retire la classe `is-open` ;
+* modifie l'attribut `aria-expanded` ;
+* referme le menu après un clic sur un lien.
+
+---
+
+## Validation
+
+Le fichier `static/js/menu.js` est bien chargé avec `defer` dans le template principal.
+
+Le menu mobile fonctionne et peut être prouvé par captures :
+
+* menu fermé ;
+* menu ouvert ;
+* extrait du JavaScript ;
+* explication du fonctionnement.
+
+---
+
+# Étape 24 — Ajout de la documentation backend complémentaire
+
+**Date :** 30/06/2026  
+**Statut :** validé
+
+## Objectif
+
+Mieux expliquer la partie backend Django dans le dossier projet.
+
+Le code existait déjà, mais il devait être davantage relié à des explications claires.
+
+---
+
+## Documents créés
+
+```text
+docs/backend/modeles-django.md
+docs/backend/vues-et-routes.md
+```
+
+---
+
+## Contenu ajouté
+
+La documentation backend explique :
+
+* le rôle du modèle `Creation` ;
+* le rôle du modèle `PlayableProject` ;
+* le lien entre les modèles et les tables SQL ;
+* le rôle des migrations ;
+* le rôle des vues Django ;
+* le lien entre les routes, les vues et les templates.
+
+---
+
+## Validation
+
+Ces documents permettent d'appuyer les captures de code dans le dossier projet.
+
+Ils donnent une explication lisible au lieu de simplement montrer du code.
+
+---
+
+# Étape 25 — Intégration NoSQL légère avec TinyDB
+
+**Date :** 30/06/2026 au 03/07/2026  
+**Statut :** validé
+
+## Objectif
+
+Ajouter une preuve NoSQL simple et contrôlée.
+
+L'objectif n'était pas de remplacer SQLite, mais de montrer une expérimentation NoSQL cohérente avec le projet.
+
+---
+
+## Actions réalisées
+
+* Installation de TinyDB.
+* Ajout de TinyDB dans `requirements.txt`.
+* Création d'un service Python dédié.
+* Création d'un script de démonstration.
+* Création d'une base JSON générée par TinyDB.
+* Lecture des notes de progression.
+* Affichage des notes sur la page d'accueil.
+
+---
+
+## Fichiers concernés
+
+```text
+requirements.txt
+core/services/nosql_notes.py
+scripts/__init__.py
+scripts/demo_tinydb_notes.py
+data/nosql/project_notes_db.json
+core/views.py
+templates/pages/home.html
+docs/nosql/tinydb-integration.md
+```
+
+---
+
+## Chaîne technique
+
+```text
+TinyDB
+→ core/services/nosql_notes.py
+→ core/views.py
+→ templates/pages/home.html
+→ affichage sur la page d'accueil
+```
+
+---
+
+## Décision prise
+
+SQLite reste la base principale.
+
+TinyDB sert uniquement à stocker des notes de progression sous forme documentaire NoSQL.
+
+Cette intégration reste volontairement limitée pour éviter de complexifier la V1.
+
+---
+
+# Étape 26 — Corrections réalisées pendant l'intégration TinyDB
+
+**Date :** 30/06/2026 au 03/07/2026  
+**Statut :** validé
+
+## Objectif
+
+Corriger les problèmes rencontrés pendant l'intégration NoSQL afin d'obtenir une version propre et stable.
+
+---
+
+## Problèmes rencontrés
+
+Plusieurs points ont dû être corrigés :
+
+* chemin de la base TinyDB à stabiliser ;
+* création du dossier `data/nosql/` ;
+* gestion propre de l'ouverture et de la fermeture de la base ;
+* typage Python trop vague ;
+* nécessité de convertir les résultats TinyDB en liste exploitable ;
+* lancement correct du script avec `python -m` ;
+* ajout du fichier `scripts/__init__.py` ;
+* vérification que TinyDB ne casse pas Django.
+
+---
+
+## Corrections appliquées
+
+Le service NoSQL a été organisé pour :
+
+* créer le dossier de données si nécessaire ;
+* ouvrir la base TinyDB proprement ;
+* fermer la base après utilisation ;
+* créer des notes de démonstration seulement si la table est vide ;
+* récupérer les notes par projet ;
+* retourner des données exploitables par la vue Django.
+
+---
+
+## Validation
+
+Commandes utilisées :
+
+```powershell
+python manage.py check
+python -m scripts.demo_tinydb_notes
+```
+
+Résultat :
+
+* Django ne signale pas d'erreur ;
+* les notes sont affichées dans le terminal ;
+* la base JSON TinyDB est générée correctement.
+
+---
+
+# Étape 27 — Affichage des notes TinyDB sur la page d'accueil
+
+**Date :** 03/07/2026  
+**Statut :** validé
+
+## Objectif
+
+Ne pas garder TinyDB uniquement comme un test terminal.
+
+L'objectif était d'afficher les notes NoSQL directement dans le site afin de prouver l'intégration réelle.
+
+---
+
+## Actions réalisées
+
+* Import du service TinyDB dans `core/views.py`.
+* Initialisation des notes de démonstration.
+* Récupération des notes du projet Frostia Games.
+* Envoi des notes au template `pages/home.html`.
+* Ajout d'une section visible sur la page d'accueil.
+
+---
+
+## Fichiers modifiés
+
+```text
+core/views.py
+templates/pages/home.html
+core/services/nosql_notes.py
+```
+
+---
+
+## Résultat obtenu
+
+Une section de notes de progression apparaît sur la page d'accueil.
+
+Elle affiche :
+
+* le titre de la note ;
+* le contenu ;
+* le statut ;
+* les tags.
+
+---
+
+## Validation
+
+La page d'accueil affiche correctement les notes issues de TinyDB.
+
+La fonctionnalité est donc démontrable avec les trois piliers :
+
+* extrait du code ;
+* explication ;
+* capture du rendu final.
+
+---
+
+# Étape 28 — Création d'un compte temporaire de lecture seule
+
+**Date :** 03/07/2026  
+**Statut :** validé
+
+## Objectif
+
+Créer un accès limité à l'administration Django pour l'évaluation.
+
+L'objectif était de permettre la consultation des données sans exposer les zones sensibles.
+
+---
+
+## Actions réalisées
+
+* Création d'un groupe de lecture seule.
+* Attribution des permissions de consultation uniquement.
+* Création d'un utilisateur temporaire.
+* Association de l'utilisateur au groupe.
+* Vérification des accès depuis l'administration.
+
+---
+
+## Permissions conservées
+
+Le compte peut consulter :
+
+* les créations ;
+* les projets jouables.
+
+---
+
+## Permissions non données
+
+Le compte ne doit pas accéder :
+
+* aux utilisateurs ;
+* aux groupes ;
+* aux permissions sensibles ;
+* aux paramètres administrateur ;
+* aux fonctions de modification importantes.
+
+---
+
+## Correction réalisée
+
+Une première configuration donnait trop de visibilité dans l'administration.
+
+Les permissions ont été corrigées pour limiter l'accès uniquement aux éléments utiles pour l'évaluation.
+
+---
+
+## Décision de sécurité
+
+Les identifiants réels du compte temporaire ne doivent pas être écrits dans le dossier projet public.
+
+Ils peuvent être transmis séparément uniquement si nécessaire.
+
+---
+
+# Étape 29 — Mise à jour de l'index documentaire
+
+**Date :** 03/07/2026  
+**Statut :** validé
+
+## Objectif
+
+Mettre à jour l'index de documentation afin qu'il reflète les ajouts récents.
+
+---
+
+## Fichier mis à jour
+
+```text
+doc/00-index-documentation.md
+```
+
+---
+
+## Ajouts intégrés
+
+L'index mentionne maintenant :
+
+* la documentation complémentaire de renforcement ;
+* le futur fichier `19-renforcement-dossier-projet.md` ;
+* les livrables de conception ;
+* le SQL natif ;
+* le JavaScript dynamique ;
+* TinyDB ;
+* l'affichage des notes TinyDB ;
+* le compte temporaire de lecture seule ;
+* la règle des trois piliers ;
+* les captures et preuves à préparer.
+
+---
+
+## Validation
+
+L'index correspond mieux à l'état réel du projet.
+
+Il conserve la structure historique du dossier `doc/` sans la casser.
+
+---
+
+# Étape 30 — Mise à jour du journal de bord
+
+**Date :** 03/07/2026  
+**Statut :** en cours de validation
+
+## Objectif
+
+Mettre à jour le journal de bord afin qu'il ne s'arrête pas à la première V1.
+
+Le projet a connu plusieurs ajouts et corrections après la première version documentée.
+
+Il était donc nécessaire de conserver une trace de ces éléments.
+
+---
+
+## Éléments à intégrer
+
+Le journal doit maintenant intégrer :
+
+* la branche de renforcement ;
+* la documentation complémentaire ;
+* les documents de conception ;
+* le SQL natif ;
+* la documentation JavaScript ;
+* la documentation backend ;
+* l'intégration TinyDB ;
+* les corrections TinyDB ;
+* l'affichage des notes sur l'accueil ;
+* le compte lecture seule ;
+* les corrections de permissions ;
+* la mise à jour de l'index ;
+* la préparation des preuves.
+
+---
+
+## Validation attendue
+
+Le journal doit devenir la trace complète du projet, depuis la création de la V1 jusqu'au renforcement du dossier.
+
+---
+
+# Étape 31 — Préparation des captures et preuves
+
+**Date :** 03/07/2026  
+**Statut :** à finaliser
+
+## Objectif
+
+Préparer les preuves visuelles nécessaires au dossier final.
+
+Le retour formateur indiquait qu'il fallait mieux prouver les compétences avec des éléments concrets.
+
+---
+
+## Règle retenue
+
+Pour chaque compétence importante, il faut préparer trois éléments :
+
+1. une capture du code ou un extrait de code ;
+2. une explication du fonctionnement ;
+3. une capture du rendu final lorsque la fonctionnalité produit un résultat visible.
+
+---
+
+## Preuves à préparer
+
+Les captures doivent couvrir notamment :
+
+* les modèles Django ;
+* les vues Django ;
+* le menu JavaScript ;
+* le rendu mobile ;
+* le SQL natif ;
+* le script TinyDB ;
+* l'affichage TinyDB sur l'accueil ;
+* l'administration Django ;
+* le compte temporaire de lecture seule ;
+* Render ;
+* GitHub ;
+* Docker si nécessaire.
+
+---
+
+## Règle de sécurité
+
+Aucune capture ne doit afficher :
+
+* de mot de passe ;
+* de clé secrète ;
+* de variable d'environnement sensible ;
+* d'identifiants privés.
+
+---
+
+# Étape 32 — État actuel après renforcement
+
+**Date :** 03/07/2026  
+**Statut :** implantation terminée
+
+## Ce qui fonctionne maintenant
+
+* Le serveur Django local fonctionne.
+* `python manage.py check` ne signale pas d'erreur.
+* Les pages principales sont accessibles.
+* L'administration Django fonctionne.
+* Les données SQLite remontent dans les templates.
+* Le menu mobile JavaScript fonctionne.
+* La conception est documentée.
+* Les extraits SQL natifs sont documentés.
+* TinyDB est installé.
+* TinyDB est testé en terminal.
+* Les notes TinyDB sont affichées sur l'accueil.
+* Le compte temporaire de lecture seule fonctionne.
+* Le dépôt Git est propre après commit.
+* Le site reste déployé sur Render.
+
+---
+
+## Ce qui reste à faire
+
+Les prochaines actions ne sont plus de l'implantation lourde.
+
+Il reste à faire :
+
+* relire les documents ;
+* mettre à jour les fichiers restants ;
+* préparer les captures propres ;
+* vérifier les trois piliers pour chaque compétence importante ;
+* intégrer les captures dans le dossier Word final ;
+* préparer les annexes ;
+* exporter le dossier en PDF ;
+* faire le commit final de documentation.
+
+---
+
+## Ce qui ne doit plus être ajouté dans Frostia Games V1
+
+Pour éviter d'élargir le périmètre, les éléments suivants restent reportés :
+
+* PostgreSQL ;
+* administration personnalisée ;
+* upload serveur réel ;
+* vrai lecteur de jeu ;
+* mini-jeu intégré ;
+* système de score ;
+* page détail complète ;
+* API REST ;
+* espace privé complet ;
+* Plotly.js ;
+* tests automatisés complets ;
+* refonte graphique complète.
+
+Le projet est suffisamment renforcé pour répondre au retour formateur.
+
+---
+
+# Bilan complémentaire après renforcement
+
+Le projet Frostia Games dispose maintenant d'une V1 Django fonctionnelle, documentée, déployée et renforcée.
+
+Il contient désormais :
+
+* une interface responsive ;
+* un backend Django ;
+* une base SQLite ;
+* des modèles Django ;
+* une administration Django ;
+* un affichage dynamique ;
+* un menu mobile en JavaScript ;
+* Docker ;
+* un déploiement Render ;
+* un README racine ;
+* un fichier de choix techniques ;
+* un exemple de variables d'environnement ;
+* une documentation SQL ;
+* des extraits SQL natifs ;
+* une expérimentation NoSQL avec TinyDB ;
+* un affichage des notes TinyDB sur la page d'accueil ;
+* une documentation de conception ;
+* un MCD ;
+* un diagramme de cas d'utilisation ;
+* un diagramme de séquence ;
+* une documentation de sécurité ;
+* un compte temporaire de lecture seule ;
+* un manuel utilisateur ;
+* un changelog ;
+* une documentation de tests ;
+* une documentation de déploiement ;
+* une documentation des limites ;
+* une documentation des pistes explorées ;
+* un plan de finalisation V1 ;
+* une préparation des preuves pour le dossier final.
+
+Le projet reste volontairement limité afin d'éviter une complexité inutile.
+
+L'objectif n'est plus d'ajouter de nouvelles fonctionnalités dans Frostia Games V1.
+
+L'objectif est maintenant de finaliser les documents, préparer les captures, vérifier les preuves et intégrer les éléments dans le dossier projet final.

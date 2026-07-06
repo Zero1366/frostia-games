@@ -14,13 +14,24 @@ Il explique :
 * les données stockées ;
 * les données non stockées ;
 * le fichier SQL documentaire ;
-* la réflexion NoSQL ;
+* les extraits SQL natifs ajoutés pour le dossier projet ;
+* l’expérimentation NoSQL avec TinyDB ;
 * le lien avec l’administration Django ;
+* le compte temporaire de lecture seule ;
 * le lien avec le déploiement Render ;
 * les limites actuelles ;
-* les évolutions possibles vers PostgreSQL.
+* les évolutions possibles vers PostgreSQL ou une solution NoSQL plus avancée.
 
 L’objectif est de montrer que la V1 possède une base de données simple, fonctionnelle et cohérente avec le périmètre du projet.
+
+Ce document a été mis à jour après le renforcement du dossier projet afin d’intégrer :
+
+* TinyDB ;
+* les notes de progression NoSQL ;
+* les extraits SQL natifs ;
+* les exemples `INSERT INTO` ;
+* le compte temporaire de lecture seule ;
+* les preuves à préparer pour le dossier final.
 
 ---
 
@@ -34,18 +45,30 @@ Les données ne sont plus uniquement écrites directement dans les fichiers HTML
 
 Une partie du contenu peut maintenant être ajoutée, modifiée ou masquée depuis l’administration Django.
 
-La base est utilisée pour gérer :
+La base SQLite est utilisée pour gérer :
 
 * les créations ;
 * les futurs projets jouables.
 
-Ce choix permet de montrer que le projet possède un vrai backend Django, même si le périmètre reste volontairement limité.
+Une expérimentation NoSQL légère avec TinyDB a également été ajoutée.
+
+TinyDB sert à stocker et afficher des notes de progression liées au projet.
+
+Ce choix permet de montrer que le projet possède :
+
+* un vrai backend Django ;
+* une base SQL principale ;
+* une expérimentation NoSQL complémentaire ;
+* une documentation SQL native ;
+* une séparation claire entre données principales et données documentaires.
+
+Le périmètre reste volontairement limité afin de conserver une V1 stable et maîtrisable.
 
 ---
 
 # 2. Choix de SQLite pour la V1
 
-La V1 utilise SQLite.
+La V1 utilise SQLite comme base principale.
 
 SQLite est adapté pour cette première version car :
 
@@ -86,7 +109,7 @@ Dans cette V1, ce choix reste cohérent car le projet ne contient pas encore :
 * de commentaires ;
 * de nombreux médias ;
 * d’upload serveur réel ;
-* de système de rôles avancés ;
+* de système de rôles publics avancés ;
 * de forte charge d’utilisation.
 
 Pour une version plus complète, une migration vers PostgreSQL pourra être envisagée.
@@ -114,7 +137,7 @@ Dans la V1, SQLite permet de garder un projet simple, stable et maintenable.
 
 # 5. Applications Django concernées
 
-Deux applications Django utilisent actuellement la base de données :
+Deux applications Django utilisent actuellement la base de données SQLite :
 
 ```text
 creations
@@ -263,11 +286,13 @@ applique les migrations à la base de données SQLite.
 
 Les migrations évitent de créer ou modifier les tables à la main.
 
+TinyDB ne dépend pas des migrations Django, car il fonctionne avec un fichier JSON.
+
 ---
 
 # 10. ORM Django
 
-Le projet utilise l’ORM Django pour manipuler les données.
+Le projet utilise l’ORM Django pour manipuler les données SQL.
 
 Exemple dans les vues :
 
@@ -318,11 +343,13 @@ PlayableProject.objects.filter(is_visible=True)
 
 Ce fonctionnement permet de gérer la visibilité des contenus depuis l’administration Django.
 
+Les notes TinyDB affichées sur l’accueil sont également préparées côté backend avant d’être transmises au template.
+
 ---
 
-# 12. Données actuellement stockées
+# 12. Données actuellement stockées dans SQLite
 
-Dans la V1, la base stocke principalement :
+Dans la V1, SQLite stocke principalement :
 
 * les créations ;
 * les futurs projets jouables ;
@@ -349,7 +376,36 @@ Ces données peuvent être modifiées depuis l’administration Django.
 
 ---
 
-# 13. Données non stockées dans la V1
+# 13. Données actuellement stockées avec TinyDB
+
+TinyDB stocke des notes de progression liées au projet.
+
+Ces notes sont des documents JSON.
+
+Elles peuvent contenir :
+
+* un code projet ;
+* un titre ;
+* un contenu ;
+* une liste de tags ;
+* un statut ;
+* une date de création.
+
+Fichier concerné :
+
+```text
+data/nosql/project_notes_db.json
+```
+
+Ces données sont utilisées pour afficher une section de notes sur la page d’accueil.
+
+TinyDB ne remplace pas SQLite.
+
+Il sert uniquement à démontrer une logique NoSQL légère et documentaire.
+
+---
+
+# 14. Données non stockées dans la V1
 
 La V1 ne stocke pas encore :
 
@@ -372,9 +428,9 @@ Ils ne sont pas ajoutés maintenant afin de conserver une base simple et maîtri
 
 ---
 
-# 14. Interface d’administration
+# 15. Interface d’administration
 
-La base est alimentée principalement via l’administration Django.
+La base SQLite est alimentée principalement via l’administration Django.
 
 Adresse locale :
 
@@ -406,7 +462,34 @@ Aucun identifiant administrateur ni mot de passe ne doit être publié dans GitH
 
 ---
 
-# 15. Lien avec le déploiement Render
+# 16. Compte temporaire de lecture seule
+
+Un compte temporaire de lecture seule peut être utilisé pour l’évaluation.
+
+Ce compte ne remplace pas l’administrateur.
+
+Il sert uniquement à permettre une consultation limitée de l’administration Django.
+
+Le compte temporaire peut voir :
+
+* les créations ;
+* les projets jouables.
+
+Il ne doit pas voir :
+
+* les utilisateurs ;
+* les groupes ;
+* les permissions sensibles ;
+* les réglages internes ;
+* les secrets du projet.
+
+Ce compte permet de montrer la partie administration sans donner un accès complet au backend.
+
+Les identifiants réels ne doivent pas être écrits dans la documentation publique.
+
+---
+
+# 17. Lien avec le déploiement Render
 
 Le projet est déployé en ligne sur Render.
 
@@ -435,15 +518,19 @@ Commande importante du script :
 python manage.py migrate
 ```
 
-Cette commande applique les migrations nécessaires à la base.
+Cette commande applique les migrations nécessaires à la base SQLite.
 
 Pour une V1, ce fonctionnement est suffisant pour montrer que le projet peut être lancé et déployé.
 
 Pour une version plus durable ou plus avancée, PostgreSQL pourra être envisagé.
 
+TinyDB est installé via `requirements.txt`.
+
+Il peut donc être chargé par l’application tant que la dépendance est bien installée.
+
 ---
 
-# 16. Variables d’environnement liées au backend
+# 18. Variables d’environnement liées au backend
 
 Le projet utilise des variables d’environnement pour éviter d’écrire les informations sensibles directement dans le code.
 
@@ -468,9 +555,11 @@ Le fichier `.env.example` est seulement un modèle.
 
 Les vraies valeurs doivent rester dans l’environnement local ou dans les variables Render.
 
+Les identifiants du compte temporaire de lecture seule ne doivent pas non plus être écrits dans ce fichier.
+
 ---
 
-# 17. Fichier `.gitignore` et base SQLite
+# 19. Fichier `.gitignore` et base SQLite
 
 Le fichier `.gitignore` permet d’éviter l’envoi de certains fichiers dans GitHub.
 
@@ -504,7 +593,32 @@ Le choix de suivre ou non `db.sqlite3` doit être cohérent avec le fonctionneme
 
 ---
 
-# 18. Schéma SQL documentaire
+# 20. Fichier `.gitignore` et TinyDB
+
+Le fichier TinyDB est :
+
+```text
+data/nosql/project_notes_db.json
+```
+
+Il peut être conservé dans le projet uniquement s’il contient des données de démonstration non sensibles.
+
+Il ne doit jamais contenir :
+
+* mot de passe ;
+* clé secrète ;
+* identifiant administrateur ;
+* variable d’environnement ;
+* information personnelle sensible ;
+* jeton d’accès.
+
+Dans cette V1, TinyDB sert à stocker des notes de progression documentaires.
+
+Il reste donc acceptable si le contenu est contrôlé et non sensible.
+
+---
+
+# 21. Schéma SQL documentaire
 
 Un fichier SQL documentaire a été ajouté :
 
@@ -527,7 +641,34 @@ Il ne remplace pas les migrations Django.
 
 ---
 
-# 19. Exemple de structure SQL
+# 22. Extraits SQL natifs complémentaires
+
+Après le retour formateur, des fichiers SQL complémentaires ont été ajoutés afin de mieux valoriser la partie SQL native.
+
+Fichiers concernés :
+
+```text
+docs/sql/create_tables_creations.sql
+docs/sql/create_tables_playable.sql
+docs/sql/exemples_insert.sql
+docs/sql/sql-natif.md
+```
+
+Ces fichiers permettent de présenter :
+
+* la structure SQL de la table des créations ;
+* la structure SQL de la table des projets jouables ;
+* des exemples `INSERT INTO` ;
+* le lien entre modèles Django et tables SQL ;
+* la différence entre SQL natif documentaire et ORM Django.
+
+Ces fichiers ne remplacent pas les migrations.
+
+Ils servent à expliquer la base dans le dossier projet.
+
+---
+
+# 23. Exemple de structure SQL
 
 Exemple simplifié de table pour les créations :
 
@@ -569,32 +710,145 @@ Ces exemples servent uniquement à expliquer la structure logique de la base.
 
 ---
 
-# 20. NoSQL
+# 24. Exemple d’insertion SQL
 
-Un fichier de réflexion NoSQL a été ajouté :
+Un fichier complémentaire contient des exemples d’insertion :
+
+```text
+docs/sql/exemples_insert.sql
+```
+
+Exemple logique :
+
+```sql
+INSERT INTO creations_creation (
+    title,
+    slug,
+    alphabet_letter,
+    code_name,
+    project_type,
+    status,
+    short_description,
+    is_visible,
+    created_at,
+    updated_at
+)
+VALUES (
+    'Frostia Games',
+    'frostia-games',
+    'F',
+    'FROSTIA',
+    'Portfolio Django',
+    'V1 en développement',
+    'Portfolio Django permettant de présenter des projets vidéoludiques.',
+    1,
+    CURRENT_TIMESTAMP,
+    CURRENT_TIMESTAMP
+);
+```
+
+Ces exemples permettent de montrer la compréhension du SQL natif, même si le projet réel utilise principalement les migrations et l’ORM Django.
+
+---
+
+# 25. NoSQL avec TinyDB
+
+Un fichier de réflexion NoSQL existe :
 
 ```text
 doc/sql/nosql.md
 ```
 
-Dans la V1, aucune base NoSQL n’est implantée.
+La V1 contient maintenant une expérimentation NoSQL légère avec TinyDB.
 
-Ce choix est volontaire, car l’objectif actuel est de stabiliser le socle Django avec SQLite.
+Ce choix a été ajouté de manière contrôlée afin de répondre au besoin de montrer une compétence NoSQL sans transformer l’architecture du projet.
 
-Une future base NoSQL pourrait être utile pour stocker des contenus plus souples :
+TinyDB est utilisé pour stocker des notes de progression dans un fichier JSON.
 
-* fiches détaillées ;
-* notes de conception ;
-* blocs de contenu variables ;
-* historiques de développement ;
-* métadonnées de médias ;
-* sections différentes selon les projets.
+Fichiers concernés :
 
-Le NoSQL est donc identifié comme une évolution possible, mais il n’est pas ajouté artificiellement dans la V1.
+```text
+core/services/nosql_notes.py
+scripts/demo_tinydb_notes.py
+data/nosql/project_notes_db.json
+docs/nosql/tinydb-integration.md
+```
 
 ---
 
-# 21. Sécurité liée à la base de données
+# 26. Rôle de TinyDB
+
+TinyDB sert à démontrer une base documentaire NoSQL.
+
+Il permet de stocker des objets JSON plutôt que des lignes dans une table SQL.
+
+Dans Frostia Games, TinyDB est utilisé pour des notes de progression liées au projet.
+
+Exemple de structure logique :
+
+```json
+{
+  "project_code": "frostia-games",
+  "title": "Renforcement du dossier projet",
+  "content": "Ajout de la conception, du SQL natif, du JavaScript documenté et de la partie NoSQL.",
+  "tags": ["dossier-projet", "conception", "sql", "nosql"],
+  "status": "in_progress",
+  "created_at": "2026-06-30"
+}
+```
+
+Ce format est plus souple qu’une table SQL pour de petites notes documentaires.
+
+---
+
+# 27. Fonctionnement TinyDB dans le projet
+
+La chaîne technique est la suivante :
+
+```text
+TinyDB
+→ core/services/nosql_notes.py
+→ core/views.py
+→ templates/pages/home.html
+→ affichage sur la page d'accueil
+```
+
+Le service Python gère :
+
+* l’ouverture de la base TinyDB ;
+* la création des notes de démonstration ;
+* la lecture des notes ;
+* la recherche par code projet ;
+* la fermeture de la base après utilisation.
+
+Le script de démonstration permet de tester TinyDB :
+
+```powershell
+python -m scripts.demo_tinydb_notes
+```
+
+Cette commande sert de preuve technique pour le dossier projet.
+
+---
+
+# 28. Différence entre SQLite et TinyDB
+
+| Élément | SQLite | TinyDB |
+| ------- | ------ | ------ |
+| Type | Base SQL relationnelle légère | Base NoSQL documentaire légère |
+| Format | Tables | Documents JSON |
+| Usage dans le projet | Données principales | Notes de progression |
+| Gestion Django | Modèles, ORM, migrations | Service Python séparé |
+| Administration Django | Oui | Non |
+| Rôle V1 | Base principale | Expérimentation complémentaire |
+
+SQLite reste la base principale du projet.
+
+TinyDB sert uniquement de complément documentaire.
+
+---
+
+# 29. Sécurité liée à la base de données
 
 La sécurité de la base repose principalement sur :
 
@@ -602,18 +856,22 @@ La sécurité de la base repose principalement sur :
 * l’absence de requêtes SQL brutes dans les vues ;
 * la validation des champs par les modèles ;
 * l’administration protégée par authentification ;
+* le compte temporaire de lecture seule ;
 * l’échappement automatique dans les templates ;
 * le filtrage des contenus visibles ;
 * la séparation des secrets avec les variables d’environnement ;
-* l’absence de vrai upload serveur dans la V1.
+* l’absence de vrai upload serveur dans la V1 ;
+* l’absence de données sensibles dans TinyDB.
 
 Le projet ne construit pas de requêtes SQL en concaténant du texte utilisateur.
 
 Cela limite les risques d’injection SQL.
 
+TinyDB ne doit pas contenir de secrets ou d’informations sensibles.
+
 ---
 
-# 22. Limites de la V1
+# 30. Limites de la V1
 
 La V1 ne contient pas encore :
 
@@ -622,21 +880,27 @@ La V1 ne contient pas encore :
 * de table version ;
 * de table utilisateur personnalisée ;
 * de base PostgreSQL ;
-* de base NoSQL connectée ;
 * de vrai système d’upload ;
 * de stockage de fichiers en base ;
-* de compte jury temporaire ;
 * d’administration personnalisée ;
 * de sauvegarde automatique avant modification ;
-* de système de restauration des contenus.
+* de système de restauration des contenus ;
+* de base NoSQL avancée comme MongoDB.
 
 Ces limites sont volontaires.
 
 L’objectif est de garder une base claire, testable et stable.
 
+Certains éléments initialement reportés ont finalement été intégrés de manière limitée et contrôlée :
+
+* compte temporaire de lecture seule ;
+* TinyDB ;
+* affichage des notes TinyDB ;
+* extraits SQL natifs documentaires.
+
 ---
 
-# 23. Évolutions prévues
+# 31. Évolutions prévues
 
 Les évolutions possibles sont :
 
@@ -645,19 +909,19 @@ Les évolutions possibles sont :
 3. Ajouter une table de versions.
 4. Relier un projet jouable à une création.
 5. Ajouter PostgreSQL pour une version plus avancée.
-6. Étudier une base NoSQL pour les contenus variables.
+6. Étudier MongoDB pour les contenus très variables.
 7. Ajouter un système d’upload sécurisé.
 8. Ajouter des permissions plus fines dans l’administration.
-9. Créer un compte jury temporaire si un accès direct est demandé.
-10. Ajouter un système de sauvegarde automatique avant modification.
-11. Ajouter un système de restauration des contenus.
-12. Ajouter des tests automatisés sur les modèles Django.
+9. Ajouter un système de sauvegarde automatique avant modification.
+10. Ajouter un système de restauration des contenus.
+11. Ajouter des tests automatisés sur les modèles Django.
+12. Ajouter des tests sur les services NoSQL si cette partie évolue.
 
 Ces évolutions sont reportées afin d’éviter d’élargir trop vite le périmètre de la V1.
 
 ---
 
-# 24. Lien avec les fichiers racine
+# 32. Lien avec les fichiers racine
 
 La partie base de données est aussi documentée par plusieurs fichiers à la racine du projet.
 
@@ -679,18 +943,48 @@ Le fichier `CHOIX_TECHNIQUES.md` explique notamment :
 
 * pourquoi SQLite est conservé dans la V1 ;
 * pourquoi PostgreSQL est reporté ;
-* pourquoi NoSQL n’est pas implanté artificiellement ;
+* pourquoi TinyDB est utilisé de manière limitée ;
 * pourquoi certaines fonctionnalités sont limitées pour éviter une complexité excessive.
 
 ## `.env.example`
 
 Le fichier `.env.example` documente les variables d’environnement nécessaires sans exposer les vraies valeurs sensibles.
 
+## `requirements.txt`
+
+Le fichier `requirements.txt` contient les dépendances utilisées, dont TinyDB.
+
 Ces fichiers complètent la documentation du dossier `doc`.
 
 ---
 
-# 25. Conclusion
+# 33. Captures et preuves à préparer
+
+Pour le dossier projet, les preuves suivantes peuvent être préparées :
+
+* capture des modèles `Creation` et `PlayableProject` ;
+* capture de l’administration Django ;
+* capture du compte temporaire de lecture seule ;
+* capture des tables ou migrations ;
+* capture du fichier `doc/sql/schema.sql` ;
+* capture des fichiers SQL natifs dans `docs/sql/`;
+* capture du fichier `docs/sql/exemples_insert.sql` ;
+* capture du service `core/services/nosql_notes.py` ;
+* capture du script `scripts/demo_tinydb_notes.py` ;
+* capture du terminal avec `python -m scripts.demo_tinydb_notes` ;
+* capture des notes TinyDB affichées sur la page d’accueil.
+
+Aucune capture ne doit afficher :
+
+* mot de passe ;
+* clé secrète ;
+* variable sensible ;
+* identifiant administrateur complet ;
+* information privée inutile.
+
+---
+
+# 34. Conclusion
 
 La base de données de Frostia Games est simple mais fonctionnelle.
 
@@ -702,10 +996,17 @@ Elle permet déjà :
 * d’afficher les données dynamiquement dans les templates ;
 * de masquer ou afficher certains contenus ;
 * de documenter la structure SQL du projet ;
-* de préparer une évolution future vers PostgreSQL ou NoSQL.
+* de présenter des extraits SQL natifs ;
+* de tester une expérimentation NoSQL avec TinyDB ;
+* d’afficher des notes TinyDB sur la page d’accueil ;
+* de préparer une évolution future vers PostgreSQL ou une solution NoSQL plus avancée.
 
 Le choix de SQLite est adapté à la V1.
 
-Il permet de valider le backend Django sans complexifier inutilement l’architecture.
+TinyDB est utilisé comme complément limité et contrôlé.
 
 Le projet dispose donc d’une base de données cohérente avec son périmètre : simple, lisible, testable, documentée et suffisante pour une première version.
+
+À ce stade, la priorité n’est plus d’ajouter une nouvelle base ou de complexifier l’architecture.
+
+La priorité est de préparer les captures, les preuves et l’intégration propre dans le dossier projet final.

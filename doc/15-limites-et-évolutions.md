@@ -6,15 +6,32 @@ Ce document présente les limites actuelles de la V1 du projet **Frostia Games**
 
 L'objectif est de montrer que le projet a été volontairement cadré afin de produire une version stable, fonctionnelle, documentée et déployée, sans ajouter trop de fonctionnalités en même temps.
 
-Cette démarche permet d'éviter une dérive du périmètre, une dette technique trop importante ou une complexité inutile pour une première version.
+Cette démarche permet d'éviter :
+
+* une dérive du périmètre ;
+* une dette technique trop importante ;
+* une complexité inutile ;
+* des fonctionnalités commencées mais non terminées ;
+* une documentation incohérente avec le projet réel.
 
 Le document sert aussi à expliquer que certaines idées peuvent être conservées, reportées, simplifiées ou abandonnées pendant la phase de stabilisation.
 
-Une V1 évolue constamment. L'objectif n'est donc pas de tout ajouter, mais de conserver uniquement ce qui renforce réellement le projet.
+Une V1 évolue constamment.
+
+L'objectif n'est donc pas de tout ajouter, mais de conserver uniquement ce qui renforce réellement le projet.
+
+Ce document a été mis à jour après le renforcement du dossier projet afin d’intégrer les éléments désormais réalisés :
+
+* TinyDB ;
+* affichage des notes TinyDB sur l’accueil ;
+* compte temporaire de lecture seule ;
+* SQL natif documentaire ;
+* documentation de conception ;
+* documentation frontend et backend complémentaire.
 
 ---
 
-## Rappel du périmètre de la V1
+# 1. Rappel du périmètre de la V1
 
 La V1 du projet Frostia Games a pour objectif de proposer un portfolio Django simple et fonctionnel permettant de présenter des projets de jeux vidéo actuels et futurs.
 
@@ -26,7 +43,13 @@ Le périmètre retenu pour cette première version comprend :
 * une base SQLite ;
 * une administration Django ;
 * un affichage dynamique de certaines données ;
+* une expérimentation NoSQL légère avec TinyDB ;
+* un affichage de notes de progression sur l’accueil ;
+* un menu mobile JavaScript ;
+* un compte temporaire de lecture seule ;
 * une documentation technique ;
+* une documentation de conception ;
+* une documentation SQL native ;
 * un déploiement en ligne sur Render ;
 * une sécurité minimale adaptée à une V1.
 
@@ -34,7 +57,7 @@ Cette V1 ne cherche pas encore à devenir une plateforme complète de gestion de
 
 ---
 
-## Limites générales de la V1
+# 2. Limites générales de la V1
 
 La V1 est volontairement limitée.
 
@@ -44,17 +67,18 @@ Limites principales :
 
 * design encore améliorable ;
 * responsive fonctionnel mais perfectible ;
-* base de données SQLite ;
+* base de données principale encore en SQLite ;
 * pas de PostgreSQL ;
-* pas de compte jury temporaire ;
 * pas d'administration personnalisée ;
 * pas d'espace privé complet ;
-* pas de système complet d'ajout dynamique de projets ;
+* pas de système complet d'ajout dynamique de projets détaillés ;
 * pas d'upload serveur réel ;
 * pas de jeu jouable directement dans le navigateur ;
 * pas de statistiques avancées ;
 * pas de graphiques Plotly.js intégrés ;
-* pas de tests automatisés complets.
+* pas de tests automatisés complets ;
+* TinyDB limité à une preuve NoSQL légère ;
+* compte temporaire limité à la consultation, sans système de rôles avancé.
 
 Ces limites sont assumées dans le cadre d'une première version.
 
@@ -62,7 +86,99 @@ Elles ne sont pas considérées comme des échecs, mais comme des choix de cadra
 
 ---
 
-## Limite 01 - Design encore perfectible
+# 3. Éléments initialement reportés mais finalement intégrés
+
+Certains éléments qui étaient au départ envisagés comme des pistes futures ont été intégrés de manière limitée et contrôlée pendant le renforcement du dossier.
+
+## 3.1 TinyDB
+
+TinyDB a été ajouté pour démontrer une logique NoSQL simple.
+
+Il sert à stocker des notes de progression dans un fichier JSON.
+
+Fichiers concernés :
+
+```text
+core/services/nosql_notes.py
+scripts/demo_tinydb_notes.py
+data/nosql/project_notes_db.json
+docs/nosql/tinydb-integration.md
+```
+
+Commande de vérification :
+
+```powershell
+python -m scripts.demo_tinydb_notes
+```
+
+TinyDB ne remplace pas SQLite.
+
+Il reste une expérimentation légère.
+
+---
+
+## 3.2 Compte temporaire de lecture seule
+
+Un compte temporaire de lecture seule a été créé.
+
+Il permet une consultation limitée de l’administration Django.
+
+Il peut consulter :
+
+* les créations ;
+* les projets jouables.
+
+Il ne doit pas donner accès :
+
+* aux utilisateurs ;
+* aux groupes ;
+* aux permissions sensibles ;
+* aux réglages internes ;
+* aux secrets du projet.
+
+Les identifiants réels ne doivent pas être écrits dans la documentation publique.
+
+---
+
+## 3.3 SQL natif documentaire
+
+Des fichiers SQL natifs ont été ajoutés pour renforcer la partie base de données du dossier projet.
+
+Fichiers concernés :
+
+```text
+docs/sql/create_tables_creations.sql
+docs/sql/create_tables_playable.sql
+docs/sql/exemples_insert.sql
+docs/sql/sql-natif.md
+```
+
+Ces fichiers servent à montrer la compréhension du SQL.
+
+Ils ne remplacent pas les migrations Django.
+
+---
+
+## 3.4 Documentation complémentaire
+
+Le dossier `docs/` a été ajouté pour renforcer la documentation technique.
+
+Il contient notamment :
+
+```text
+docs/backend/
+docs/conception/
+docs/frontend/
+docs/nosql/
+docs/preuves/
+docs/sql/
+```
+
+Ce dossier complète la documentation principale du dossier `doc/`.
+
+---
+
+# 4. Limite 01 - Design encore perfectible
 
 ## Description
 
@@ -81,7 +197,14 @@ La V1 propose déjà une interface propre, mais certains éléments pourront êt
 
 ## Raison du report
 
-Le design complet n'a pas été poussé trop loin afin de garder du temps pour la stabilisation technique, la documentation et le déploiement.
+Le design complet n'a pas été poussé trop loin afin de garder du temps pour :
+
+* la stabilisation technique ;
+* la documentation ;
+* le déploiement ;
+* les preuves ;
+* les captures ;
+* les corrections de dossier.
 
 L'objectif principal était d'obtenir une V1 fonctionnelle et déployée, pas une version graphique définitive.
 
@@ -90,7 +213,7 @@ L'objectif principal était d'obtenir une V1 fonctionnelle et déployée, pas un
 Dans une prochaine version, le design pourra être modernisé avec :
 
 * une identité visuelle plus complète ;
-* des maquettes Figma ;
+* des maquettes Figma plus poussées ;
 * une meilleure organisation des sections ;
 * des animations légères ;
 * un responsive plus travaillé ;
@@ -98,7 +221,7 @@ Dans une prochaine version, le design pourra être modernisé avec :
 
 ---
 
-## Limite 02 - Responsive mobile à améliorer
+# 5. Limite 02 - Responsive mobile à améliorer
 
 ## Description
 
@@ -131,17 +254,17 @@ Une prochaine version pourra intégrer :
 
 ---
 
-## Limite 03 - Utilisation de SQLite
+# 6. Limite 03 - Utilisation de SQLite
 
 ## Description
 
-La V1 utilise SQLite comme base de données.
+La V1 utilise SQLite comme base de données principale.
 
 SQLite est suffisant pour un portfolio simple, mais ce n'est pas la solution idéale pour une vraie production avec plusieurs utilisateurs ou beaucoup de données.
 
 Base actuelle :
 
-```txt
+```text
 db.sqlite3
 ```
 
@@ -175,49 +298,47 @@ Cette évolution est reportée pour éviter de complexifier trop tôt la V1.
 
 ---
 
-## Limite 04 - Pas de compte jury temporaire
+# 7. Limite 04 - Compte temporaire limité
 
 ## Description
 
-Aucun compte jury temporaire n'a été créé dans la V1.
+Un compte temporaire de lecture seule existe désormais.
 
-L'administration Django est fonctionnelle, mais l'accès reste réservé à l'administrateur du projet.
+Il permet de consulter certaines parties de l’administration Django, mais il ne constitue pas un vrai système de rôles avancé.
 
-## Raison du report
+## Ce qui est fait
 
-Créer un compte jury maintenant aurait ajouté une couche de gestion supplémentaire :
+Le compte temporaire permet :
 
-* mot de passe temporaire ;
-* droits à limiter ;
-* accès à surveiller ;
-* compte à supprimer après évaluation ;
-* risque de donner trop de permissions.
+* une consultation limitée ;
+* un droit de regard sur les créations ;
+* un droit de regard sur les projets jouables ;
+* une présentation plus sécurisée qu’un compte superutilisateur.
 
-Pour la V1, les captures d'écran et la documentation suffisent à montrer que l'administration fonctionne.
+## Limite
+
+Ce compte ne remplace pas :
+
+* une interface d’administration personnalisée ;
+* un système de rôles complet ;
+* un espace privé ;
+* une gestion avancée des permissions métier.
 
 ## Évolution possible
 
-Si le projet est validé comme second projet ou si l'évaluateur demande un accès direct, un compte temporaire pourra être créé.
+Une future version pourra proposer :
 
-Ce compte devra être :
+* des rôles plus fins ;
+* une interface dédiée à l’évaluation ;
+* un accès temporaire mieux encadré ;
+* une expiration automatique ;
+* une page de consultation publique ou semi-privée.
 
-* limité ;
-* temporaire ;
-* en consultation si possible ;
-* supprimé après l'évaluation ;
-* séparé du compte administrateur principal.
-
-Exemple de compte possible :
-
-```txt
-jury_demo
-```
-
-Ce compte ne devra jamais avoir les pleins droits administrateur.
+Les identifiants du compte temporaire ne doivent jamais être publiés dans la documentation publique.
 
 ---
 
-## Limite 05 - Administration Django non personnalisée
+# 8. Limite 05 - Administration Django non personnalisée
 
 ## Description
 
@@ -253,7 +374,7 @@ Cette évolution sera utile si le site devient une vraie plateforme de gestion d
 
 ---
 
-## Limite 06 - Ajout dynamique de projets encore limité
+# 9. Limite 06 - Ajout dynamique de projets encore limité
 
 ## Description
 
@@ -279,7 +400,7 @@ Pour la V1, il était préférable de conserver un système simple.
 
 Une future version pourra ajouter des modèles plus détaillés :
 
-```txt
+```text
 Projet
 Version
 Capture
@@ -293,7 +414,7 @@ Ces modèles permettraient de transformer le portfolio en véritable base de sui
 
 ---
 
-## Limite 07 - Pas d'upload serveur réel
+# 10. Limite 07 - Pas d'upload serveur réel
 
 ## Description
 
@@ -336,7 +457,7 @@ Une future version pourra intégrer :
 
 ---
 
-## Limite 08 - Pas de jeu jouable dans le navigateur
+# 11. Limite 08 - Pas de jeu jouable dans le navigateur
 
 ## Description
 
@@ -375,7 +496,7 @@ Cette fonctionnalité doit rester une évolution future, pas une priorité immé
 
 ---
 
-## Limite 09 - Pas de statistiques avancées
+# 12. Limite 09 - Pas de statistiques avancées
 
 ## Description
 
@@ -409,7 +530,7 @@ Cette évolution pourra être présentée comme une amélioration future.
 
 ---
 
-## Limite 10 - Tests automatisés incomplets
+# 13. Limite 10 - Tests automatisés incomplets
 
 ## Description
 
@@ -418,8 +539,10 @@ La V1 a été vérifiée manuellement, mais ne dispose pas encore d'une couvertu
 Les vérifications actuelles reposent surtout sur :
 
 * `python manage.py check` ;
+* `python -m scripts.demo_tinydb_notes` ;
 * tests manuels des pages ;
 * tests de l'administration ;
+* tests du compte lecture seule ;
 * tests du déploiement Render ;
 * tests visuels ;
 * vérifications fonctionnelles.
@@ -434,7 +557,8 @@ Pour cette V1, la priorité a été donnée à :
 * le fonctionnement visible ;
 * le déploiement ;
 * la documentation ;
-* les vérifications manuelles.
+* les vérifications manuelles ;
+* les preuves.
 
 ## Évolution possible
 
@@ -446,12 +570,58 @@ Une version future pourra ajouter :
 * tests des URLs ;
 * tests de formulaires ;
 * tests d'accès admin ;
+* tests TinyDB ;
 * tests de sécurité ;
 * tests responsive plus systématiques.
 
 ---
 
-## Limite 11 - Documentation encore à maintenir
+# 14. Limite 11 - TinyDB limité à une preuve NoSQL légère
+
+## Description
+
+TinyDB est intégré dans le projet, mais son usage reste volontairement limité.
+
+Il sert à stocker des notes de progression dans un fichier JSON.
+
+Il ne constitue pas une base NoSQL complète pour une production avancée.
+
+## Raison du choix
+
+TinyDB a été choisi car :
+
+* il est léger ;
+* il s’intègre rapidement ;
+* il permet de démontrer une logique NoSQL ;
+* il ne demande pas de serveur externe ;
+* il reste cohérent avec une V1 limitée.
+
+## Limite
+
+TinyDB n’est pas utilisé pour :
+
+* stocker des utilisateurs ;
+* gérer des médias ;
+* stocker des données sensibles ;
+* remplacer SQLite ;
+* gérer une forte charge ;
+* devenir une vraie base NoSQL de production.
+
+## Évolution possible
+
+Si le projet évolue vers des contenus très variables, une solution comme MongoDB pourra être étudiée.
+
+MongoDB pourrait être utile pour :
+
+* notes de conception ;
+* contenus flexibles ;
+* fiches projets variables ;
+* journaux de développement ;
+* métadonnées de médias.
+
+---
+
+# 15. Limite 12 - Documentation encore à maintenir
 
 ## Description
 
@@ -467,7 +637,7 @@ Si la documentation n'est pas mise à jour, elle peut devenir incohérente avec 
 
 Pour éviter cela, chaque étape future devra suivre la règle suivante :
 
-```txt
+```text
 Une fonctionnalité ajoutée = une documentation mise à jour.
 ```
 
@@ -479,11 +649,14 @@ Documents à maintenir :
 * documentation de déploiement ;
 * documentation architecture ;
 * documentation sécurité ;
-* documentation utilisateur.
+* documentation utilisateur ;
+* documentation base de données ;
+* documentation tests ;
+* documentation captures et preuves.
 
 ---
 
-## Limite 12 - Offre gratuite Render
+# 16. Limite 13 - Offre gratuite Render
 
 ## Description
 
@@ -517,13 +690,12 @@ Si le projet devient plus important, il pourra évoluer vers :
 
 ---
 
-## Ce qui est volontairement exclu de la V1
+# 17. Ce qui est volontairement exclu de la V1
 
 Les éléments suivants sont volontairement exclus de la V1 :
 
-```txt
+```text
 PostgreSQL
-Compte jury temporaire
 Interface admin personnalisée
 Upload serveur réel
 Jeu jouable navigateur
@@ -533,15 +705,22 @@ Espace privé complet
 Système de sauvegarde automatique
 Gestion avancée des médias
 Tests automatisés complets
+API REST
+MongoDB
+Mini-jeu intégré
+Système de score
+Téléchargement public de projet jouable
 ```
 
 Ces éléments ne sont pas oubliés.
 
 Ils sont reportés afin de protéger la stabilité du projet.
 
+Le compte temporaire de lecture seule et TinyDB ne sont plus dans cette liste, car ils ont été ajoutés de manière limitée.
+
 ---
 
-## Risques évités
+# 18. Risques évités
 
 Le cadrage de la V1 permet d'éviter plusieurs risques classiques :
 
@@ -555,11 +734,11 @@ Le cadrage de la V1 permet d'éviter plusieurs risques classiques :
 * retard important ;
 * transformation du projet en usine à gaz.
 
-La priorité a été donnée à une version simple, stable, déployée et défendable.
+La priorité a été donnée à une version simple, stable, déployée, documentée et défendable.
 
 ---
 
-## Idées pouvant être abandonnées pendant la stabilisation
+# 19. Idées pouvant être abandonnées pendant la stabilisation
 
 Pendant la phase de stabilisation d'une V1, certaines idées peuvent être reportées, simplifiées ou même abandonnées.
 
@@ -613,38 +792,43 @@ L'objectif est de garder ce qui renforce réellement le projet.
 
 ---
 
-## Évolutions prioritaires
+# 20. Évolutions prioritaires
 
 Les évolutions futures doivent être ajoutées progressivement.
 
-Priorité 1 :
+## Priorité 1 - Finalisation du dossier
 
-* améliorer le contenu des pages ;
 * corriger les textes ;
-* améliorer le responsive ;
+* harmoniser les documents ;
 * finaliser les captures ;
+* vérifier les preuves ;
 * améliorer le README ;
-* finaliser le dossier projet.
+* finaliser le dossier projet ;
+* vérifier les annexes ;
+* faire un dernier commit propre.
 
-Priorité 2 :
+## Priorité 2 - Amélioration de présentation
 
 * améliorer le design ;
-* créer des maquettes Figma ;
+* améliorer le responsive ;
+* enrichir les pages ;
+* créer des maquettes Figma plus détaillées ;
 * enrichir les fiches projets ;
 * structurer davantage les données ;
 * améliorer l'administration Django.
 
-Priorité 3 :
+## Priorité 3 - Évolution technique
 
 * ajouter PostgreSQL ;
-* créer un compte jury temporaire si demandé ;
 * intégrer Plotly.js ;
 * préparer une vraie section de projets jouables ;
-* étudier l'intégration d'une démonstration dans le navigateur.
+* étudier l'intégration d'une démonstration dans le navigateur ;
+* étudier MongoDB si les contenus deviennent très variables ;
+* ajouter des tests automatisés.
 
 ---
 
-## Roadmap possible
+# 21. Roadmap possible
 
 ## Version 1.1
 
@@ -657,7 +841,8 @@ Objectif : améliorer la présentation sans changer l'architecture.
 * meilleure mise en page ;
 * captures propres ;
 * README plus complet ;
-* dossier projet finalisé.
+* dossier projet finalisé ;
+* preuves mieux organisées.
 
 ---
 
@@ -672,7 +857,8 @@ Objectif : améliorer la gestion des contenus.
 * meilleure utilisation de l'administration ;
 * champs supplémentaires ;
 * tri des projets ;
-* statuts plus précis.
+* statuts plus précis ;
+* meilleure organisation des médias.
 
 ---
 
@@ -685,15 +871,16 @@ Objectif : transformer le portfolio en plateforme plus complète.
 * PostgreSQL ;
 * espace privé ;
 * administration personnalisée ;
-* compte jury temporaire ;
 * upload sécurisé ;
 * gestion avancée des médias ;
 * graphiques de suivi ;
-* intégration éventuelle de démonstrations jouables.
+* intégration éventuelle de démonstrations jouables ;
+* tests automatisés plus complets ;
+* système de rôles plus avancé.
 
 ---
 
-## Conditions avant d'ajouter une nouvelle fonctionnalité
+# 22. Conditions avant d'ajouter une nouvelle fonctionnalité
 
 Avant d'ajouter une nouvelle fonctionnalité, il faudra vérifier :
 
@@ -715,7 +902,7 @@ Si une idée fragilise la V1, elle doit être simplifiée ou abandonnée.
 
 ---
 
-## Bilan
+# 23. Bilan
 
 La V1 de Frostia Games est volontairement limitée, mais elle est fonctionnelle.
 
@@ -725,9 +912,14 @@ Elle permet déjà de montrer :
 * une interface publique ;
 * une base SQLite ;
 * une administration Django ;
+* un compte temporaire de lecture seule ;
 * un affichage dynamique ;
+* une expérimentation NoSQL TinyDB ;
+* un affichage des notes TinyDB ;
+* un menu mobile JavaScript ;
 * un déploiement Render ;
 * une documentation complète ;
+* des fichiers SQL natifs documentaires ;
 * une réflexion technique sur les limites et évolutions.
 
 Les limites actuelles ne sont pas des échecs.
@@ -739,3 +931,5 @@ Les évolutions futures sont identifiées, mais elles seront ajoutées progressi
 Certaines idées pourront aussi être abandonnées pendant la stabilisation si elles ne servent plus l'objectif principal de la V1.
 
 La priorité reste de conserver un projet clair, stable, maintenable, documenté et défendable.
+
+À ce stade, la priorité immédiate est la finalisation des captures, des preuves, des annexes et du dossier projet final, pas l’ajout de nouvelles fonctionnalités lourdes.
