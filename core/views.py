@@ -1,9 +1,21 @@
+from __future__ import annotations
+
+from typing import Any
+
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 
 from core.services.nosql_notes import find_notes_by_project, seed_project_notes
 from creations.models import Creation
 from playable.models import PlayableProject
+
+
+def get_project_notes_safe() -> list[dict[str, Any]]:
+    try:
+        seed_project_notes()
+        return find_notes_by_project("frostia-games")
+    except Exception:
+        return []
 
 
 def home(request: HttpRequest) -> HttpResponse:
@@ -16,8 +28,7 @@ def home(request: HttpRequest) -> HttpResponse:
         is_visible=True,
     ).order_by("title")[:3]
 
-    seed_project_notes()
-    project_notes = find_notes_by_project("frostia-games")
+    project_notes = get_project_notes_safe()
 
     return render(
         request,
