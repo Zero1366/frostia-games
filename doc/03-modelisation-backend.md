@@ -1,4 +1,4 @@
-# Modélisation backend - Frostia Games
+# Modélisation backend — Frostia Games
 
 ## Objectif du document
 
@@ -6,62 +6,49 @@ Ce document présente la modélisation backend de la V1 du projet **Frostia Game
 
 Il décrit :
 
-* les entités utilisées dans la base de données ;
-* le rôle des modèles Django ;
-* le schéma relationnel simplifié ;
-* le MCD simplifié ;
-* les cas d'utilisation principaux ;
-* les diagrammes de séquence ;
-* le rôle de l'ORM Django ;
-* le rôle du SQL natif documentaire ;
-* le rôle de l'intégration NoSQL légère avec TinyDB ;
-* le rôle du compte temporaire de lecture seule ;
-* les limites de la V1 ;
-* les évolutions prévues.
+- les entités utilisées dans la base de données ;
+- le rôle des modèles Django ;
+- le schéma relationnel simplifié ;
+- le MCD simplifié ;
+- les cas d'utilisation principaux ;
+- les diagrammes de séquence ;
+- le rôle de l'ORM Django ;
+- le rôle du SQL natif documentaire ;
+- le rôle de TinyDB ;
+- le rôle du compte d’évaluation en lecture seule ;
+- le rôle de `setup_render_data` sur Render ;
+- les limites de la V1 ;
+- les évolutions prévues.
 
 L'objectif est de montrer que le backend du projet repose sur une structure claire, même si la V1 reste volontairement simple.
 
-Ce document a été mis à jour après le renforcement du dossier projet afin d'intégrer :
-
-* les documents de conception complémentaires ;
-* les extraits SQL natifs ;
-* la documentation du JavaScript dynamique ;
-* l'intégration TinyDB ;
-* l'affichage des notes TinyDB sur l'accueil ;
-* le compte temporaire de lecture seule ;
-* la préparation des preuves pour le dossier final.
-
 ---
 
-# 1. Contexte backend du projet
+# 1. Contexte backend
 
 Frostia Games est un portfolio développé avec **Django**.
 
 La V1 utilise :
 
-* Django pour le routage, les vues, les modèles et l'administration ;
-* SQLite pour stocker les données principales ;
-* l'ORM Django pour manipuler les données SQL ;
-* l'administration Django pour ajouter ou modifier les contenus ;
-* des templates Django pour afficher les données dans les pages HTML ;
-* TinyDB pour une expérimentation NoSQL légère ;
-* un fichier JSON TinyDB pour stocker des notes de progression ;
-* un service Python pour lire les notes NoSQL ;
-* un compte temporaire de lecture seule pour l'évaluation ;
-* Render pour le déploiement en ligne ;
-* Gunicorn pour lancer l'application Django en production ;
-* WhiteNoise pour la gestion des fichiers statiques en production.
+- Django pour les routes, les vues, les modèles et l'administration ;
+- SQLite pour les données principales ;
+- l'ORM Django pour manipuler les données SQL ;
+- TinyDB pour une expérimentation NoSQL légère ;
+- un service Python pour lire les notes TinyDB ;
+- un compte d’évaluation en lecture seule ;
+- une commande `setup_render_data` pour recréer les données Render ;
+- Render pour le déploiement en ligne ;
+- Gunicorn pour lancer l'application Django en production ;
+- WhiteNoise pour les fichiers statiques en production.
 
-La base SQLite est utilisée pour rendre certaines parties du site dynamiques.
+Les deux contenus principaux stockés en SQLite sont :
 
-Actuellement, deux types de contenus principaux sont stockés en base SQLite :
+- les créations ;
+- les futurs projets jouables.
 
-* les créations ;
-* les futurs projets jouables.
+TinyDB est utilisé en complément pour stocker des notes de progression sous forme documentaire JSON.
 
-En complément, TinyDB est utilisé pour stocker des notes de progression sous forme documentaire NoSQL.
-
-Le backend reste volontairement limité afin de conserver une V1 stable, lisible, maintenable et défendable dans le dossier projet.
+Le backend reste volontairement limité afin de conserver une V1 stable, lisible, maintenable et défendable.
 
 ---
 
@@ -73,19 +60,17 @@ Le modèle `Creation` représente une création ou un projet présenté dans la 
 
 Il permet d'enregistrer :
 
-* le titre du projet ;
-* son identifiant URL ;
-* sa lettre de classement alphabétique ;
-* son nom de code ;
-* son type ;
-* son statut ;
-* sa description courte ;
-* sa visibilité sur le site ;
-* ses dates de création et de modification.
+- le titre du projet ;
+- son identifiant URL ;
+- sa lettre de classement alphabétique ;
+- son nom de code ;
+- son type ;
+- son statut ;
+- sa description courte ;
+- sa visibilité sur le site ;
+- ses dates de création et de modification.
 
 Ce modèle permet d'afficher dynamiquement les créations enregistrées dans l'administration Django.
-
-Il évite de devoir modifier directement le HTML pour changer certains contenus affichés dans la page **Mes créations**.
 
 ---
 
@@ -95,25 +80,21 @@ Le modèle `PlayableProject` représente un futur contenu jouable, une vidéo, u
 
 Il permet d'enregistrer :
 
-* le titre du contenu ;
-* son identifiant URL ;
-* son statut ;
-* le type de contenu prévu ;
-* une description courte ;
-* un message de disponibilité ;
-* son état de disponibilité ;
-* sa visibilité sur le site ;
-* ses dates de création et de modification.
+- le titre du contenu ;
+- son identifiant URL ;
+- son statut ;
+- le type de contenu prévu ;
+- une description courte ;
+- un message de disponibilité ;
+- son état de disponibilité ;
+- sa visibilité sur le site ;
+- ses dates de création et de modification.
 
-Ce modèle permet d'afficher clairement qu'un projet jouable est prévu, sans annoncer une fonctionnalité qui n'est pas encore disponible dans la V1.
-
-Il sert donc à préparer une évolution future tout en restant honnête sur les limites actuelles du projet.
+Ce modèle prépare une évolution future sans annoncer une fonctionnalité qui n'est pas encore disponible dans la V1.
 
 ---
 
 ## 2.3 Données NoSQL TinyDB
-
-En complément des modèles Django, le projet utilise une base NoSQL légère avec TinyDB.
 
 TinyDB ne remplace pas les modèles Django.
 
@@ -121,12 +102,12 @@ Il sert uniquement à stocker des notes de progression liées au projet Frostia 
 
 Les notes NoSQL peuvent contenir :
 
-* un code projet ;
-* un titre ;
-* un contenu ;
-* une liste de tags ;
-* un statut ;
-* une date de création.
+- un code projet ;
+- un titre ;
+- un contenu ;
+- une liste de tags ;
+- un statut ;
+- une date de création.
 
 Ces données ne sont pas gérées par l'administration Django.
 
@@ -138,61 +119,48 @@ Elles sont lues par un service Python dédié, puis affichées sur la page d'acc
 
 ## Table `creations_creation`
 
-| Champ               | Type logique       | Rôle                         |
-| ------------------- | ------------------ | ---------------------------- |
-| `id`                | Integer            | Identifiant unique           |
-| `title`             | Texte court        | Titre de la création         |
-| `slug`              | Texte court unique | Identifiant URL              |
-| `alphabet_letter`   | Texte court        | Lettre de classement         |
-| `code_name`         | Texte court        | Nom de code du projet        |
-| `project_type`      | Texte court        | Type de projet               |
-| `status`            | Texte court        | Statut de développement      |
-| `short_description` | Texte long         | Description courte           |
-| `is_visible`        | Booléen            | Affichage ou non sur le site |
-| `created_at`        | Date / heure       | Date de création             |
-| `updated_at`        | Date / heure       | Dernière modification        |
-
----
+| Champ | Type logique | Rôle |
+| ----- | ------------ | ---- |
+| `id` | Integer | Identifiant unique |
+| `title` | Texte court | Titre de la création |
+| `slug` | Texte court unique | Identifiant URL |
+| `alphabet_letter` | Texte court | Lettre de classement |
+| `code_name` | Texte court | Nom de code du projet |
+| `project_type` | Texte court | Type de projet |
+| `status` | Texte court | Statut de développement |
+| `short_description` | Texte long | Description courte |
+| `is_visible` | Booléen | Affichage ou non sur le site |
+| `created_at` | Date / heure | Date de création |
+| `updated_at` | Date / heure | Dernière modification |
 
 ## Table `playable_playableproject`
 
-| Champ                  | Type logique       | Rôle                                 |
-| ---------------------- | ------------------ | ------------------------------------ |
-| `id`                   | Integer            | Identifiant unique                   |
-| `title`                | Texte court        | Titre du projet jouable              |
-| `slug`                 | Texte court unique | Identifiant URL                      |
-| `status`               | Texte court        | Statut du contenu                    |
-| `content_type`         | Texte court        | Type de contenu prévu                |
-| `short_description`    | Texte long         | Description courte                   |
-| `availability_message` | Texte long         | Message de disponibilité             |
-| `is_available`         | Booléen            | Indique si le contenu est disponible |
-| `is_visible`           | Booléen            | Affichage ou non sur le site         |
-| `created_at`           | Date / heure       | Date de création                     |
-| `updated_at`           | Date / heure       | Dernière modification                |
-
----
+| Champ | Type logique | Rôle |
+| ----- | ------------ | ---- |
+| `id` | Integer | Identifiant unique |
+| `title` | Texte court | Titre du projet jouable |
+| `slug` | Texte court unique | Identifiant URL |
+| `status` | Texte court | Statut du contenu |
+| `content_type` | Texte court | Type de contenu prévu |
+| `short_description` | Texte long | Description courte |
+| `availability_message` | Texte long | Message de disponibilité |
+| `is_available` | Booléen | Indique si le contenu est disponible |
+| `is_visible` | Booléen | Affichage ou non sur le site |
+| `created_at` | Date / heure | Date de création |
+| `updated_at` | Date / heure | Dernière modification |
 
 ## Structure documentaire TinyDB
 
-La base TinyDB n'est pas relationnelle.
+| Champ | Type logique | Rôle |
+| ----- | ------------ | ---- |
+| `project_code` | Texte court | Code du projet concerné |
+| `title` | Texte court | Titre de la note |
+| `content` | Texte long | Contenu de la note |
+| `tags` | Liste de textes | Tags associés à la note |
+| `status` | Texte court | Statut de la note |
+| `created_at` | Texte / date | Date de création de la note |
 
-Elle stocke des documents JSON.
-
-Exemple de structure logique :
-
-| Champ          | Type logique     | Rôle                                  |
-| -------------- | ---------------- | ------------------------------------- |
-| `project_code` | Texte court      | Code du projet concerné               |
-| `title`        | Texte court      | Titre de la note                      |
-| `content`      | Texte long       | Contenu de la note                    |
-| `tags`         | Liste de textes  | Tags associés à la note               |
-| `status`       | Texte court      | Statut de la note                     |
-| `created_at`   | Texte / date     | Date de création de la note           |
-
-TinyDB permet ici de montrer la différence entre :
-
-* une base SQL structurée avec tables ;
-* une base NoSQL documentaire avec objets JSON.
+TinyDB permet de montrer la différence entre une base SQL structurée avec tables et une base NoSQL documentaire avec objets JSON.
 
 ---
 
@@ -235,41 +203,25 @@ Dans la V1, les deux entités SQL principales sont indépendantes.
 +---------------------------+
 ```
 
-## Explication
-
-L'entité `CREATION` sert à gérer les projets présentés dans le lexique de la page **Mes créations**.
-
-L'entité `PLAYABLE_PROJECT` sert à gérer les contenus liés à la page **Projets jouables**.
-
 Dans cette V1, il n'existe pas encore de relation directe entre ces deux entités.
 
-Ce choix est volontaire.
-
-Il permet de conserver un backend simple, stable et adapté au périmètre actuel.
+Ce choix permet de conserver un backend simple, stable et adapté au périmètre actuel.
 
 Une future version pourra ajouter des relations entre :
 
-* les créations ;
-* les médias ;
-* les fiches détaillées ;
-* les versions jouables ;
-* les captures ;
-* les liens externes ;
-* les journaux de développement.
+- créations ;
+- médias ;
+- fiches détaillées ;
+- versions jouables ;
+- captures ;
+- liens externes ;
+- journaux de développement.
 
----
-
-## MCD complémentaire
-
-Un document complémentaire de conception existe dans la documentation de renforcement :
+Document complémentaire :
 
 ```text
 docs/conception/mcd.md
 ```
-
-Ce document permet de présenter le MCD de manière plus propre dans le dossier projet final.
-
-Il complète cette section sans remplacer l'explication présente ici.
 
 ---
 
@@ -277,77 +229,60 @@ Il complète cette section sans remplacer l'explication présente ici.
 
 ## Acteurs
 
-Le projet possède trois acteurs principaux :
-
 ```text
-- Visiteur
-- Administrateur
-- Évaluateur en lecture seule
+Visiteur
+Administrateur
+Évaluateur en lecture seule
 ```
 
----
-
-## 5.1 Visiteur
+## Visiteur
 
 Le visiteur peut :
 
-* consulter la page d'accueil ;
-* consulter la page **Mes créations** ;
-* cliquer sur une lettre du lexique ;
-* consulter les créations visibles ;
-* consulter la page **Projets jouables** ;
-* voir l'état de disponibilité d'un futur projet jouable ;
-* sélectionner un fichier local dans l'interface préparatoire ;
-* voir les notes de progression affichées sur l'accueil ;
-* comprendre qu'aucun vrai upload serveur n'est implanté dans la V1.
+- consulter la page d'accueil ;
+- consulter la page **Mes créations** ;
+- consulter les créations visibles ;
+- consulter la page **Projets jouables** ;
+- voir l'état de disponibilité d'un futur projet jouable ;
+- sélectionner un fichier local dans l'interface préparatoire ;
+- voir les notes de progression affichées sur l'accueil.
 
 Le visiteur n'a pas de compte utilisateur dans cette V1.
 
 Il n'a pas accès à l'administration Django.
 
----
-
-## 5.2 Administrateur
+## Administrateur
 
 L'administrateur peut :
 
-* se connecter à l'administration Django ;
-* ajouter une création ;
-* modifier une création ;
-* masquer ou afficher une création ;
-* ajouter un futur projet jouable ;
-* modifier un projet jouable ;
-* définir si un projet jouable est disponible ;
-* masquer ou afficher un projet jouable ;
-* gérer les groupes et utilisateurs si le compte est superutilisateur.
-
-L'administration Django reste privée.
+- se connecter à l'administration Django ;
+- ajouter une création ;
+- modifier une création ;
+- masquer ou afficher une création ;
+- ajouter un futur projet jouable ;
+- modifier un projet jouable ;
+- gérer les groupes et utilisateurs si le compte est superutilisateur.
 
 Aucun identifiant administrateur n'est publié dans GitHub ou dans la documentation publique.
 
----
+## Évaluateur en lecture seule
 
-## 5.3 Évaluateur en lecture seule
-
-Un compte temporaire de lecture seule peut être utilisé pour l'évaluation.
-
-Ce compte permet uniquement de consulter certaines données dans l'administration Django.
+Le compte d’évaluation permet uniquement de consulter certaines données dans l'administration Django.
 
 Il peut voir :
 
-* les créations ;
-* les projets jouables.
+- les créations ;
+- les projets jouables.
 
-Il ne doit pas voir :
+Il ne doit pas permettre :
 
-* les utilisateurs ;
-* les groupes ;
-* les permissions sensibles ;
-* les informations administrateur avancées.
-
-Ce compte permet de montrer l'administration Django sans fournir un accès complet au backend.
-
-Les identifiants réels ne doivent pas être écrits directement dans le dossier projet public.
+- l’ajout ;
+- la modification ;
+- la suppression ;
+- l’accès aux utilisateurs ;
+- l’accès aux groupes ;
+- l’accès aux permissions sensibles ;
+- l’accès aux secrets du projet.
 
 ---
 
@@ -363,38 +298,16 @@ Les identifiants réels ne doivent pas être écrits directement dans le dossier
         +-----------+                         +------------------+
              |                                          |
              | consulter l'accueil                      |
-             |----------------------------------------->|
-             |                                          |
              | consulter les créations                  |
-             |----------------------------------------->|
-             |                                          |
-             | afficher un projet depuis le lexique     |
-             |----------------------------------------->|
-             |                                          |
              | consulter les projets jouables           |
-             |----------------------------------------->|
-             |                                          |
              | consulter les notes de progression       |
-             |----------------------------------------->|
-             |                                          |
              | sélectionner un fichier local            |
-             |----------------------------------------->|
-             |                                          |
                                                         |
                                                         | se connecter à l'admin
-                                                        |---------------------->
-                                                        |
                                                         | ajouter une création
-                                                        |---------------------->
-                                                        |
                                                         | modifier une création
-                                                        |---------------------->
-                                                        |
                                                         | ajouter un projet jouable
-                                                        |---------------------->
-                                                        |
                                                         | modifier un projet jouable
-                                                        |---------------------->
 
         +------------------------------+
         | Évaluateur en lecture seule  |
@@ -406,43 +319,15 @@ Les identifiants réels ne doivent pas être écrits directement dans le dossier
              | sans modifier les utilisateurs
 ```
 
-## Explication
-
-Le visiteur interagit uniquement avec les pages publiques du site.
-
-L'administrateur utilise l'administration Django pour gérer les données affichées sur le site.
-
-L'évaluateur en lecture seule peut consulter une partie de l'administration sans accès aux permissions sensibles.
-
-La V1 ne contient pas encore :
-
-* d'espace utilisateur public ;
-* de système de rôles avancé public ;
-* de véritable upload serveur ;
-* de compte visiteur ;
-* d'API REST.
-
-Ces éléments sont reportés afin de conserver une V1 stable.
-
----
-
-## Diagramme complémentaire
-
-Un document complémentaire existe dans :
+Document complémentaire :
 
 ```text
 docs/conception/cas-utilisation.md
 ```
 
-Il permet d'intégrer un diagramme plus propre dans le dossier projet final.
-
 ---
 
-# 7. Diagramme de séquence : consultation des créations
-
-## Objectif
-
-Ce diagramme montre le fonctionnement lorsqu'un visiteur consulte la page **Mes créations**.
+# 7. Diagramme de séquence — consultation des créations
 
 ```text
 Visiteur
@@ -476,23 +361,15 @@ Template : creation.html
 Navigateur
    |
    | 8. Affiche la page au visiteur
-   v
-Visiteur
 ```
-
-## Explication
 
 La vue Django récupère uniquement les créations dont le champ `is_visible` est actif.
 
-La récupération des données passe par l'ORM Django, ce qui évite d'écrire directement des requêtes SQL brutes dans le code.
+La récupération des données passe par l'ORM Django.
 
 ---
 
-# 8. Diagramme de séquence : ajout d'une création via l'administration Django
-
-## Objectif
-
-Ce diagramme montre le fonctionnement lorsqu'un administrateur ajoute une création dans l'administration Django.
+# 8. Diagramme de séquence — ajout d'une création via l'administration
 
 ```text
 Administrateur
@@ -534,31 +411,13 @@ Base SQLite
 Admin Django
    |
    | 10. Affiche la création dans la liste admin
-   v
-Administrateur
 ```
-
-## Explication
-
-L'ajout d'une création passe par l'administration Django.
-
-Les champs du modèle définissent les contraintes principales comme :
-
-* la longueur maximale ;
-* l'unicité du slug ;
-* les champs obligatoires ;
-* la visibilité ;
-* les dates de création et de modification.
 
 L'ORM Django traduit l'opération en requête SQL sans écrire manuellement du SQL dans le code applicatif.
 
 ---
 
-# 9. Diagramme de séquence : consultation des projets jouables
-
-## Objectif
-
-Ce diagramme montre le fonctionnement lorsqu'un visiteur consulte la page **Projets jouables**.
+# 9. Diagramme de séquence — consultation des projets jouables
 
 ```text
 Visiteur
@@ -592,13 +451,7 @@ Template : projet_jouable.html
 Navigateur
    |
    | 8. Affiche la page au visiteur
-   v
-Visiteur
 ```
-
-## Explication
-
-La page **Projets jouables** affiche les données enregistrées dans la base SQLite.
 
 Dans la V1, l'interface de sélection de fichier est seulement préparatoire.
 
@@ -606,11 +459,7 @@ Aucun fichier n'est envoyé ni enregistré sur le serveur.
 
 ---
 
-# 10. Diagramme de séquence : affichage des notes TinyDB sur l'accueil
-
-## Objectif
-
-Ce diagramme montre le fonctionnement lorsqu'un visiteur consulte la page d'accueil et que les notes de progression TinyDB sont affichées.
+# 10. Diagramme de séquence — affichage des notes TinyDB
 
 ```text
 Visiteur
@@ -648,25 +497,13 @@ Template : home.html
 Navigateur
    |
    | 9. Affiche les notes au visiteur
-   v
-Visiteur
 ```
-
-## Explication
-
-La vue d'accueil utilise un service Python pour lire les données TinyDB.
-
-Les notes sont ensuite transmises au template `pages/home.html`.
 
 Cela permet de démontrer une utilisation NoSQL légère sans remplacer la base SQLite principale.
 
 ---
 
-# 11. Diagramme de séquence : accès en lecture seule à l'administration
-
-## Objectif
-
-Ce diagramme montre le fonctionnement lorsqu'un évaluateur utilise un compte temporaire de lecture seule.
+# 11. Diagramme de séquence — accès en lecture seule à l'administration
 
 ```text
 Évaluateur
@@ -679,7 +516,7 @@ Admin Django
    v
 Évaluateur
    |
-   | 3. Saisit les identifiants temporaires
+   | 3. Saisit les identifiants d'évaluation
    v
 Système d'authentification Django
    |
@@ -692,21 +529,62 @@ Permissions Django
 Admin Django
    |
    | 6. Affiche seulement les modèles autorisés
-   v
-Évaluateur
 ```
 
-## Explication
-
-Le compte temporaire est actif et membre de l'équipe, mais il n'est pas superutilisateur.
+Le compte d’évaluation est actif et membre de l'équipe, mais il n'est pas superutilisateur.
 
 Il possède uniquement les droits de consultation nécessaires.
 
-Il ne doit pas permettre de modifier les utilisateurs, les groupes ou les permissions sensibles.
+---
+
+# 12. Diagramme de séquence — initialisation Render
+
+```text
+Render
+   |
+   | 1. Démarre le service
+   v
+Start Command
+   |
+   | 2. python manage.py migrate --noinput
+   v
+Migrations Django
+   |
+   | 3. Base SQLite préparée
+   v
+Start Command
+   |
+   | 4. python manage.py setup_render_data
+   v
+Commande Django personnalisée
+   |
+   | 5. Crée ou met à jour les données de démonstration
+   | 6. Crée ou met à jour le groupe Evaluation lecture seule
+   | 7. Crée ou met à jour le compte evaluation_temp
+   | 8. Applique les permissions de lecture seule
+   v
+Start Command
+   |
+   | 9. gunicorn frostia_config.wsgi:application --bind 0.0.0.0:$PORT
+   v
+Application Django en ligne
+```
+
+Start Command actuel :
+
+```bash
+python manage.py migrate --noinput && python manage.py setup_render_data && gunicorn frostia_config.wsgi:application --bind 0.0.0.0:$PORT
+```
+
+Le mot de passe du compte d’évaluation est fourni par :
+
+```text
+EVALUATION_USER_PASSWORD
+```
 
 ---
 
-# 12. Rôle de l'ORM Django
+# 13. Rôle de l'ORM Django
 
 L'ORM Django permet de manipuler les données à travers des classes Python.
 
@@ -719,44 +597,36 @@ Creation.objects.filter(is_visible=True).order_by(
 )
 ```
 
-Cette instruction permet de récupérer les créations visibles sans écrire directement de requête SQL.
+Avantages :
 
-L'ORM apporte plusieurs avantages :
-
-* code plus lisible ;
-* meilleure intégration avec Django ;
-* réduction du risque d'injection SQL ;
-* compatibilité avec les migrations ;
-* manipulation des données sous forme d'objets Python ;
-* possibilité de changer de moteur de base plus tard plus facilement.
-
-Ce dernier point est important, car une migration future vers PostgreSQL pourra être envisagée sans réécrire toute la logique métier.
+- code plus lisible ;
+- meilleure intégration avec Django ;
+- réduction du risque d'injection SQL ;
+- compatibilité avec les migrations ;
+- manipulation des données sous forme d'objets Python ;
+- migration future vers PostgreSQL plus simple.
 
 ---
 
-# 13. Sécurité liée à la base de données
+# 14. Sécurité liée à la base de données
 
 La V1 utilise plusieurs mécanismes de sécurité fournis par Django :
 
-* utilisation de l'ORM au lieu de requêtes SQL brutes dans les vues ;
-* administration protégée par authentification ;
-* compte temporaire limité en lecture seule ;
-* protection CSRF disponible pour les formulaires ;
-* échappement automatique des variables dans les templates ;
-* validation des champs par les modèles Django ;
-* absence de vrai upload serveur dans la V1 ;
-* séparation des secrets dans les variables d'environnement ;
-* fichier `.env.example` pour documenter les variables sans exposer les vraies valeurs.
-
-Le projet n'utilise pas de requêtes SQL construites manuellement avec des chaînes de caractères dans les vues.
-
-Cela limite les risques d'injection SQL.
+- utilisation de l'ORM au lieu de requêtes SQL brutes dans les vues ;
+- administration protégée par authentification ;
+- compte d’évaluation limité en lecture seule ;
+- protection CSRF disponible pour les formulaires ;
+- échappement automatique des variables dans les templates ;
+- validation des champs par les modèles Django ;
+- absence de vrai upload serveur dans la V1 ;
+- séparation des secrets dans les variables d'environnement ;
+- fichier `.env.example` pour documenter les variables sans exposer les vraies valeurs.
 
 Les extraits SQL natifs sont présents dans la documentation pour expliquer la structure de la base, pas pour contourner l'ORM Django.
 
 ---
 
-# 14. Scripts SQL documentaires
+# 15. SQL documentaire
 
 Le fichier suivant contient un équivalent SQL simplifié des tables utilisées :
 
@@ -764,23 +634,7 @@ Le fichier suivant contient un équivalent SQL simplifié des tables utilisées 
 doc/sql/schema.sql
 ```
 
-Il contient :
-
-* les instructions `CREATE TABLE` ;
-* les exemples `INSERT INTO` ;
-* les commentaires expliquant le rôle des tables.
-
-Dans le projet réel, la création des tables est gérée par les migrations Django.
-
-Le fichier SQL est ajouté pour documenter la structure de la base et répondre aux attendus du dossier projet.
-
-Il ne remplace pas les migrations Django.
-
----
-
-## 14.1 Extraits SQL natifs complémentaires
-
-Après le retour formateur, des fichiers complémentaires ont été ajoutés pour mieux valoriser le SQL natif :
+Fichiers complémentaires :
 
 ```text
 docs/sql/create_tables_creations.sql
@@ -791,32 +645,20 @@ docs/sql/sql-natif.md
 
 Ces fichiers permettent de montrer :
 
-* les structures SQL générées pour les tables principales ;
-* des exemples d'insertion avec `INSERT INTO` ;
-* le lien entre modèles Django et tables SQL ;
-* la différence entre ORM Django et SQL natif documentaire.
+- les structures SQL générées pour les tables principales ;
+- des exemples d'insertion avec `INSERT INTO` ;
+- le lien entre modèles Django et tables SQL ;
+- la différence entre ORM Django et SQL natif documentaire.
+
+Dans le projet réel, la création des tables est gérée par les migrations Django.
 
 ---
 
-# 15. NoSQL avec TinyDB
-
-Le projet contient maintenant une expérimentation NoSQL légère avec TinyDB.
-
-Cette partie est volontairement limitée.
-
-Elle sert à montrer une compétence complémentaire sans transformer l'architecture du projet.
+# 16. NoSQL avec TinyDB
 
 TinyDB est utilisé pour stocker des notes de progression du projet dans un fichier JSON.
 
-La base NoSQL est séparée de SQLite.
-
-SQLite reste la base principale du projet Django.
-
----
-
-## 15.1 Fichiers NoSQL concernés
-
-Les fichiers principaux sont :
+Fichiers principaux :
 
 ```text
 core/services/nosql_notes.py
@@ -825,72 +667,30 @@ data/nosql/project_notes_db.json
 docs/nosql/tinydb-integration.md
 ```
 
----
+Le service `core/services/nosql_notes.py` permet de :
 
-## 15.2 Rôle du service NoSQL
+- créer le dossier de stockage si nécessaire ;
+- ouvrir la base TinyDB ;
+- créer des notes de démonstration ;
+- lister les notes ;
+- rechercher les notes liées au projet Frostia Games ;
+- fermer proprement la base après utilisation.
 
-Le fichier `core/services/nosql_notes.py` contient la logique liée à TinyDB.
-
-Il permet de :
-
-* créer le dossier de stockage si nécessaire ;
-* ouvrir la base TinyDB ;
-* créer des notes de démonstration ;
-* lister les notes ;
-* rechercher les notes liées au projet Frostia Games ;
-* fermer proprement la base après utilisation.
-
----
-
-## 15.3 Rôle du script de démonstration
-
-Le fichier `scripts/demo_tinydb_notes.py` permet de tester TinyDB dans le terminal.
-
-Commande utilisée :
+Commande de test :
 
 ```powershell
 python -m scripts.demo_tinydb_notes
 ```
 
-Ce script permet de vérifier que les notes sont bien lues depuis la base TinyDB.
-
----
-
-## 15.4 Affichage sur la page d'accueil
-
-La vue `home()` lit les notes TinyDB et les transmet au template.
-
-Le template `templates/pages/home.html` affiche ensuite une section de notes de progression.
-
-La chaîne technique est la suivante :
-
-```text
-TinyDB
-→ core/services/nosql_notes.py
-→ core/views.py
-→ templates/pages/home.html
-→ affichage sur la page d'accueil
-```
-
----
-
-## 15.5 Limites de TinyDB dans la V1
-
 TinyDB n'est pas utilisé pour remplacer SQLite.
 
 Il n'est pas utilisé pour gérer les créations ou les projets jouables.
 
-Il sert uniquement à documenter et afficher des notes de progression.
-
-Une future version pourra envisager MongoDB ou une autre solution NoSQL si le projet évolue réellement vers des contenus très variables.
-
 ---
 
-# 16. JavaScript dynamique lié au backend
+# 17. JavaScript dynamique lié à l'interface
 
 Le JavaScript principal du projet concerne le menu mobile.
-
-Il ne manipule pas directement les données backend, mais il fait partie de l'expérience utilisateur du site.
 
 Le fichier concerné est :
 
@@ -901,146 +701,109 @@ static/js/menu.js
 Le script est chargé dans :
 
 ```text
-templates/base.html
+templates/partials/base.html
 ```
 
 Il permet :
 
-* d'ouvrir le menu mobile ;
-* de fermer le menu mobile ;
-* de modifier l'attribut `aria-expanded` ;
-* de fermer la navigation après un clic sur un lien.
+- d'ouvrir le menu mobile ;
+- de fermer le menu mobile ;
+- de modifier l'attribut `aria-expanded` ;
+- de fermer la navigation après un clic sur un lien.
 
-La documentation complémentaire se trouve dans :
+Documentation complémentaire :
 
 ```text
 docs/frontend/javascript-menu-mobile.md
 ```
 
-Cette partie permet de mieux valoriser le JavaScript dynamique dans le dossier projet final.
-
 ---
 
-# 17. Lien avec le déploiement Render
+# 18. Lien avec le déploiement Render
 
-Le backend est maintenant déployé en ligne avec Render.
-
-Le projet utilise :
+URL de production :
 
 ```text
 https://frostia-games.onrender.com
 ```
 
-Le déploiement permet de vérifier que :
-
-* Django fonctionne hors de l'environnement local ;
-* Gunicorn lance correctement l'application ;
-* les fichiers statiques sont collectés ;
-* les migrations sont appliquées ;
-* l'administration Django reste accessible ;
-* les variables d'environnement peuvent être utilisées pour les secrets.
-
-La commande de build Render est :
+Build Command Render :
 
 ```bash
 bash build.sh
 ```
 
-La commande de démarrage Render est :
+Start Command Render :
 
 ```bash
-gunicorn frostia_config.wsgi:application --bind 0.0.0.0:$PORT
+python manage.py migrate --noinput && python manage.py setup_render_data && gunicorn frostia_config.wsgi:application --bind 0.0.0.0:$PORT
+```
+
+Variables importantes :
+
+```text
+DJANGO_DEBUG
+DJANGO_SECRET_KEY
+DJANGO_SUPERUSER_USERNAME
+DJANGO_SUPERUSER_EMAIL
+DJANGO_SUPERUSER_PASSWORD
+EVALUATION_USER_PASSWORD
 ```
 
 ---
 
-# 18. Limites de la V1
+# 19. Limites de la V1
 
 La V1 ne contient pas encore :
 
-* de vraie page détail projet ;
-* de vrai upload serveur ;
-* de vrai lecteur vidéo ;
-* d'API REST ;
-* de système de comptes publics ;
-* de rôles publics avancés ;
-* de base PostgreSQL ;
-* d'administration personnalisée ;
-* de graphiques Plotly.js ;
-* de tests automatisés complets ;
-* de mini-jeu intégré ;
-* de système de score ;
-* de téléchargement public de projet jouable.
+- vraie page détail projet ;
+- vrai upload serveur ;
+- vrai lecteur vidéo ;
+- API REST ;
+- système de comptes publics ;
+- rôles publics avancés ;
+- PostgreSQL ;
+- administration personnalisée ;
+- graphiques Plotly.js ;
+- tests automatisés complets ;
+- mini-jeu intégré ;
+- système de score ;
+- téléchargement public de projet jouable.
 
 Ces limites sont volontaires.
 
-Elles permettent de conserver un projet stable, testable, maintenable et présentable.
+Certains éléments initialement reportés ont été intégrés de manière limitée et contrôlée :
 
-Certains éléments initialement reportés ont finalement été ajoutés de manière limitée et contrôlée :
-
-* une expérimentation NoSQL légère avec TinyDB ;
-* un affichage des notes TinyDB sur l'accueil ;
-* un compte temporaire de lecture seule ;
-* des extraits SQL natifs documentaires.
-
-Le déploiement Render est fonctionnel, mais une configuration de production plus avancée pourra être envisagée plus tard si le projet évolue.
+- expérimentation NoSQL légère avec TinyDB ;
+- affichage des notes TinyDB sur l'accueil ;
+- compte d’évaluation en lecture seule ;
+- extraits SQL natifs documentaires ;
+- initialisation automatique Render avec `setup_render_data`.
 
 ---
 
-# 19. Évolutions prévues
+# 20. Évolutions prévues
 
 Les évolutions possibles du backend sont :
 
-* ajouter des fiches détaillées pour les créations ;
-* relier les projets jouables à une création ;
-* ajouter une table de médias ;
-* ajouter une table de versions ;
-* ajouter une gestion plus avancée des statuts ;
-* ajouter un vrai système d'upload sécurisé ;
-* migrer vers PostgreSQL si le projet devient plus complet ;
-* créer une administration personnalisée ;
-* envisager MongoDB pour les contenus très variables ;
-* ajouter des tests automatisés Django ;
-* ajouter un système de sauvegarde automatique avant modification ;
-* ajouter un système de rôles plus avancé si un espace privé est créé.
+- ajouter des fiches détaillées pour les créations ;
+- relier les projets jouables à une création ;
+- ajouter une table de médias ;
+- ajouter une table de versions ;
+- ajouter une gestion plus avancée des statuts ;
+- ajouter un vrai système d'upload sécurisé ;
+- migrer vers PostgreSQL si le projet devient plus complet ;
+- créer une administration personnalisée ;
+- envisager MongoDB pour les contenus très variables ;
+- ajouter des tests automatisés Django ;
+- ajouter un système de sauvegarde automatique avant modification ;
+- ajouter un système de rôles plus avancé si un espace privé est créé.
 
 Ces évolutions sont reportées afin de protéger le périmètre de la V1.
 
-Le projet a déjà été renforcé pour répondre au retour formateur.
-
-L'objectif n'est donc plus d'ajouter des fonctionnalités lourdes, mais de finaliser les preuves, les captures et le dossier projet.
-
 ---
 
-# 20. Lien avec les fichiers racine
-
-La modélisation backend est complétée par plusieurs fichiers situés à la racine du projet.
-
-## `README.md`
-
-Le fichier `README.md` permet de présenter rapidement le projet, son installation, son lancement, son déploiement et ses limites.
-
-## `CHOIX_TECHNIQUES.md`
-
-Le fichier `CHOIX_TECHNIQUES.md` explique pourquoi Django a été retenu pour la V1 et pourquoi d'autres pistes, comme C# / Razor, ont été reportées.
-
-## `.env.example`
-
-Le fichier `.env.example` documente les variables d'environnement nécessaires sans exposer les vraies valeurs sensibles.
-
-## `requirements.txt`
-
-Le fichier `requirements.txt` liste les dépendances Python nécessaires au projet.
-
-TinyDB doit y être présent, car il fait maintenant partie de l'expérimentation NoSQL de la V1.
-
-Ces fichiers permettent de rendre le backend plus compréhensible pour une personne qui découvre le dépôt.
-
----
-
-# 21. Documents complémentaires liés à cette modélisation
-
-La modélisation backend est renforcée par plusieurs documents complémentaires.
+# 21. Documents complémentaires
 
 ## Conception
 
@@ -1050,16 +813,12 @@ docs/conception/cas-utilisation.md
 docs/conception/diagramme-sequence.md
 ```
 
-Ces documents servent à présenter les livrables de conception demandés dans le dossier projet.
-
 ## Backend
 
 ```text
 docs/backend/modeles-django.md
 docs/backend/vues-et-routes.md
 ```
-
-Ces documents expliquent plus précisément les modèles, les vues et les routes Django.
 
 ## SQL
 
@@ -1070,15 +829,11 @@ docs/sql/exemples_insert.sql
 docs/sql/sql-natif.md
 ```
 
-Ces documents permettent de valoriser les compétences SQL.
-
 ## NoSQL
 
 ```text
 docs/nosql/tinydb-integration.md
 ```
-
-Ce document explique l'intégration TinyDB.
 
 ## Frontend
 
@@ -1086,19 +841,16 @@ Ce document explique l'intégration TinyDB.
 docs/frontend/javascript-menu-mobile.md
 ```
 
-Ce document explique le JavaScript dynamique du menu mobile.
-
 ## Preuves
 
 ```text
-docs/preuves/liste-captures-a-faire.md
+docs/preuves/
+PREUVES-FONCTIONNEMENT.md
 ```
-
-Ce document sert à organiser les captures et preuves à intégrer dans le dossier final.
 
 ---
 
-# 22. Règle des trois piliers pour le dossier projet
+# 22. Règle des trois piliers
 
 Pour chaque compétence importante, le dossier final doit montrer :
 
@@ -1108,45 +860,70 @@ Pour chaque compétence importante, le dossier final doit montrer :
 
 Cette règle concerne notamment :
 
-* les modèles Django ;
-* les vues Django ;
-* l'administration Django ;
-* le compte temporaire de lecture seule ;
-* le SQL natif ;
-* TinyDB ;
-* l'affichage des notes TinyDB ;
-* le JavaScript dynamique ;
-* Docker ;
-* Render ;
-* GitHub.
-
-Cette règle permet d'éviter un dossier trop théorique.
-
-Elle montre que les fonctionnalités sont réellement implantées, expliquées et visibles.
+- les modèles Django ;
+- les vues Django ;
+- l'administration Django ;
+- le compte d’évaluation en lecture seule ;
+- le SQL natif ;
+- TinyDB ;
+- l'affichage des notes TinyDB ;
+- le JavaScript dynamique ;
+- Docker ;
+- Render ;
+- GitHub.
 
 ---
 
-# 23. Conclusion
+# 23. Captures et preuves à préparer
+
+Pour le dossier final, les captures utiles sont :
+
+- modèles Django ;
+- vues Django ;
+- routes ;
+- administration Django ;
+- compte d’évaluation en lecture seule ;
+- fichiers SQL natifs ;
+- service TinyDB ;
+- script TinyDB ;
+- affichage des notes TinyDB sur l'accueil ;
+- JavaScript du menu mobile ;
+- commande `python manage.py check` ;
+- commande `python -m scripts.demo_tinydb_notes` ;
+- logs Render avec `setup_render_data`.
+
+Aucune capture ne doit afficher :
+
+- mot de passe ;
+- clé secrète ;
+- vraie variable d’environnement ;
+- identifiant administrateur complet ;
+- information sensible inutile.
+
+---
+
+# 24. Conclusion
 
 La V1 de Frostia Games possède un backend simple mais fonctionnel.
 
 Elle montre :
 
-* une structure Django claire ;
-* deux modèles reliés à une base SQLite ;
-* une administration fonctionnelle ;
-* un compte temporaire de lecture seule ;
-* des migrations ;
-* un affichage dynamique dans les templates ;
-* une séparation entre données, vues et templates ;
-* une réflexion sur la sécurité ;
-* une documentation SQL ;
-* des extraits SQL natifs ;
-* une expérimentation NoSQL avec TinyDB ;
-* un affichage des notes NoSQL sur l'accueil ;
-* une documentation du JavaScript dynamique ;
-* un déploiement Render fonctionnel ;
-* une documentation des limites et évolutions.
+- une structure Django claire ;
+- deux modèles reliés à une base SQLite ;
+- une administration fonctionnelle ;
+- un compte d’évaluation en lecture seule ;
+- des migrations ;
+- un affichage dynamique dans les templates ;
+- une séparation entre données, vues et templates ;
+- une réflexion sur la sécurité ;
+- une documentation SQL ;
+- des extraits SQL natifs ;
+- une expérimentation NoSQL avec TinyDB ;
+- un affichage des notes NoSQL sur l'accueil ;
+- une documentation du JavaScript dynamique ;
+- un déploiement Render fonctionnel ;
+- une initialisation automatique Render avec `setup_render_data` ;
+- une documentation des limites et évolutions.
 
 Le backend reste volontairement limité afin d'éviter une complexité inutile.
 
@@ -1155,5 +932,3 @@ Il constitue une base stable pour faire évoluer le projet progressivement.
 À ce stade, les éléments backend essentiels sont implantés.
 
 La priorité n'est plus d'ajouter de nouvelles fonctionnalités lourdes, mais de préparer les captures, les annexes et l'intégration propre dans le dossier projet final.
-
-

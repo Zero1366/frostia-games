@@ -1,484 +1,399 @@
-# Index de la documentation - Frostia Games
+# Index de la documentation — Frostia Games
 
 ## Objectif
 
-Ce dossier regroupe la documentation technique, fonctionnelle et organisationnelle du projet **Frostia Games**.
+Ce document sert de point d’entrée pour la documentation du projet **Frostia Games**.
 
-L'objectif de cette documentation est de conserver une trace claire :
+Il regroupe les documents techniques, fonctionnels et organisationnels produits pendant la V1.
 
-* des choix réalisés ;
-* des étapes validées ;
-* des fichiers modifiés ;
-* des fonctionnalités implantées ;
-* des limites volontaires de la V1 ;
-* des évolutions prévues ;
-* des pistes explorées mais non retenues ;
-* des vérifications réalisées ;
-* du déploiement en ligne ;
-* des preuves préparées pour le dossier projet.
+L’objectif est de conserver une trace claire :
 
-Chaque partie importante du projet est documentée afin que le projet reste compréhensible, maintenable et présentable.
+- des choix réalisés ;
+- des étapes validées ;
+- des fichiers modifiés ;
+- des fonctionnalités implantées ;
+- des limites volontaires de la V1 ;
+- des évolutions prévues ;
+- des vérifications réalisées ;
+- du déploiement Render ;
+- de l’accès d’évaluation en lecture seule ;
+- des preuves préparées pour le dossier projet.
 
----
-
-## Rôle de cette documentation
-
-La documentation permet de montrer que le projet n'a pas été construit au hasard.
-
-Elle explique :
-
-* pourquoi Django a été retenu ;
-* comment le projet est organisé ;
-* comment le projet peut être lancé ;
-* comment les données sont gérées ;
-* comment l'administration Django fonctionne ;
-* comment la base SQLite est utilisée ;
-* comment le JavaScript dynamique du menu mobile fonctionne ;
-* comment les extraits SQL natifs sont documentés ;
-* comment une expérimentation NoSQL légère a été intégrée avec TinyDB ;
-* comment les notes TinyDB sont affichées sur la page d'accueil ;
-* comment un compte temporaire de lecture seule peut être utilisé pour l'évaluation ;
-* comment le projet est déployé sur Render ;
-* quelles limites sont assumées dans la V1 ;
-* quelles évolutions pourront être ajoutées plus tard.
-
-Cette documentation sert aussi de support pour présenter le projet comme une V1 stable, documentée, testée, déployée et évolutive.
+Cette documentation permet de montrer que le projet n’a pas été construit au hasard et que la V1 est fonctionnelle, documentée, déployée et défendable.
 
 ---
 
-## Structure actuelle de la documentation
+# 1. Rôle de la documentation
+
+La documentation explique :
+
+- pourquoi Django a été retenu ;
+- comment le projet est organisé ;
+- comment le projet peut être lancé ;
+- comment les données sont gérées ;
+- comment l’administration Django fonctionne ;
+- comment SQLite est utilisée ;
+- comment TinyDB est intégré comme expérimentation NoSQL légère ;
+- comment les notes TinyDB sont affichées sur la page d’accueil ;
+- comment le menu mobile JavaScript fonctionne ;
+- comment les extraits SQL natifs sont documentés ;
+- comment le compte d’évaluation en lecture seule est configuré ;
+- comment le projet est déployé sur Render ;
+- comment les données de démonstration sont recréées avec `setup_render_data` ;
+- quelles limites sont assumées dans la V1 ;
+- quelles évolutions pourront être ajoutées plus tard.
+
+---
+
+# 2. Structure actuelle de la documentation
 
 ```text
 doc/
-├─ sql/
-│  ├─ nosql.md
-│  └─ schema.sql
+├── sql/
+│   ├── nosql.md
+│   └── schema.sql
 │
-├─ 00-index-documentation.md
-├─ 01-modernisation-interface.md
-├─ 02-journal-de-bord.md
-├─ 03-modelisation-backend.md
-├─ 04-docker-et-lancement.md
-├─ 05-securite-backend.md
-├─ 06-manuel-utilisateur.md
-├─ 07-base-de-donnees.md
-├─ 08-changelog.md
-├─ 09-deploiement-render.md
-├─ 10-bilan-v1-frostia-games.md
-├─ 11-installation-locale.md
-├─ 12-architecture.md
-├─ 13-test-et-vérification.md
-├─ 14-Capture-et Preuve.md
-├─ 15-limites-et-évolutions.md
-├─ 16-presentation-projet-2.md
-├─ 17-pistes-explorees-et-non-retenues.md
-├─ 18-plan-finalisation-v1.md
-└─ 19-renforcement-dossier-projet.md
+├── 00-index-documentation.md
+├── 01-modernisation-interface.md
+├── 02-Journal de bord.md
+├── 03-modelisation-backend.md
+├── 04-docker-et-lancement.md
+├── 05-securite-backend.md
+├── 06-manuel-utilisateur.md
+├── 07-base-de-donnees.md
+├── 08-changelog.md
+├── 09-deploiement-render.md
+├── 10-bilan-v1-frostia-games.md
+├── 11-installation-locale.md
+├── 12-architecture.md
+├── 13-test-et-vérification.md
+├── 14-Capture-et-Preuve.md
+├── 15-limites-et-évolutions.md
+├── 16-presentation-projet-2.md
+├── 17-pistes-explorees-et-non-retenues.md
+└── 18-plan-finalisation-v1.md
+```
+
+Documentation complémentaire :
+
+```text
+docs/
+├── backend/
+├── conception/
+├── frontend/
+├── nosql/
+├── preuves/
+└── sql/
 ```
 
 ---
 
-## Documentation complémentaire de renforcement
+# 3. Documentation principale `doc/`
 
-En complément de la documentation principale présente dans le dossier `doc/`, plusieurs documents techniques complémentaires ont été ajoutés afin de renforcer le dossier projet après le retour formateur.
+## 00 — Index de la documentation
 
-Ces documents complémentaires concernent notamment :
+**Fichier :** `doc/00-index-documentation.md`
 
-* la conception avec MCD, diagramme de cas d'utilisation et diagramme de séquence ;
-* les extraits SQL natifs avec `CREATE TABLE` et `INSERT INTO` ;
-* la documentation du JavaScript dynamique du menu mobile ;
-* l'intégration NoSQL légère avec TinyDB ;
-* l'affichage des notes TinyDB sur la page d'accueil ;
-* la documentation des vues, routes et modèles Django ;
-* la préparation des captures et preuves pour les annexes.
-
-Le fichier `doc/19-renforcement-dossier-projet.md` sert de synthèse pour relier ces documents complémentaires à la documentation principale.
-
----
-
-# 00 - Index de la documentation
-
-**Fichier :** `00-index-documentation.md`
-
-Ce document sert de point d'entrée pour toute la documentation du projet.
+Ce document sert de point d’entrée pour toute la documentation.
 
 Il présente :
 
-* l'organisation générale de la documentation ;
-* les fichiers disponibles ;
-* le rôle de chaque document ;
-* l'état actuel de la V1 ;
-* les fonctionnalités implantées ;
-* les limites assumées ;
-* les évolutions prévues ;
-* les commandes principales ;
-* les règles de validation ;
-* les documents complémentaires ajoutés pour renforcer le dossier projet ;
-* les preuves à préparer pour les annexes.
+- l’organisation générale ;
+- les fichiers disponibles ;
+- le rôle de chaque document ;
+- l’état actuel de la V1 ;
+- les fonctionnalités implantées ;
+- les limites assumées ;
+- les commandes principales ;
+- les documents complémentaires ;
+- les preuves à préparer.
 
 ---
 
-# 01 - Modernisation de l'interface
+## 01 — Modernisation de l’interface
 
-**Fichier :** `01-modernisation-interface.md`
+**Fichier :** `doc/01-modernisation-interface.md`
 
-Ce document présente le travail réalisé sur l'interface visuelle du site.
+Ce document présente le travail réalisé sur l’interface visuelle.
 
-Il explique notamment :
+Il explique :
 
-* la direction graphique retenue ;
-* les choix de couleurs ;
-* l'organisation de la page d'accueil ;
-* la sidebar ;
-* les cartes de contenu ;
-* le responsive desktop et mobile ;
-* le menu mobile ;
-* l'affichage des notes de progression sur l'accueil ;
-* les améliorations visuelles prévues après stabilisation de la V1.
-
-Ce document permet de garder une trace des choix UI/UX sans mélanger la partie visuelle avec la partie backend.
+- la direction graphique retenue ;
+- les choix de couleurs ;
+- l’organisation de la page d’accueil ;
+- la sidebar ;
+- les cartes de contenu ;
+- le responsive desktop et mobile ;
+- le menu mobile ;
+- les améliorations prévues après stabilisation.
 
 ---
 
-# 02 - Journal de bord
+## 02 — Journal de bord
 
-**Fichier :** `02-journal-de-bord.md`
+**Fichier :** `doc/02-Journal de bord.md`
 
 Ce document consigne les étapes réalisées au fur et à mesure du développement.
 
-Il indique pour chaque étape :
+Il sert à montrer :
 
-* ce qui a été fait ;
-* pourquoi cela a été fait ;
-* quels fichiers ont été modifiés ;
-* comment vérifier que cela fonctionne ;
-* les problèmes rencontrés ;
-* les décisions prises ;
-* les prochaines actions.
+- ce qui a été fait ;
+- pourquoi cela a été fait ;
+- les fichiers modifiés ;
+- les problèmes rencontrés ;
+- les décisions prises ;
+- les validations effectuées.
 
-Le journal de bord permet de montrer que le projet a été construit progressivement, avec une trace claire des décisions prises.
-
-Il doit aussi intégrer les étapes récentes :
-
-* ajout des livrables de conception ;
-* ajout des extraits SQL natifs ;
-* ajout de la documentation JavaScript ;
-* ajout de TinyDB ;
-* affichage des notes TinyDB sur la page d'accueil ;
-* création du compte temporaire de lecture seule ;
-* préparation des preuves et captures pour le dossier projet.
+Le journal de bord doit rester chronologique et ne pas recopier tous les détails techniques du déploiement Render, car ceux-ci sont déjà centralisés dans `doc/09-deploiement-render.md`.
 
 ---
 
-# 03 - Modélisation backend
+## 03 — Modélisation backend
 
-**Fichier :** `03-modelisation-backend.md`
+**Fichier :** `doc/03-modelisation-backend.md`
 
 Ce document présente la modélisation backend du projet.
 
-Il contient :
+Il traite notamment :
 
-* les modèles Django ;
-* le schéma relationnel simplifié ;
-* le MCD simplifié ;
-* les cas d'utilisation ;
-* les diagrammes de séquence ;
-* le rôle de l'ORM Django ;
-* les limites de la V1 ;
-* les évolutions prévues.
-
-Ce fichier répond aux attendus liés à la modélisation, notamment le MCD, les cas d'utilisation et les diagrammes de séquence.
+- les modèles Django ;
+- le schéma relationnel simplifié ;
+- le rôle de l’ORM Django ;
+- les liens entre modèles, vues et templates ;
+- les limites de la V1 ;
+- les évolutions prévues.
 
 Documents complémentaires associés :
 
-* document de MCD ;
-* document de cas d'utilisation ;
-* document de diagramme de séquence ;
-* documentation des modèles Django ;
-* documentation des vues et routes.
+```text
+docs/conception/mcd.md
+docs/conception/cas-utilisation.md
+docs/conception/diagramme-sequence.md
+docs/backend/modeles-django.md
+docs/backend/vues-et-routes.md
+```
 
 ---
 
-# 04 - Docker et lancement du projet
+## 04 — Docker et lancement du projet
 
-**Fichier :** `04-docker-et-lancement.md`
+**Fichier :** `doc/04-docker-et-lancement.md`
 
-Ce document présente les informations liées au lancement local et au lancement avec Docker.
+Ce document présente :
 
-Il contient :
+- les prérequis ;
+- les commandes de lancement local ;
+- le lancement avec Docker ;
+- le rôle du `Dockerfile` ;
+- le rôle de `docker-compose.yml` ;
+- le rôle de `.dockerignore` ;
+- le rôle de `requirements.txt` ;
+- les limites de Docker dans cette V1.
 
-* les prérequis ;
-* les commandes de lancement local ;
-* les commandes de lancement avec Docker ;
-* le rôle du `Dockerfile` ;
-* le rôle de `docker-compose.yml` ;
-* le rôle de `.dockerignore` ;
-* le rôle de `requirements.txt` ;
-* les commandes de vérification ;
-* les limites de la configuration actuelle.
+Docker sert ici à tester le projet localement dans un environnement reproductible.
 
-Ce document permet de démontrer que le projet peut être lancé dans un environnement reproductible.
-
-Il sert également de preuve technique pour le dossier projet, notamment avec les captures prévues :
-
-* fichier `Dockerfile` ;
-* fichier `docker-compose.yml` ;
-* commande `docker compose up --build` ;
-* vérification avec `python manage.py check` dans le conteneur.
+Le déploiement principal est réalisé avec Render.
 
 ---
 
-# 05 - Sécurité backend
+## 05 — Sécurité backend
 
-**Fichier :** `05-securite-backend.md`
+**Fichier :** `doc/05-securite-backend.md`
 
 Ce document regroupe les choix liés à la sécurité backend.
 
 Il traite notamment :
 
-* le mode `DEBUG` ;
-* la clé secrète Django ;
-* `ALLOWED_HOSTS` ;
-* l'utilisation de l'ORM Django ;
-* l'absence de SQL brut non contrôlé dans les vues ;
-* la protection contre les injections SQL ;
-* l'administration Django protégée ;
-* le compte temporaire de lecture seule pour l'évaluation ;
-* la protection CSRF ;
-* l'échappement automatique dans les templates ;
-* les fichiers médias ;
-* l'absence de vrai upload serveur dans la V1 ;
-* l'absence de téléchargement public d'exécutable ou de fichier ZIP ;
-* les protections prévues pour une future version plus avancée.
-
-Ce document permet de montrer que la sécurité est prise en compte, même si la V1 reste volontairement limitée.
-
-Le compte temporaire de lecture seule permet de donner un accès limité à l'administration sans exposer les comptes utilisateurs, les groupes ou les réglages sensibles.
-
-Les identifiants réels de ce compte ne doivent pas être écrits directement dans le dossier projet public.
+- le mode `DEBUG` ;
+- la clé secrète Django ;
+- `ALLOWED_HOSTS`;
+- l’utilisation de l’ORM Django ;
+- l’absence de SQL brut dans les vues ;
+- l’administration Django protégée ;
+- l’accès d’évaluation en lecture seule ;
+- `EVALUATION_USER_PASSWORD` ;
+- la protection CSRF ;
+- l’échappement automatique dans les templates ;
+- l’absence de vrai upload serveur ;
+- la sécurité des captures et des preuves.
 
 ---
 
-# 06 - Manuel utilisateur
+## 06 — Manuel utilisateur
 
-**Fichier :** `06-manuel-utilisateur.md`
+**Fichier :** `doc/06-manuel-utilisateur.md`
 
-Ce document explique comment utiliser la V1 du projet.
+Ce document explique comment utiliser la V1.
 
 Il contient :
 
-* le lancement local ;
-* le lancement avec Docker ;
-* les pages principales ;
-* l'accès à l'administration Django ;
-* l'ajout d'une création ;
-* l'ajout d'un projet jouable ;
-* l'utilisation du compte temporaire de lecture seule ;
-* les fonctionnalités disponibles ;
-* les fonctionnalités non implantées dans la V1 ;
-* les vérifications à faire avant une démonstration.
+- le lancement local ;
+- le lancement avec Docker ;
+- les pages principales ;
+- l’accès à l’administration Django ;
+- l’utilisation du compte d’évaluation en lecture seule ;
+- les fonctionnalités disponibles ;
+- les fonctionnalités non implantées dans la V1 ;
+- les vérifications à faire avant une démonstration.
 
-Ce document sert de manuel d'utilisation pour relancer, tester et présenter le projet.
-
-Il doit rappeler que les identifiants réels du compte temporaire ne doivent pas être écrits directement dans le dossier projet public.
+Les identifiants réels ne doivent pas être écrits dans ce document public.
 
 ---
 
-# 07 - Base de données
+## 07 — Base de données
 
-**Fichier :** `07-base-de-donnees.md`
+**Fichier :** `doc/07-base-de-donnees.md`
 
-Ce document présente la partie base de données du projet.
+Ce document présente la partie base de données.
 
 Il explique :
 
-* le rôle de SQLite dans la V1 ;
-* les modèles Django ;
-* les migrations ;
-* les tables créées ;
-* le schéma logique de la base ;
-* les extraits SQL natifs ;
-* les exemples `CREATE TABLE` ;
-* les exemples `INSERT INTO` ;
-* ce qui est stocké en base ;
-* ce qui n'est pas stocké en base ;
-* le rôle de l'administration Django ;
-* le rôle de l'ORM ;
-* le rôle complémentaire de TinyDB ;
-* les évolutions possibles vers PostgreSQL.
+- le rôle de SQLite dans la V1 ;
+- les modèles Django ;
+- les migrations ;
+- les tables créées ;
+- les extraits SQL natifs ;
+- le rôle de l’ORM ;
+- le rôle complémentaire de TinyDB ;
+- les limites de SQLite sur Render gratuit ;
+- l’évolution possible vers PostgreSQL.
 
 Documents associés :
 
-* `doc/sql/schema.sql`
-* `doc/sql/nosql.md`
-
-Documents complémentaires associés :
-
-* fichier SQL natif pour la table des créations ;
-* fichier SQL natif pour la table des projets jouables ;
-* fichier d'exemples `INSERT INTO` ;
-* documentation SQL native ;
-* documentation TinyDB.
-
-Le fichier `schema.sql` contient un équivalent SQL documentaire avec des instructions `CREATE TABLE` et des exemples `INSERT INTO`.
-
-Les fichiers SQL complémentaires contiennent des extraits SQL natifs issus des migrations Django.
-
-Le fichier d'exemples `INSERT INTO` contient des exemples d'insertion de données.
-
-La partie NoSQL ne remplace pas SQLite. Elle sert à montrer une expérimentation complémentaire avec TinyDB pour stocker et afficher des notes de progression liées au projet.
+```text
+doc/sql/schema.sql
+doc/sql/nosql.md
+docs/sql/create_tables_creations.sql
+docs/sql/create_tables_playable.sql
+docs/sql/exemples_insert.sql
+docs/sql/sql-natif.md
+docs/nosql/tinydb-integration.md
+```
 
 ---
 
-# 08 - Changelog
+## 08 — Changelog
 
-**Fichier :** `08-changelog.md`
+**Fichier :** `doc/08-changelog.md`
 
-Ce document sert à noter les changements importants du projet.
+Ce document note les changements importants du projet.
 
-Il contient :
+Il permet de suivre :
 
-* les étapes importantes du développement ;
-* le résumé de chaque modification ;
-* les fichiers concernés ;
-* les vérifications effectuées ;
-* le statut de validation.
+- les ajouts ;
+- les corrections ;
+- les renforcements ;
+- les fichiers concernés ;
+- les validations réalisées.
 
-Il permet de garder une trace claire de l'évolution du projet, notamment :
+Il doit inclure les derniers éléments importants :
 
-* création du projet Django ;
-* ajout des pages principales ;
-* ajout des modèles ;
-* ajout de l'administration Django ;
-* connexion des vues à la base SQLite ;
-* ajout de Docker ;
-* ajout du schéma SQL ;
-* ajout des extraits SQL natifs ;
-* ajout de la documentation backend ;
-* ajout de la documentation de conception ;
-* ajout de la documentation JavaScript ;
-* ajout de TinyDB ;
-* ajout de l'affichage des notes TinyDB sur l'accueil ;
-* ajout du compte temporaire de lecture seule ;
-* nettoyage des alertes inutiles dans VS Code ;
-* ajout du déploiement Render ;
-* ajout de la documentation finale de V1.
+- TinyDB ;
+- affichage des notes TinyDB ;
+- SQL natif documentaire ;
+- compte d’évaluation en lecture seule ;
+- déploiement Render ;
+- `setup_render_data` ;
+- mise à jour des preuves ;
+- mise à jour de la documentation finale.
 
 ---
 
-# 09 - Déploiement Render
+## 09 — Déploiement Render
 
-**Fichier :** `09-deploiement-render.md`
+**Fichier :** `doc/09-deploiement-render.md`
 
-Ce document présente le déploiement du projet sur Render.
+Ce document présente le déploiement sur Render.
 
 Il explique :
 
-* l'objectif du déploiement ;
-* la plateforme utilisée ;
-* la configuration Render ;
-* les variables d'environnement ;
-* le rôle de `build.sh` ;
-* le rôle de Gunicorn ;
-* la commande de build ;
-* la commande de démarrage ;
-* les problèmes rencontrés ;
-* les vérifications après déploiement ;
-* les limites de l'offre gratuite Render.
+- l’objectif du déploiement ;
+- la plateforme utilisée ;
+- la configuration Render ;
+- les variables d’environnement ;
+- le rôle de `build.sh` ;
+- le rôle de Gunicorn ;
+- la commande de build ;
+- la commande de démarrage ;
+- la commande `setup_render_data` ;
+- les problèmes rencontrés ;
+- les vérifications après déploiement ;
+- les limites de l’offre gratuite Render.
 
-Le projet est déployé en ligne à l'adresse :
+URL de production :
 
 ```text
 https://frostia-games.onrender.com
 ```
 
-Ce document prouve que le projet fonctionne en dehors de l'environnement local.
+Start Command actuel :
 
-Les captures Render devront être préparées sans afficher de secret, de mot de passe ou de variable sensible.
+```bash
+python manage.py migrate --noinput && python manage.py setup_render_data && gunicorn frostia_config.wsgi:application --bind 0.0.0.0:$PORT
+```
 
 ---
 
-# 10 - Bilan V1 Frostia Games
+## 10 — Bilan V1 Frostia Games
 
-**Fichier :** `10-bilan-v1-frostia-games.md`
+**Fichier :** `doc/10-bilan-v1-frostia-games.md`
 
 Ce document présente le bilan de la V1.
 
 Il contient :
 
-* l'objectif de la V1 ;
-* l'état global du projet ;
-* les pourcentages d'avancement estimés ;
-* ce qui est terminé ;
-* ce qui reste à améliorer ;
-* ce qui est volontairement reporté ;
-* la conclusion sur l'état actuel du projet.
+- l’objectif de la V1 ;
+- l’état global du projet ;
+- les pourcentages d’avancement estimés ;
+- ce qui est terminé ;
+- ce qui reste à améliorer ;
+- ce qui est volontairement reporté ;
+- la conclusion sur l’état actuel du projet.
 
-Ce fichier permet de montrer que la V1 est évaluée de manière réaliste, sans la présenter comme une version finale complète.
-
-Le bilan doit maintenant préciser que les éléments suivants sont terminés :
-
-* conception avec MCD, cas d'utilisation et diagramme de séquence ;
-* JavaScript dynamique du menu mobile ;
-* SQL natif avec `CREATE TABLE` et `INSERT INTO` ;
-* expérimentation NoSQL TinyDB ;
-* affichage des notes TinyDB sur la page d'accueil ;
-* compte temporaire de lecture seule ;
-* préparation des preuves pour les annexes.
+La V1 est complète dans son périmètre, mais elle ne doit pas être présentée comme une plateforme finale complète.
 
 ---
 
-# 11 - Installation locale
+## 11 — Installation locale
 
-**Fichier :** `11-installation-locale.md`
+**Fichier :** `doc/11-installation-locale.md`
 
-Ce document regroupe les informations liées à l'installation locale du projet.
+Ce document regroupe les informations liées à l’installation locale.
 
 Il contient :
 
-* la création de l'environnement virtuel ;
-* l'activation du `.venv` ;
-* l'installation des dépendances ;
-* l'installation de Django ;
-* l'installation de TinyDB ;
-* la création du projet Django ;
-* les premières commandes de vérification ;
-* les problèmes rencontrés lors de l'installation ;
-* les commandes utiles pour relancer le projet.
-
-Ce fichier remplace l'ancien fichier `installation-django.md`.
-
-Il sert de trace technique sur la mise en place initiale du socle Django.
-
-TinyDB fait maintenant partie des dépendances du projet et doit être présent dans `requirements.txt`.
+- la création de l’environnement virtuel ;
+- l’activation du `.venv` ;
+- l’installation des dépendances ;
+- l’installation de Django ;
+- l’installation de TinyDB ;
+- les commandes de vérification ;
+- les problèmes rencontrés ;
+- les commandes utiles pour relancer le projet.
 
 ---
 
-# 12 - Architecture
+## 12 — Architecture
 
-**Fichier :** `12-architecture.md`
+**Fichier :** `doc/12-architecture.md`
 
-Ce document présente l'architecture du projet.
+Ce document présente l’architecture du projet.
 
 Il explique :
 
-* la structure générale du projet ;
-* le rôle du dossier `frostia_config` ;
-* le rôle des applications Django ;
-* le rôle des templates ;
-* le rôle des fichiers statiques ;
-* le fonctionnement des vues ;
-* le fonctionnement de la base SQLite ;
-* le rôle de TinyDB pour les notes de progression ;
-* le rôle du service NoSQL ;
-* le rôle de l'administration Django ;
-* le fonctionnement du déploiement ;
-* les limites actuelles de l'architecture ;
-* les évolutions possibles.
+- la structure générale ;
+- le rôle de `frostia_config` ;
+- le rôle des applications Django ;
+- le rôle des templates ;
+- le rôle des fichiers statiques ;
+- le fonctionnement des vues ;
+- le fonctionnement de SQLite ;
+- le rôle de TinyDB ;
+- le rôle du service NoSQL ;
+- le rôle de l’administration Django ;
+- le fonctionnement du déploiement Render.
 
-Ce document permet de comprendre comment les différentes parties du projet fonctionnent ensemble.
-
-La chaîne NoSQL ajoutée est la suivante :
+Chaîne NoSQL :
 
 ```text
 TinyDB
@@ -490,32 +405,28 @@ TinyDB
 
 ---
 
-# 13 - Tests et vérifications
+## 13 — Tests et vérifications
 
-**Fichier :** `13-test-et-vérification.md`
+**Fichier :** `doc/13-test-et-vérification.md`
 
 Ce document présente les tests et vérifications réalisés sur la V1.
 
 Il contient :
 
-* les tests du lancement local ;
-* les tests des pages principales ;
-* les tests de navigation ;
-* les tests du responsive ;
-* les tests des modèles Django ;
-* les tests de l'administration ;
-* les tests du compte temporaire de lecture seule ;
-* les tests Docker ;
-* les tests du déploiement Render ;
-* les tests des variables d'environnement ;
-* les tests TinyDB ;
-* les tests d'affichage des notes NoSQL sur l'accueil ;
-* les vérifications de sécurité minimale ;
-* les problèmes rencontrés pendant les tests.
+- les tests du lancement local ;
+- les tests des pages principales ;
+- les tests de navigation ;
+- les tests du responsive ;
+- les tests des modèles Django ;
+- les tests de l’administration ;
+- les tests du compte d’évaluation ;
+- les tests Docker ;
+- les tests du déploiement Render ;
+- les tests TinyDB ;
+- les tests d’affichage des notes NoSQL ;
+- les vérifications de sécurité minimale.
 
-Ce fichier montre que la V1 n'a pas seulement été développée, mais aussi vérifiée.
-
-Commandes importantes à conserver comme preuve :
+Commandes importantes :
 
 ```powershell
 python manage.py check
@@ -525,428 +436,301 @@ git status
 
 ---
 
-# 14 - Captures et preuves
+## 14 — Captures et preuves
 
-**Fichier :** `14-Capture-et Preuve.md`
+**Fichier :** `doc/14-Capture-et-Preuve.md`
 
-Ce document liste les captures d'écran à conserver pour le dossier projet.
+Ce document liste les captures d’écran à conserver pour le dossier projet.
 
 Il prévoit notamment :
 
-* les captures du site public ;
-* les captures responsive ;
-* les captures du menu mobile ;
-* les captures du JavaScript dynamique ;
-* les captures de l'administration Django ;
-* les captures du compte temporaire de lecture seule ;
-* les captures SQL ;
-* les captures NoSQL TinyDB ;
-* les captures Render ;
-* les captures GitHub ;
-* les captures Docker ;
-* les captures du code ;
-* les captures de validation technique ;
-* les captures de documentation.
+- captures du site public ;
+- captures responsive ;
+- captures du menu mobile ;
+- captures JavaScript ;
+- captures de l’administration Django ;
+- captures du compte d’évaluation ;
+- captures SQL ;
+- captures NoSQL TinyDB ;
+- captures Render ;
+- captures GitHub ;
+- captures Docker ;
+- captures de validation technique.
 
-Ce document sert de checklist pour préparer les preuves visuelles du projet.
+Les preuves sont organisées principalement dans :
 
-Il rappelle aussi qu'aucune capture ne doit afficher de mot de passe, de clé secrète ou de valeur sensible.
+```text
+docs/preuves/
+```
 
-Les captures doivent respecter la règle des trois piliers :
-
-* capture du code ou extrait de code ;
-* explication du fonctionnement ;
-* capture du rendu final lorsque la fonctionnalité produit un résultat visible.
+Aucune capture ne doit afficher de mot de passe, de clé secrète ou de valeur sensible.
 
 ---
 
-# 15 - Limites et évolutions
+## 15 — Limites et évolutions
 
-**Fichier :** `15-limites-et-évolutions.md`
+**Fichier :** `doc/15-limites-et-évolutions.md`
 
 Ce document présente les limites actuelles de la V1 et les évolutions possibles.
 
-Il explique notamment pourquoi certaines fonctionnalités ne sont pas encore intégrées :
+Il explique pourquoi certains éléments sont reportés :
 
-* PostgreSQL ;
-* administration personnalisée ;
-* upload serveur réel ;
-* jeu jouable dans le navigateur ;
-* graphiques Plotly.js ;
-* espace privé complet ;
-* tests automatisés complets ;
-* API REST ;
-* système de comptes publics ;
-* rôles avancés ;
-* vraie plateforme complète de gestion de projets.
+- PostgreSQL ;
+- administration personnalisée ;
+- upload serveur réel ;
+- jeu jouable dans le navigateur ;
+- graphiques Plotly.js ;
+- espace privé complet ;
+- API REST ;
+- tests automatisés complets ;
+- MongoDB en production.
 
-Ce document montre que les limites du projet ne sont pas des oublis, mais des choix de périmètre.
+Il précise aussi que certains éléments ont finalement été ajoutés de manière limitée :
 
-Certaines fonctionnalités envisagées au départ comme reportées ont finalement été intégrées de manière limitée et contrôlée :
-
-* un compte temporaire de lecture seule pour l'évaluation ;
-* une expérimentation NoSQL avec TinyDB ;
-* un affichage des notes TinyDB sur la page d'accueil ;
-* des extraits SQL natifs pour le dossier projet.
+- TinyDB ;
+- SQL natif documentaire ;
+- compte d’évaluation ;
+- `setup_render_data`.
 
 ---
 
-# 16 - Présentation du projet 2
+## 16 — Présentation du projet 2
 
-**Fichier :** `16-presentation-projet-2.md`
+**Fichier :** `doc/16-presentation-projet-2.md`
 
 Ce document présente Frostia Games comme proposition de second projet.
 
 Il explique :
 
-* la nature du projet ;
-* le positionnement de la V1 ;
-* pourquoi le projet peut être proposé comme projet 2 ;
-* les fonctionnalités réalisées ;
-* les choix techniques ;
-* les compétences mises en avant ;
-* les limites assumées ;
-* les prochaines étapes avant présentation.
-
-Ce document sert de base pour défendre le projet dans un dossier ou une présentation.
-
-Il doit mettre en avant les compétences suivantes :
-
-* conception ;
-* développement Django ;
-* modèles et vues ;
-* base de données SQLite ;
-* SQL natif documentaire ;
-* JavaScript dynamique ;
-* NoSQL TinyDB ;
-* sécurité minimale ;
-* Docker ;
-* déploiement Render ;
-* GitHub ;
-* documentation technique.
+- la nature du projet ;
+- le positionnement de la V1 ;
+- pourquoi le projet peut être proposé comme projet 2 ;
+- les fonctionnalités réalisées ;
+- les choix techniques ;
+- les compétences mises en avant ;
+- les limites assumées ;
+- les prochaines étapes avant présentation.
 
 ---
 
-# 17 - Pistes explorées et non retenues
+## 17 — Pistes explorées et non retenues
 
-**Fichier :** `17-pistes-explorees-et-non-retenues.md`
+**Fichier :** `doc/17-pistes-explorees-et-non-retenues.md`
 
 Ce document présente les pistes techniques et fonctionnelles envisagées, mais non intégrées dans la V1.
 
 Il traite notamment :
 
-* C# / ASP.NET Core / Razor ;
-* Django ;
-* PostgreSQL ;
-* administration personnalisée ;
-* upload serveur réel ;
-* jeu jouable dans le navigateur ;
-* Plotly.js ;
-* espace privé complet ;
-* sauvegardes automatiques ;
-* refonte graphique complète ;
-* tests automatisés complets ;
-* gestion complète des médias ;
-* API REST ;
-* système de comptes publics.
+- C# / ASP.NET Core / Razor ;
+- PostgreSQL ;
+- MongoDB ;
+- administration personnalisée ;
+- upload serveur réel ;
+- jeu jouable dans le navigateur ;
+- Plotly.js ;
+- espace privé complet ;
+- sauvegardes automatiques ;
+- refonte graphique complète ;
+- tests automatisés complets ;
+- API REST.
 
-Ce document montre que plusieurs pistes ont été explorées, puis reportées pour éviter de transformer la V1 en projet trop complexe.
-
-Le compte temporaire de lecture seule et TinyDB ne doivent plus être présentés comme totalement non implantés : ils ont été ajoutés de manière limitée et contrôlée.
+Il doit préciser que TinyDB, le compte d’évaluation et le SQL natif documentaire ne sont plus totalement non implantés, car ils ont été ajoutés de manière limitée.
 
 ---
 
-# 18 - Plan de finalisation V1
+## 18 — Plan de finalisation V1
 
-**Fichier :** `18-plan-finalisation-v1.md`
+**Fichier :** `doc/18-plan-finalisation-v1.md`
 
 Ce document présente les dernières actions à réaliser avant de considérer la V1 comme terminée.
 
 Il contient :
 
-* la vérification du contenu des pages ;
-* la vérification du responsive ;
-* la préparation des captures ;
-* la vérification du README racine ;
-* la vérification du fichier `CHOIX_TECHNIQUES.md` ;
-* la préparation des maquettes Figma si nécessaire ;
-* la vérification technique finale ;
-* la vérification Render ;
-* la vérification de l'administration Django ;
-* la vérification du compte temporaire de lecture seule ;
-* la vérification TinyDB ;
-* la vérification de l'affichage des notes NoSQL ;
-* la relecture de la documentation ;
-* le commit final ;
-* le déploiement final Render.
-
-Ce fichier sert de checklist de fin de V1.
+- la vérification du contenu des pages ;
+- la vérification du responsive ;
+- la préparation des captures ;
+- la vérification du README ;
+- la vérification de `CHOIX_TECHNIQUES.md` ;
+- la vérification technique finale ;
+- la vérification Render ;
+- la vérification de l’administration Django ;
+- la vérification du compte d’évaluation ;
+- la vérification TinyDB ;
+- la relecture de la documentation ;
+- le commit final.
 
 ---
 
-# 19 - Renforcement du dossier projet
-
-**Fichier :** `19-renforcement-dossier-projet.md`
-
-Ce document sert de synthèse pour les ajouts réalisés après le retour formateur.
-
-Il présente les éléments ajoutés pour renforcer le dossier projet :
-
-* MCD ;
-* diagramme de cas d'utilisation ;
-* diagramme de séquence ;
-* extraits SQL natifs `CREATE TABLE` ;
-* exemples SQL `INSERT INTO` ;
-* JavaScript dynamique du menu mobile ;
-* documentation des modèles Django ;
-* documentation des vues et routes ;
-* expérimentation NoSQL TinyDB ;
-* affichage des notes TinyDB sur l'accueil ;
-* compte temporaire de lecture seule ;
-* liste des captures et preuves à préparer.
-
-Ce fichier permet de relier la documentation principale aux documents complémentaires créés pour répondre aux attendus du dossier projet.
-
----
-
-# Documents SQL associés
-
-## `doc/sql/schema.sql`
-
-Ce fichier présente l'équivalent SQL simplifié des tables utilisées par Django.
-
-Il contient :
-
-* la table `creations_creation` ;
-* la table `playable_playableproject` ;
-* des instructions `CREATE TABLE` ;
-* des exemples `INSERT INTO` ;
-* des commentaires sur le rôle des tables.
-
-Dans le projet réel, les tables sont créées par les migrations Django.
-
-Le fichier SQL sert à documenter la structure de la base pour le dossier projet.
-
----
-
-## `doc/sql/nosql.md`
-
-Ce document présentait initialement la réflexion autour d'une future intégration NoSQL.
-
-La V1 contient maintenant une expérimentation NoSQL légère avec TinyDB.
-
-Ce choix reste volontairement limité afin de conserver une V1 stable, simple et maîtrisable.
-
-Le document peut maintenant expliquer :
-
-* pourquoi NoSQL n'était pas prévu au départ ;
-* pourquoi TinyDB a été choisi pour une intégration légère ;
-* dans quels cas NoSQL peut devenir utile ;
-* un exemple de document NoSQL possible ;
-* les différences entre la base SQL actuelle et la base NoSQL documentaire ;
-* la roadmap possible pour intégrer MongoDB ou une autre solution NoSQL dans une version plus avancée.
-
----
-
-# Documents complémentaires de renforcement
-
-Les documents complémentaires ajoutés après le retour formateur permettent de renforcer la présentation du projet dans le dossier final.
-
-Ils concernent principalement :
-
-* la conception ;
-* le SQL natif ;
-* le JavaScript dynamique ;
-* le NoSQL TinyDB ;
-* le backend Django ;
-* les preuves et captures.
-
-Ces documents ne remplacent pas la documentation principale. Ils servent à compléter les preuves attendues pour le dossier projet.
-
----
+# 4. Documents complémentaires `docs/`
 
 ## Conception
 
-Les documents de conception présentent :
+```text
+docs/conception/mcd.md
+docs/conception/cas-utilisation.md
+docs/conception/diagramme-sequence.md
+```
 
-* le MCD ;
-* le diagramme de cas d'utilisation ;
-* le diagramme de séquence.
+Ces documents permettent de montrer :
 
-Ils permettent de montrer que le projet ne repose pas uniquement sur du code, mais aussi sur une réflexion préalable.
+- le MCD ;
+- les acteurs ;
+- les cas d’utilisation ;
+- le parcours visiteur ;
+- le lien entre navigateur, vues Django, base SQLite et templates.
 
 ---
 
 ## Backend Django
 
-Les documents backend présentent :
+```text
+docs/backend/modeles-django.md
+docs/backend/vues-et-routes.md
+```
 
-* les modèles Django ;
-* les vues ;
-* les routes ;
-* la récupération des données SQLite ;
-* la récupération des notes TinyDB ;
-* l'envoi des données aux templates.
+Ces documents présentent :
 
-Ils permettent de mieux expliquer la partie développement du projet.
+- les modèles Django ;
+- les champs principaux ;
+- les vues ;
+- les routes ;
+- la récupération des données SQLite ;
+- la récupération des notes TinyDB ;
+- l’envoi des données aux templates.
 
 ---
 
 ## Frontend et JavaScript
 
-Le document frontend présente le JavaScript dynamique du menu mobile.
+```text
+docs/frontend/javascript-menu-mobile.md
+```
 
-Il explique notamment :
+Ce document explique :
 
-* le rôle du fichier `static/js/menu.js` ;
-* le chargement du script dans `base.html` ;
-* l'utilisation de `data-menu-button` ;
-* l'utilisation de `data-sidebar` ;
-* l'utilisation de `querySelector` ;
-* l'utilisation de `addEventListener` ;
-* l'ouverture et la fermeture du menu avec `classList.toggle` ;
-* la mise à jour de `aria-expanded` ;
-* la fermeture du menu lors du clic sur un lien.
-
-Ce document permet de mieux valoriser le JavaScript dynamique dans le dossier projet.
+- le rôle de `static/js/menu.js` ;
+- l’ouverture et la fermeture du menu mobile ;
+- l’utilisation de `querySelector` ;
+- l’utilisation de `addEventListener` ;
+- l’utilisation de `classList.toggle` ;
+- la mise à jour de `aria-expanded`.
 
 ---
 
 ## SQL natif
 
-Les documents SQL complémentaires présentent :
+```text
+docs/sql/create_tables_creations.sql
+docs/sql/create_tables_playable.sql
+docs/sql/exemples_insert.sql
+docs/sql/sql-natif.md
+```
 
-* les extraits `CREATE TABLE` ;
-* les exemples `INSERT INTO` ;
-* le lien entre les modèles Django et les tables SQL ;
-* le rôle des migrations ;
-* la différence entre ORM Django et SQL natif documentaire.
+Ces documents présentent :
 
-Ces documents répondent à la demande de mieux valoriser les compétences SQL.
+- les extraits `CREATE TABLE` ;
+- les exemples `INSERT INTO` ;
+- le lien entre les modèles Django et les tables SQL ;
+- le rôle des migrations ;
+- la différence entre ORM Django et SQL natif documentaire.
 
 ---
 
 ## NoSQL TinyDB
 
-La documentation NoSQL présente l'intégration légère réalisée avec TinyDB.
-
-Elle explique :
-
-* pourquoi TinyDB a été retenu ;
-* pourquoi cette intégration reste volontairement limitée ;
-* le rôle du service Python NoSQL ;
-* le rôle du fichier JSON généré par TinyDB ;
-* le rôle du script de démonstration terminal ;
-* la lecture des notes de progression ;
-* l'affichage des notes sur la page d'accueil ;
-* la différence entre SQLite et TinyDB ;
-* les limites de cette expérimentation.
-
-Cette intégration ne remplace pas SQLite.
-
-SQLite reste la base principale du projet Django. TinyDB sert uniquement de base NoSQL documentaire pour suivre des notes de progression liées au projet.
-
----
-
-# Fichiers NoSQL implantés dans le projet
-
-## `core/services/nosql_notes.py`
-
-Ce fichier contient le service Python utilisé pour interagir avec TinyDB.
-
-Il contient notamment :
-
-* la création du chemin vers la base NoSQL ;
-* l'ouverture de la base TinyDB ;
-* la création des notes de démonstration ;
-* la lecture de toutes les notes ;
-* la recherche de notes par projet.
-
-Ce service est utilisé par la vue d'accueil pour transmettre les notes au template.
-
----
-
-## `data/nosql/project_notes_db.json`
-
-Ce fichier est la base NoSQL générée par TinyDB.
-
-Il contient les notes de progression du projet Frostia Games.
-
----
-
-## `scripts/demo_tinydb_notes.py`
-
-Ce script permet de tester la lecture TinyDB depuis le terminal.
-
-Commande de test :
-
-```powershell
-python -m scripts.demo_tinydb_notes
+```text
+docs/nosql/nosql.md
+docs/nosql/structure-nosql.md
+docs/nosql/tinydb-integration.md
 ```
 
-Ce script affiche les notes de progression dans le terminal et sert de preuve technique.
+Ces documents présentent :
+
+- pourquoi TinyDB a été retenu ;
+- pourquoi l’intégration reste volontairement limitée ;
+- le rôle du service Python NoSQL ;
+- le rôle du fichier JSON ;
+- le rôle du script de démonstration ;
+- l’affichage des notes sur la page d’accueil ;
+- la différence entre SQLite et TinyDB.
 
 ---
 
-# Fichiers importants à la racine
-
-La racine du projet contient aussi plusieurs fichiers importants.
+## Preuves
 
 ```text
-frostia-games/
-├─ README.md
-├─ CHOIX_TECHNIQUES.md
-├─ .env.example
-├─ .gitignore
-├─ .dockerignore
-├─ build.sh
-├─ manage.py
-├─ requirements.txt
-├─ Dockerfile
-├─ docker-compose.yml
-├─ pyproject.toml
-└─ db.sqlite3
+docs/preuves/
 ```
 
-## `README.md`
+Ce dossier regroupe les captures de fonctionnement.
 
-Le fichier `README.md` présente rapidement le projet.
+Organisation recommandée :
 
-Il sert de point d'entrée pour une personne qui découvre le dépôt GitHub.
+```text
+docs/preuves/
+├── admin/
+├── js/
+├── nosql/
+├── render/
+├── sql/
+└── test/
+```
 
-Il doit expliquer :
+L’index principal des preuves est :
 
-* le rôle du projet ;
-* les technologies utilisées ;
-* l'installation locale ;
-* le lancement du serveur ;
-* le lancement Docker ;
-* le déploiement Render ;
-* les limites de la V1 ;
-* les évolutions prévues.
-
----
-
-## `CHOIX_TECHNIQUES.md`
-
-Le fichier `CHOIX_TECHNIQUES.md` présente les choix techniques du projet.
-
-Il explique notamment :
-
-* pourquoi Django a été retenu ;
-* pourquoi C# / Razor a été envisagé mais reporté ;
-* pourquoi SQLite est utilisé dans la V1 ;
-* pourquoi TinyDB a été ajouté de manière limitée ;
-* pourquoi certaines pistes sont volontairement repoussées ;
-* comment le projet évite de devenir une usine à gaz.
+```text
+PREUVES-FONCTIONNEMENT.md
+```
 
 ---
 
-## `.env.example`
+# 5. Fichiers importants à la racine
 
-Le fichier `.env.example` montre les variables d'environnement nécessaires au projet sans afficher les vraies valeurs sensibles.
+```text
+README.md
+CHOIX_TECHNIQUES.md
+PREUVES-FONCTIONNEMENT.md
+.env.example
+.gitignore
+.dockerignore
+build.sh
+manage.py
+requirements.txt
+Dockerfile
+docker-compose.yml
+pyproject.toml
+```
 
-Variables principales :
+## README.md
+
+Présente rapidement :
+
+- le rôle du projet ;
+- les technologies utilisées ;
+- l’installation locale ;
+- le lancement du serveur ;
+- le lancement Docker ;
+- le déploiement Render ;
+- les limites de la V1.
+
+## CHOIX_TECHNIQUES.md
+
+Explique :
+
+- pourquoi Django a été retenu ;
+- pourquoi C# / Razor a été envisagé mais reporté ;
+- pourquoi SQLite est utilisé dans la V1 ;
+- pourquoi TinyDB a été ajouté de manière limitée ;
+- pourquoi PostgreSQL est reporté ;
+- pourquoi certaines pistes ne doivent pas être ajoutées immédiatement.
+
+## PREUVES-FONCTIONNEMENT.md
+
+Indexe les captures de fonctionnement et les preuves techniques du projet.
+
+## .env.example
+
+Documente les variables d’environnement sans exposer les vraies valeurs :
 
 ```text
 DJANGO_DEBUG=False
@@ -954,138 +738,96 @@ DJANGO_SECRET_KEY=change-me
 DJANGO_SUPERUSER_USERNAME=admin
 DJANGO_SUPERUSER_EMAIL=admin@example.com
 DJANGO_SUPERUSER_PASSWORD=change-me
+EVALUATION_USER_PASSWORD=change-me
 ```
 
-Ce fichier permet de comprendre la configuration attendue sans exposer les secrets.
+## build.sh
 
----
-
-## `build.sh`
-
-Le fichier `build.sh` est utilisé par Render pour préparer le projet avant le lancement.
+Utilisé par Render pendant le build.
 
 Il permet notamment :
 
-* d'installer les dépendances ;
-* de collecter les fichiers statiques ;
-* d'appliquer les migrations ;
-* de créer un superutilisateur si les variables nécessaires sont présentes.
+- d’installer les dépendances ;
+- de collecter les fichiers statiques ;
+- d’appliquer les migrations ;
+- de créer un superutilisateur si les variables sont présentes.
 
 ---
 
-## `requirements.txt`
+# 6. État actuel de la V1
 
-Le fichier `requirements.txt` liste les dépendances Python nécessaires au projet.
+La V1 contient actuellement :
 
-Il contient notamment :
-
-* Django ;
-* Gunicorn ;
-* WhiteNoise ;
-* TinyDB.
-
-TinyDB est utilisé pour l'expérimentation NoSQL légère.
-
----
-
-# État actuel de la V1
-
-La V1 de Frostia Games contient actuellement :
-
-* une structure Django fonctionnelle ;
-* trois pages principales ;
-* une base SQLite ;
-* des modèles Django ;
-* des migrations ;
-* une administration Django ;
-* un compte temporaire de lecture seule pour l'évaluation ;
-* un affichage dynamique des données ;
-* une interface préparatoire pour les projets jouables ;
-* un menu mobile en JavaScript ;
-* une expérimentation NoSQL avec TinyDB ;
-* un affichage des notes TinyDB sur la page d'accueil ;
-* un lancement local ;
-* un lancement Docker ;
-* un déploiement Render ;
-* une documentation SQL ;
-* une documentation NoSQL ;
-* une documentation de modélisation ;
-* une documentation frontend ;
-* une documentation backend ;
-* une documentation de sécurité ;
-* une documentation Docker ;
-* un manuel utilisateur ;
-* un changelog ;
-* un bilan V1 ;
-* une documentation de déploiement ;
-* une documentation des tests ;
-* une documentation des limites et évolutions.
+- une structure Django fonctionnelle ;
+- trois pages principales ;
+- une base SQLite ;
+- des modèles Django ;
+- des migrations ;
+- une administration Django ;
+- un compte d’évaluation en lecture seule ;
+- un affichage dynamique des données ;
+- une interface préparatoire pour les projets jouables ;
+- un menu mobile JavaScript ;
+- une expérimentation NoSQL avec TinyDB ;
+- un affichage des notes TinyDB sur la page d’accueil ;
+- un lancement local ;
+- un lancement Docker ;
+- un déploiement Render ;
+- une commande `setup_render_data` ;
+- une documentation SQL ;
+- une documentation NoSQL ;
+- une documentation de modélisation ;
+- une documentation frontend ;
+- une documentation backend ;
+- une documentation de sécurité ;
+- une documentation Docker ;
+- un manuel utilisateur ;
+- un changelog ;
+- un bilan V1 ;
+- une documentation de déploiement ;
+- une documentation des tests ;
+- une documentation des limites et évolutions.
 
 ---
 
-# Fonctionnalités implantées
-
-La V1 contient :
-
-* la page d'accueil ;
-* la page Mes créations ;
-* la page Projets jouables ;
-* une navigation responsive ;
-* un menu mobile ;
-* une base SQLite ;
-* les modèles Django nécessaires à la V1 ;
-* l'administration Django ;
-* un compte temporaire de lecture seule ;
-* l'affichage des créations depuis la base ;
-* l'affichage des projets jouables depuis la base ;
-* l'affichage des notes TinyDB sur l'accueil ;
-* une interface préparatoire de sélection de fichier ;
-* Docker ;
-* un déploiement Render ;
-* une documentation technique complète.
-
----
-
-# Limites assumées et éléments reportés
+# 7. Limites assumées
 
 La V1 ne contient pas encore :
 
-* de vraie plateforme complète de gestion de projets ;
-* de PostgreSQL ;
-* d'administration personnalisée ;
-* de vrai upload serveur ;
-* de vrai lecteur de jeu ou de vidéo ;
-* de page détail complète pour chaque projet ;
-* d'API REST ;
-* de système de comptes publics ;
-* de rôles avancés ;
-* de graphiques Plotly.js ;
-* de tests automatisés complets ;
-* de mini-jeu intégré ;
-* de système de score ;
-* de téléchargement public de projet jouable.
+- vraie plateforme complète de gestion de projets ;
+- PostgreSQL ;
+- administration personnalisée ;
+- vrai upload serveur ;
+- vrai lecteur de jeu ou vidéo ;
+- page détail complète pour chaque projet ;
+- API REST ;
+- système de comptes publics ;
+- rôles avancés ;
+- graphiques Plotly.js ;
+- tests automatisés complets ;
+- mini-jeu intégré ;
+- système de score ;
+- téléchargement public de projet jouable.
 
 Ces limites sont volontaires afin de conserver un projet stable, testable, maintenable et présentable.
 
 ---
 
-# Règle de documentation
+# 8. Règle de documentation
 
 Une étape du projet est considérée comme terminée uniquement si :
 
-* le code fonctionne ;
-* `python manage.py check` ne signale pas d'erreur ;
-* les alertes importantes ont été traitées ;
-* la fonctionnalité a été testée dans le navigateur ;
-* le comportement a été vérifié ;
-* la documentation correspondante est mise à jour ;
-* les modifications sont sauvegardées avec Git.
-
-L'objectif est d'éviter que le projet évolue sans trace claire.
+- le code fonctionne ;
+- `python manage.py check` ne signale pas d'erreur ;
+- les alertes importantes ont été traitées ;
+- la fonctionnalité a été testée dans le navigateur ;
+- le comportement a été vérifié ;
+- la documentation correspondante est mise à jour ;
+- les modifications sont sauvegardées avec Git.
 
 ---
 
-# Règle des trois piliers pour le dossier projet
+# 9. Règle des trois piliers pour le dossier projet
 
 Pour chaque compétence importante, le dossier doit présenter :
 
@@ -1095,19 +837,20 @@ Pour chaque compétence importante, le dossier doit présenter :
 
 Cette règle concerne notamment :
 
-* le JavaScript dynamique ;
-* les vues Django ;
-* les modèles Django ;
-* le SQL natif ;
-* TinyDB ;
-* l'administration Django ;
-* le déploiement Render ;
-* Docker ;
-* GitHub.
+- le JavaScript dynamique ;
+- les vues Django ;
+- les modèles Django ;
+- le SQL natif ;
+- TinyDB ;
+- l’administration Django ;
+- le compte d’évaluation ;
+- le déploiement Render ;
+- Docker ;
+- GitHub.
 
 ---
 
-# Commandes principales
+# 10. Commandes principales
 
 ## Lancement local
 
@@ -1141,7 +884,7 @@ python manage.py makemigrations
 python manage.py migrate
 ```
 
-## Création d'un administrateur local
+## Création d’un administrateur local
 
 ```powershell
 python manage.py createsuperuser
@@ -1165,55 +908,55 @@ docker compose exec web python manage.py check
 git status
 git add .
 git commit -m "Update documentation"
-git push
+git push origin main
 ```
 
 ---
 
-# Prochaines actions
+# 11. Prochaines actions
 
 Les prochaines actions prévues sont :
 
-1. Relire les pages publiques du site.
-2. Vérifier le responsive mobile.
-3. Préparer les captures d'écran.
-4. Vérifier le README à la racine.
-5. Vérifier le fichier `CHOIX_TECHNIQUES.md`.
-6. Vérifier le site en local.
-7. Vérifier le site sur Render.
-8. Vérifier l'administration Django.
-9. Vérifier le compte temporaire de lecture seule.
-10. Vérifier l'affichage des notes TinyDB sur l'accueil.
-11. Faire les captures des preuves.
-12. Mettre à jour le dossier Word final.
-13. Intégrer les annexes réelles.
-14. Exporter le dossier en PDF.
-15. Faire le commit final.
-16. Vérifier que le dépôt GitHub est propre.
+1. relire les pages publiques du site ;
+2. vérifier le responsive mobile ;
+3. préparer les captures ;
+4. vérifier le README ;
+5. vérifier `CHOIX_TECHNIQUES.md` ;
+6. vérifier le site en local ;
+7. vérifier le site sur Render ;
+8. vérifier l’administration Django ;
+9. vérifier le compte d’évaluation en lecture seule ;
+10. vérifier l’affichage des notes TinyDB ;
+11. vérifier les captures dans `docs/preuves/` ;
+12. mettre à jour le dossier final ;
+13. intégrer les annexes réelles ;
+14. exporter le dossier en PDF si nécessaire ;
+15. faire le commit final ;
+16. vérifier que le dépôt GitHub est propre.
 
 ---
 
-# Conclusion
+# 12. Conclusion
 
 La documentation de Frostia Games sert à montrer que le projet est construit progressivement, avec une séparation claire entre :
 
-* ce qui est implanté ;
-* ce qui est documenté ;
-* ce qui est testé ;
-* ce qui est déployé ;
-* ce qui est volontairement reporté ;
-* ce qui pourra être ajouté dans une version future.
+- ce qui est implanté ;
+- ce qui est documenté ;
+- ce qui est testé ;
+- ce qui est déployé ;
+- ce qui est volontairement reporté ;
+- ce qui pourra être ajouté dans une version future.
 
 L'objectif n'est pas d'empiler les fonctionnalités, mais de présenter une base Django propre, documentée, testée, déployée et évolutive.
 
-La V1 de Frostia Games répond désormais aux principaux points de renforcement demandés :
+La V1 répond désormais aux principaux points de renforcement :
 
-* conception avec MCD, cas d'utilisation et diagramme de séquence ;
-* extraits SQL natifs `CREATE TABLE` et `INSERT INTO` ;
-* JavaScript dynamique du menu mobile ;
-* documentation backend ;
-* expérimentation NoSQL TinyDB ;
-* affichage NoSQL sur l'accueil ;
-* compte temporaire de lecture seule ;
-* organisation des preuves à intégrer dans le dossier projet.
-
+- conception avec MCD, cas d'utilisation et diagramme de séquence ;
+- extraits SQL natifs `CREATE TABLE` et `INSERT INTO` ;
+- JavaScript dynamique du menu mobile ;
+- documentation backend ;
+- expérimentation NoSQL TinyDB ;
+- affichage NoSQL sur l'accueil ;
+- compte d’évaluation en lecture seule ;
+- initialisation Render avec `setup_render_data` ;
+- organisation des preuves dans `docs/preuves/`.

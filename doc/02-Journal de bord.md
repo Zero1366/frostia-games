@@ -15,15 +15,15 @@ L’objectif est de garder une trace claire :
 * des technologies envisagées mais non retenues ;
 * du déploiement en ligne ;
 * de la documentation produite ;
-* des fichiers importants ajoutés à la racine du projet.
+* des preuves préparées pour le dossier projet.
 
-Ce journal permet aussi d’expliquer que certaines décisions techniques ont été prises pour protéger la stabilité du projet, éviter de repartir de zéro et conserver un périmètre réaliste.
+Ce journal montre également que certaines décisions techniques ont été prises pour protéger la stabilité du projet, éviter l’élargissement excessif du périmètre et conserver une V1 réaliste, terminée et présentable.
 
 ---
 
 # Étape 01 — Mise en place du socle Django
 
-**Date :** 19/06/2026
+**Date :** 19/06/2026  
 **Statut :** validé
 
 ## Objectif
@@ -32,20 +32,13 @@ Mettre en place un premier socle technique propre pour le projet Frostia Games a
 
 Cette étape sert à préparer une base stable avant de commencer le développement des pages du site.
 
----
-
 ## Actions réalisées
 
 * Création du dossier du projet **Frostia Games**.
-
 * Création d’un environnement virtuel Python nommé `.venv`.
-
 * Activation de l’environnement virtuel dans le terminal VS Code.
-
 * Installation de Django.
-
 * Création du projet Django principal : `frostia_config`.
-
 * Création des applications Django :
 
   * `core` ;
@@ -65,8 +58,6 @@ Cette étape sert à préparer une base stable avant de commencer le développem
   * `doc` ;
   * `.vscode`.
 
----
-
 ## Configuration réalisée
 
 Le fichier `frostia_config/settings.py` a été modifié afin de configurer :
@@ -78,7 +69,7 @@ Le fichier `frostia_config/settings.py` a été modifié afin de configurer :
 * la langue française ;
 * le fuseau horaire `Europe/Paris`.
 
-Les applications ajoutées sont :
+Applications ajoutées :
 
 ```python
 "core",
@@ -86,13 +77,13 @@ Les applications ajoutées sont :
 "playable",
 ```
 
-Le dossier des templates est configuré avec :
+Configuration des templates :
 
 ```python
 "DIRS": [BASE_DIR / "templates"],
 ```
 
-Les fichiers statiques et médias sont configurés avec :
+Configuration des fichiers statiques et médias :
 
 ```python
 STATIC_URL = "static/"
@@ -101,8 +92,6 @@ STATICFILES_DIRS = [BASE_DIR / "static"]
 MEDIA_URL = "media/"
 MEDIA_ROOT = BASE_DIR / "media"
 ```
-
----
 
 ## Vérifications effectuées
 
@@ -118,8 +107,6 @@ Résultat obtenu :
 System check identified no issues (0 silenced).
 ```
 
----
-
 ## Fichiers concernés
 
 * `manage.py`
@@ -128,8 +115,6 @@ System check identified no issues (0 silenced).
 * `core/views.py`
 * `core/urls.py`
 * `.vscode/settings.json`
-
----
 
 ## Problèmes rencontrés
 
@@ -141,8 +126,6 @@ Plusieurs problèmes ont été rencontrés pendant l’installation :
 * alertes de typage inutiles dans VS Code liées à Django ;
 * besoin de distinguer les vraies erreurs Django des faux positifs de l’éditeur.
 
----
-
 ## Décision prise
 
 Le projet ne devait pas commencer par une accumulation de fonctionnalités.
@@ -153,22 +136,20 @@ La priorité a été de mettre en place une base Django stable, compréhensible 
 
 # Étape 02 — Réflexion sur les technologies envisagées
 
-**Date :** 19/06/2026
+**Date :** 19/06/2026  
 **Statut :** documenté
 
 ## Objectif
 
-Cette étape permet d’expliquer les technologies envisagées pour le projet et les raisons pour lesquelles certaines pistes n’ont pas été retenues dans la V1.
+Expliquer les technologies envisagées pour le projet et les raisons pour lesquelles certaines pistes n’ont pas été retenues dans la V1.
 
-Ce point est important, car il montre que le choix technique n’a pas été fait au hasard. Il a été fait en tenant compte :
+Ce point montre que le choix technique n’a pas été fait au hasard. Il tient compte :
 
 * du temps disponible ;
 * du périmètre du projet ;
 * de la stabilité attendue ;
 * de la documentation à produire ;
 * de la capacité à terminer une V1 présentable.
-
----
 
 ## Technologies envisagées
 
@@ -182,27 +163,6 @@ Plusieurs pistes techniques ont été envisagées avant de stabiliser le projet 
 * une organisation plus proche d’un environnement applicatif C#.
 
 Ces pistes restent intéressantes pour de futurs projets, car elles correspondent davantage à certaines préférences personnelles en matière de structure, de typage et de lisibilité du code.
-
----
-
-## Point de vue technique personnel
-
-Une attention particulière a été portée à l’élégance technique.
-
-Par élégance, on entend ici :
-
-* une syntaxe claire ;
-* une structure logique ;
-* un typage rassurant ;
-* une séparation propre des responsabilités ;
-* une architecture qui évite les solutions trop dispersées ;
-* un langage qui aide le développeur à garder un code stable.
-
-De ce point de vue, certaines technologies envisagées semblaient intéressantes, notamment C# avec ASP.NET ou Razor.
-
-Cependant, ce projet devait rester réaliste, livrable et terminé dans un délai raisonnable.
-
----
 
 ## Pourquoi ne pas avoir changé de technologie
 
@@ -220,19 +180,11 @@ Ce choix aurait créé plusieurs risques :
 * risque de ne pas terminer une version présentable ;
 * transformation du projet en expérimentation technique au lieu d’un livrable stable.
 
-La décision a donc été de ne pas repartir de zéro.
-
-Ce choix est important, car il montre une capacité à limiter le périmètre et à terminer un projet plutôt qu’à suivre uniquement une préférence technique.
-
----
-
 ## Choix final de Django et Python
 
 Le choix final s’est porté sur Django avec Python.
 
-Python reste un langage assez permissif. Cela peut parfois donner moins de sécurité qu’un langage plus strict ou plus fortement typé.
-
-Cependant, dans le cadre de cette V1, Django apporte une structure claire :
+Python reste un langage permissif, mais Django apporte une structure claire :
 
 * routes ;
 * vues ;
@@ -242,12 +194,6 @@ Cependant, dans le cadre de cette V1, Django apporte une structure claire :
 * templates ;
 * base SQLite ;
 * séparation entre code, données et affichage.
-
-Même si Python n’est pas le langage le plus strict, Django permet d’encadrer le projet avec une architecture compréhensible.
-
-Python reste également lisible, rapide à mettre en place et suffisamment efficace lorsqu’il est utilisé avec méthode, documentation et règles de validation.
-
----
 
 ## Garde-fous ajoutés
 
@@ -259,16 +205,14 @@ Pour compenser la permissivité de Python, plusieurs garde-fous ont été ajout�
 * commandes de vérification Django ;
 * séparation des fichiers ;
 * environnement virtuel `.venv` ;
-* utilisation de migrations Django ;
+* migrations Django ;
 * validation avec `python manage.py check` ;
 * organisation des templates ;
 * fichiers statiques séparés ;
 * documentation des limites ;
 * documentation des choix techniques ;
-* utilisation de variables d’environnement ;
-* fichier `.env.example` pour documenter la configuration sans exposer les secrets.
-
----
+* variables d’environnement ;
+* fichier `.env.example` sans secret réel.
 
 ## Décision retenue
 
@@ -282,38 +226,16 @@ La décision prise est donc la suivante :
 * éviter le changement de technologie en cours de route ;
 * renforcer le projet avec de la documentation, des vérifications et des garde-fous.
 
-Ce choix permet de protéger le projet contre le risque de dérive technique.
-
----
-
-## Bilan de cette réflexion
-
-Cette réflexion est un point positif du projet.
-
-Elle montre que les technologies mises de côté ne l’ont pas été par oubli, mais par choix de périmètre.
-
-Le projet aurait pu partir vers une technologie plus proche de certaines préférences techniques, mais cela aurait augmenté le risque de ne pas terminer correctement la V1.
-
-Le choix final est donc un compromis entre :
-
-* les préférences techniques ;
-* la stabilité du projet ;
-* le temps disponible ;
-* la capacité à documenter ;
-* la capacité à livrer une version présentable.
-
 ---
 
 # Étape 03 — Création de l’interface principale
 
-**Date :** 19/06/2026
+**Date :** 19/06/2026  
 **Statut :** validé
 
 ## Objectif
 
 Créer les pages principales du portfolio Frostia Games avec une interface simple, moderne et responsive.
-
----
 
 ## Actions réalisées
 
@@ -332,11 +254,9 @@ Mise en place :
 * du fichier CSS principal ;
 * du fichier JavaScript pour le menu.
 
----
-
 ## Fichiers concernés
 
-* `templates/base.html`
+* `templates/partials/base.html`
 * `templates/pages/home.html`
 * `templates/pages/creation.html`
 * `templates/pages/projet_jouable.html`
@@ -344,8 +264,6 @@ Mise en place :
 * `static/js/menu.js`
 * `core/views.py`
 * `core/urls.py`
-
----
 
 ## Résultat obtenu
 
@@ -358,8 +276,6 @@ Le site dispose maintenant :
 * d’un menu mobile ;
 * d’une interface responsive ;
 * d’un thème bleu cohérent avec le nom Frostia Games.
-
----
 
 ## Vérifications effectuées
 
@@ -382,7 +298,7 @@ Résultat :
 
 # Étape 04 — Modernisation de l’interface
 
-**Date :** 20/06/2026
+**Date :** 20/06/2026  
 **Statut :** validé
 
 ## Objectif
@@ -390,8 +306,6 @@ Résultat :
 Améliorer l’apparence du site sans utiliser de template Django lourd.
 
 L’objectif est de conserver le contrôle du code, du CSS et de la structure.
-
----
 
 ## Actions réalisées
 
@@ -405,17 +319,13 @@ L’objectif est de conserver le contrôle du code, du CSS et de la structure.
 * Préparation du responsive mobile.
 * Adaptation progressive de l’interface à l’affichage des données provenant du backend.
 
----
-
 ## Fichiers concernés
 
 * `static/css/main.css`
-* `templates/base.html`
+* `templates/partials/base.html`
 * `templates/pages/home.html`
 * `templates/pages/creation.html`
 * `templates/pages/projet_jouable.html`
-
----
 
 ## Problèmes rencontrés
 
@@ -425,21 +335,17 @@ L’objectif est de conserver le contrôle du code, du CSS et de la structure.
 * Certains textes étaient trop petits ou mal hiérarchisés.
 * Certaines parties de l’interface ont dû être adaptées après l’ajout du backend.
 
----
-
 ## Résultat obtenu
 
 L’interface est devenue plus propre, plus lisible et plus professionnelle.
 
 Elle reste volontairement simple afin de conserver une V1 stable, maintenable et compatible avec le backend Django.
 
-La modernisation lourde est reportée à une version future.
-
 ---
 
 # Étape 05 — Création du backend SQL
 
-**Date :** 24/06/2026
+**Date :** 24/06/2026  
 **Statut :** validé
 
 ## Objectif
@@ -448,26 +354,15 @@ Ajouter un backend Django minimal mais réel afin que le site ne soit pas unique
 
 L’objectif est de connecter certaines pages à une base SQLite via les modèles Django.
 
----
-
 ## Actions réalisées
 
-Création des modèles :
-
-* `Creation` ;
-* `PlayableProject`.
-
-Ajout des modèles dans l’administration Django.
-
-Création et application des migrations.
-
-Ajout de données depuis l’admin Django.
-
-Connexion des vues aux modèles.
-
-Affichage des données dans les templates.
-
----
+* Création du modèle `Creation`.
+* Création du modèle `PlayableProject`.
+* Ajout des modèles dans l’administration Django.
+* Création et application des migrations.
+* Ajout de données depuis l’admin Django.
+* Connexion des vues aux modèles.
+* Affichage des données dans les templates.
 
 ## Fichiers concernés
 
@@ -479,8 +374,6 @@ Affichage des données dans les templates.
 * `templates/pages/creation.html`
 * `templates/pages/projet_jouable.html`
 * `frostia_config/settings.py`
-
----
 
 ## Modèle Creation
 
@@ -498,8 +391,6 @@ Il contient notamment :
 * un champ de visibilité ;
 * des dates de création et de modification.
 
----
-
 ## Modèle PlayableProject
 
 Le modèle `PlayableProject` permet de gérer les futurs contenus de la page **Projets jouables**.
@@ -515,8 +406,6 @@ Il contient notamment :
 * un état de disponibilité ;
 * un champ de visibilité ;
 * des dates de création et de modification.
-
----
 
 ## Vérifications effectuées
 
@@ -553,14 +442,12 @@ Résultat :
 
 # Étape 06 — Mise en place de l’administration Django
 
-**Date :** 24/06/2026
+**Date :** 24/06/2026  
 **Statut :** validé
 
 ## Objectif
 
 Permettre la gestion des contenus dynamiques depuis l’administration Django.
-
----
 
 ## Actions réalisées
 
@@ -580,14 +467,10 @@ Pour le modèle `PlayableProject` :
 * ajout de `prepopulated_fields` ;
 * ajout de `readonly_fields`.
 
----
-
 ## Fichiers concernés
 
 * `creations/admin.py`
 * `playable/admin.py`
-
----
 
 ## Problème rencontré
 
@@ -602,8 +485,6 @@ Elles ont été traitées avec :
 ```
 
 et avec un réglage plus adapté de Pylance pour un projet Django.
-
----
 
 ## Validation
 
@@ -625,7 +506,7 @@ Actions testées :
 
 # Étape 07 — Interface préparatoire des projets jouables
 
-**Date :** 24/06/2026
+**Date :** 24/06/2026  
 **Statut :** validé
 
 ## Objectif
@@ -633,8 +514,6 @@ Actions testées :
 Préparer la page **Projets jouables** sans intégrer de vrai upload serveur.
 
 L’objectif est de montrer une interface prévue pour une future évolution, tout en restant honnête sur les limites de la V1.
-
----
 
 ## Actions réalisées
 
@@ -645,16 +524,12 @@ L’objectif est de montrer une interface prévue pour une future évolution, to
 * Message indiquant clairement que l’upload n’est pas implanté.
 * Affichage des données `PlayableProject` depuis la base.
 
----
-
 ## Fichiers concernés
 
 * `templates/pages/projet_jouable.html`
 * `static/css/main.css`
 * `core/views.py`
 * `playable/models.py`
-
----
 
 ## Limite volontaire
 
@@ -668,8 +543,6 @@ Cela signifie que :
 * aucun vrai lecteur vidéo n’est actif.
 
 Ce choix évite d’ajouter une fonctionnalité sensible sans sécurité suffisante.
-
----
 
 ## Validation
 
@@ -686,14 +559,12 @@ Tests effectués :
 
 # Étape 08 — Nettoyage des alertes inutiles
 
-**Date :** 24/06/2026
+**Date :** 24/06/2026  
 **Statut :** validé
 
 ## Objectif
 
 Supprimer les fausses erreurs affichées par VS Code afin de ne conserver que les alertes réellement utiles.
-
----
 
 ## Problème rencontré
 
@@ -706,8 +577,6 @@ Le mode strict de Pylance générait de nombreuses alertes sur les champs Django
 
 Ces alertes étaient liées au typage interne de Django et ne bloquaient pas l’exécution.
 
----
-
 ## Actions réalisées
 
 Modification de `.vscode/settings.json` :
@@ -716,16 +585,6 @@ Modification de `.vscode/settings.json` :
 * désactivation des faux positifs liés aux types inconnus ;
 * conservation de Ruff pour le formatage et les imports ;
 * conservation de `python manage.py check` comme validation principale Django.
-
----
-
-## Fichiers concernés
-
-* `.vscode/settings.json`
-* `creations/admin.py`
-* `playable/admin.py`
-
----
 
 ## Validation
 
@@ -741,14 +600,12 @@ python manage.py check
 
 # Étape 09 — Ajout de Docker
 
-**Date :** 24/06/2026
+**Date :** 24/06/2026  
 **Statut :** validé
 
 ## Objectif
 
 Ajouter Docker afin de rendre l’environnement de développement reproductible.
-
----
 
 ## Actions réalisées
 
@@ -761,24 +618,11 @@ Création des fichiers :
 
 Test du lancement avec Docker Compose.
 
----
-
-## Fichiers concernés
-
-* `Dockerfile`
-* `docker-compose.yml`
-* `.dockerignore`
-* `requirements.txt`
-
----
-
 ## Commande utilisée
 
 ```powershell
 docker compose up --build
 ```
-
----
 
 ## Problèmes rencontrés
 
@@ -789,8 +633,6 @@ Plusieurs erreurs ont été corrigées :
 * erreur de nom de fichier dans le `Dockerfile` ;
 * nécessité de lancer le serveur depuis Docker avant de tester la page.
 
----
-
 ## Validation
 
 Docker construit l’image correctement.
@@ -799,30 +641,24 @@ Le conteneur se lance.
 
 Le serveur Django démarre dans Docker.
 
-Le site est accessible via :
-
-```text
-https://frostia-games.onrender.com/
-```
+Le site est accessible dans l’environnement de test local Docker.
 
 ---
 
 # Étape 10 — Ajout de la documentation backend
 
-**Date :** 24/06/2026
+**Date :** 24/06/2026  
 **Statut :** validé
 
 ## Objectif
 
 Ajouter les documents nécessaires pour répondre aux attendus du dossier projet.
 
----
-
 ## Documents créés ou mis à jour
 
 * `doc/00-index-documentation.md`
 * `doc/01-modernisation-interface.md`
-* `doc/02-journal-de-bord.md`
+* `doc/02-Journal de bord.md`
 * `doc/03-modelisation-backend.md`
 * `doc/04-docker-et-lancement.md`
 * `doc/05-securite-backend.md`
@@ -830,27 +666,17 @@ Ajouter les documents nécessaires pour répondre aux attendus du dossier projet
 * `doc/07-base-de-donnees.md`
 * `doc/08-changelog.md`
 * `doc/sql/schema.sql`
-* `doc/sql/nosql.md`
-
----
 
 ## Contenu ajouté
 
 * MCD simplifié.
-* Cas d’utilisation.
-* Diagrammes de séquence.
 * Schéma SQL documentaire.
-* Exemples `CREATE TABLE`.
-* Exemples `INSERT INTO`.
-* Réflexion NoSQL.
 * Documentation Docker.
 * Documentation sécurité.
 * Manuel utilisateur.
 * Changelog.
 * Mise à jour de l’index.
 * Mise à jour du journal de bord.
-
----
 
 ## Validation
 
@@ -871,7 +697,7 @@ Ils permettent de justifier :
 
 # Étape 11 — Préparation du déploiement Render
 
-**Date :** 25/06/2026
+**Date :** 25/06/2026  
 **Statut :** validé
 
 ## Objectif
@@ -879,8 +705,6 @@ Ils permettent de justifier :
 Préparer le projet Django pour un déploiement en ligne avec Render.
 
 L’objectif était de rendre le site accessible hors de l’environnement local, tout en conservant une configuration simple et documentée.
-
----
 
 ## Actions réalisées
 
@@ -895,8 +719,6 @@ L’objectif était de rendre le site accessible hors de l’environnement local
 * Vérification de l’accès au site en ligne.
 * Vérification de l’accès à l’administration Django.
 
----
-
 ## Fichiers concernés
 
 * `requirements.txt`
@@ -907,21 +729,19 @@ L’objectif était de rendre le site accessible hors de l’environnement local
 * `.env.example`
 * `doc/09-deploiement-render.md`
 
----
-
 ## Commande de build Render
 
 ```bash
 bash build.sh
 ```
 
-## Commande de démarrage Render
+## Commande de démarrage Render initiale
 
 ```bash
 gunicorn frostia_config.wsgi:application --bind 0.0.0.0:$PORT
 ```
 
----
+Cette commande a ensuite été améliorée afin d’exécuter automatiquement les migrations et l’initialisation des données Render.
 
 ## Problèmes rencontrés
 
@@ -933,25 +753,6 @@ Plusieurs problèmes ou confusions ont été rencontrés :
 * nécessité d’utiliser `frostia_config.wsgi:application` pour un projet Django ;
 * nécessité de ne pas exposer les valeurs sensibles dans GitHub.
 
----
-
-## Décisions prises
-
-Les commandes de déploiement doivent rester dans la configuration Render :
-
-* `bash build.sh` dans **Build Command** ;
-* `gunicorn frostia_config.wsgi:application --bind 0.0.0.0:$PORT` dans **Start Command**.
-
-Les secrets doivent rester dans les variables d’environnement Render :
-
-* `DJANGO_DEBUG` ;
-* `DJANGO_SECRET_KEY` ;
-* `DJANGO_SUPERUSER_USERNAME` ;
-* `DJANGO_SUPERUSER_EMAIL` ;
-* `DJANGO_SUPERUSER_PASSWORD`.
-
----
-
 ## Validation
 
 Le site est déployé en ligne avec succès.
@@ -961,8 +762,6 @@ URL de production :
 ```text
 https://frostia-games.onrender.com
 ```
-
-Render indique que le service est actif.
 
 L’administration Django est également accessible via :
 
@@ -974,14 +773,12 @@ L’administration Django est également accessible via :
 
 # Étape 12 — Documentation du déploiement Render
 
-**Date :** 25/06/2026
+**Date :** 25/06/2026  
 **Statut :** validé
 
 ## Objectif
 
 Documenter le déploiement Render afin de garder une trace complète de la mise en ligne.
-
----
 
 ## Actions réalisées
 
@@ -1004,8 +801,6 @@ Ce document explique :
 * les problèmes rencontrés ;
 * les limites de l’offre gratuite Render.
 
----
-
 ## Validation
 
 Le document permet de comprendre comment le projet a été mis en ligne.
@@ -1016,14 +811,12 @@ Il peut être utilisé comme support pour le dossier projet ou pour relancer une
 
 # Étape 13 — Bilan V1 avec pourcentages
 
-**Date :** 25/06/2026
+**Date :** 25/06/2026  
 **Statut :** validé
 
 ## Objectif
 
 Créer un bilan clair de l’état de la V1 avec une estimation par pourcentage.
-
----
 
 ## Actions réalisées
 
@@ -1040,8 +833,6 @@ Ce fichier permet de présenter :
 * les éléments volontairement reportés ;
 * une estimation globale de l’avancement.
 
----
-
 ## Résultat
 
 La V1 est estimée comme fonctionnelle et avancée, mais pas comme une version finale complète.
@@ -1052,27 +843,23 @@ Le projet est présenté comme une base Django stable, déployée, documentée e
 
 # Étape 14 — Complément de documentation finale
 
-**Date :** 25/06/2026
+**Date :** 25/06/2026  
 **Statut :** validé
 
 ## Objectif
 
 Compléter la documentation afin de rendre le projet plus lisible, défendable et présentable.
 
----
-
 ## Documents ajoutés
 
 * `doc/11-installation-locale.md`
 * `doc/12-architecture.md`
 * `doc/13-test-et-vérification.md`
-* `doc/14-Capture-et Preuve.md`
+* `doc/14-Capture-et-Preuve.md`
 * `doc/15-limites-et-évolutions.md`
 * `doc/16-presentation-projet-2.md`
 * `doc/17-pistes-explorees-et-non-retenues.md`
 * `doc/18-plan-finalisation-v1.md`
-
----
 
 ## Rôle des documents ajoutés
 
@@ -1082,7 +869,7 @@ Compléter la documentation afin de rendre le projet plus lisible, défendable e
 
 `13-test-et-vérification.md` liste les tests et vérifications réalisés.
 
-`14-Capture-et Preuve.md` prépare les captures d’écran nécessaires pour le dossier.
+`14-Capture-et-Preuve.md` prépare les captures d’écran nécessaires pour le dossier.
 
 `15-limites-et-évolutions.md` explique ce qui est volontairement limité ou reporté.
 
@@ -1091,8 +878,6 @@ Compléter la documentation afin de rendre le projet plus lisible, défendable e
 `17-pistes-explorees-et-non-retenues.md` explique les pistes envisagées mais non intégrées.
 
 `18-plan-finalisation-v1.md` sert de checklist pour terminer proprement la V1.
-
----
 
 ## Validation
 
@@ -1115,14 +900,12 @@ La documentation du dossier `doc` couvre maintenant :
 
 # Étape 15 — Ajout des fichiers racine du projet
 
-**Date :** 25/06/2026
+**Date :** 25/06/2026  
 **Statut :** validé
 
 ## Objectif
 
 Ajouter des fichiers à la racine du projet afin de rendre le dépôt GitHub plus clair et plus professionnel.
-
----
 
 ## Fichiers ajoutés ou mis à jour
 
@@ -1130,8 +913,6 @@ Ajouter des fichiers à la racine du projet afin de rendre le dépôt GitHub plu
 * `CHOIX_TECHNIQUES.md`
 * `.env.example`
 * `.gitignore`
-
----
 
 ## Rôle du README
 
@@ -1152,10 +933,6 @@ Il présente :
 * les limites de la V1 ;
 * les évolutions prévues.
 
-Ce fichier permet à une personne extérieure de comprendre rapidement le projet.
-
----
-
 ## Rôle du fichier CHOIX_TECHNIQUES.md
 
 Le fichier `CHOIX_TECHNIQUES.md` explique les décisions techniques du projet.
@@ -1168,27 +945,9 @@ Il présente notamment :
 * pourquoi certaines fonctionnalités ont été reportées ;
 * pourquoi le projet a été limité pour éviter une usine à gaz.
 
-Ce fichier permet de montrer que les choix techniques sont réfléchis et documentés.
-
----
-
 ## Rôle du fichier .env.example
 
 Le fichier `.env.example` indique les variables d’environnement nécessaires au projet sans exposer les vraies valeurs sensibles.
-
-Exemple :
-
-```text
-DJANGO_DEBUG=False
-DJANGO_SECRET_KEY=change-me
-DJANGO_SUPERUSER_USERNAME=admin
-DJANGO_SUPERUSER_EMAIL=admin@example.com
-DJANGO_SUPERUSER_PASSWORD=change-me
-```
-
-Ce fichier permet de documenter la configuration attendue sans publier de secret.
-
----
 
 ## Rôle du fichier .gitignore
 
@@ -1205,28 +964,22 @@ Il permet notamment d’ignorer :
 * les caches Python ;
 * les fichiers temporaires.
 
----
-
 ## Validation
 
 Les fichiers racine rendent le projet plus lisible sur GitHub.
 
 Ils complètent la documentation du dossier `doc`.
 
-Le dépôt contient maintenant une présentation rapide, une justification des choix techniques et un exemple de configuration d’environnement.
-
 ---
 
 # Étape 16 — Mise à jour de l’index de documentation
 
-**Date :** 25/06/2026
+**Date :** 25/06/2026  
 **Statut :** validé
 
 ## Objectif
 
 Mettre à jour l’index de documentation afin qu’il corresponde à l’état réel du projet.
-
----
 
 ## Actions réalisées
 
@@ -1236,15 +989,13 @@ Le fichier suivant a été mis à jour :
 
 L’ancienne version de l’index ne listait pas encore tous les documents récents.
 
-La nouvelle version inclut maintenant les documents `09` à `18`, ainsi que les fichiers importants à la racine :
+La nouvelle version inclut les documents `09` à `18`, ainsi que les fichiers importants à la racine :
 
 * `README.md` ;
 * `CHOIX_TECHNIQUES.md` ;
 * `.env.example` ;
 * `build.sh` ;
 * `requirements.txt`.
-
----
 
 ## Correction importante
 
@@ -1253,10 +1004,6 @@ L’ancien fichier `installation-django.md` a été remplacé par :
 ```text
 11-installation-locale.md
 ```
-
-Cette modification permet d’avoir une documentation plus cohérente, car le fichier ne concerne pas seulement Django, mais l’installation locale complète du projet.
-
----
 
 ## Validation
 
@@ -1268,14 +1015,12 @@ Il sert de point d’entrée fiable pour la documentation du projet.
 
 # Étape 17 — Sauvegarde Git et synchronisation GitHub
 
-**Date :** 25/06/2026
+**Date :** 25/06/2026  
 **Statut :** validé
 
 ## Objectif
 
 Sauvegarder toutes les modifications dans Git et synchroniser le projet avec GitHub.
-
----
 
 ## Actions réalisées
 
@@ -1300,8 +1045,6 @@ Résultat attendu :
 nothing to commit, working tree clean
 ```
 
----
-
 ## Résultat
 
 Le dépôt local est propre.
@@ -1312,18 +1055,18 @@ Le projet est synchronisé avec la branche `main`.
 
 ---
 
-# Étape 18 — État actuel du projet
+# Étape 18 — État de la première V1 documentée
 
-**Date :** 25/06/2026
-**Statut :** en finalisation V1
+**Date :** 25/06/2026  
+**Statut :** finalisation V1
 
-## Ce qui fonctionne
+## Ce qui fonctionne à ce stade
 
 * Le serveur Django local fonctionne.
 * Le serveur Docker fonctionne.
 * Les pages principales sont accessibles.
 * L’administration Django est accessible.
-* Les données SQL sont conservées.
+* Les données SQL sont conservées localement.
 * Les données SQL remontent dans les templates.
 * L’interface préparatoire des projets jouables fonctionne.
 * `python manage.py check` ne signale pas d’erreur.
@@ -1336,31 +1079,24 @@ Le projet est synchronisé avec la branche `main`.
 * La documentation du dossier `doc` est complète jusqu’au fichier 18.
 * Le dépôt Git est propre.
 
----
+## Ce qu’il reste à faire à ce stade
 
-## Ce qu’il reste à faire
-
-Les prochaines actions sont maintenant limitées à la finalisation :
+Les prochaines actions sont limitées à la finalisation :
 
 * relire les pages publiques ;
 * vérifier le responsive mobile ;
 * préparer les captures d’écran ;
 * vérifier le README racine ;
 * vérifier le fichier `CHOIX_TECHNIQUES.md` ;
-* préparer les maquettes Figma si nécessaire ;
-* vérifier le site en local ;
 * vérifier le site sur Render ;
 * vérifier l’administration Django ;
 * préparer le dossier projet final.
-
----
 
 ## Ce qui ne doit plus être ajouté dans cette V1
 
 Pour éviter d’élargir le périmètre, les éléments suivants sont reportés :
 
 * PostgreSQL ;
-* compte jury temporaire ;
 * administration personnalisée ;
 * upload serveur réel ;
 * jeu jouable dans le navigateur ;
@@ -1370,44 +1106,6 @@ Pour éviter d’élargir le périmètre, les éléments suivants sont reportés
 * refonte graphique complète ;
 * tests automatisés complets.
 
-Ces éléments sont documentés comme pistes futures.
-
----
-
-# Bilan
-
-Le projet Frostia Games dispose maintenant d’une V1 Django fonctionnelle, documentée et déployée.
-
-Il contient :
-
-* une interface responsive ;
-* un backend Django ;
-* une base SQLite ;
-* une administration ;
-* un affichage dynamique ;
-* Docker ;
-* un déploiement Render ;
-* un README racine ;
-* un fichier de choix techniques ;
-* un exemple de variables d’environnement ;
-* une documentation SQL ;
-* une réflexion NoSQL ;
-* une documentation de sécurité ;
-* un manuel utilisateur ;
-* un changelog ;
-* une documentation de tests ;
-* une documentation de déploiement ;
-* une documentation des limites ;
-* une documentation des pistes explorées ;
-* un plan de finalisation V1.
-
-Le projet reste volontairement limité afin d’éviter une complexité inutile.
-
-Le choix de ne pas changer de technologie en cours de route est une décision importante du projet.
-
-Même si certaines technologies auraient pu correspondre davantage à des préférences personnelles, la priorité a été donnée à une V1 terminée, stable, documentée, déployée et présentable.
-
-L’objectif est maintenant de finaliser les captures, relire les textes, vérifier le responsive et préparer la présentation du projet.
 ---
 
 # Mise à jour du journal — Renforcement après retour formateur
@@ -1416,11 +1114,11 @@ Cette partie complète le journal de bord initial.
 
 Elle ne remplace pas les étapes précédentes : elle ajoute les corrections, renforcements et validations réalisés après la première V1 documentée.
 
-L'objectif de cette mise à jour est de garder une trace des ajouts récents sans effacer l'historique du projet.
+L’objectif de cette mise à jour est de garder une trace des ajouts récents sans effacer l’historique du projet.
 
 ---
 
-# Étape 19 — Création d'une branche de renforcement du dossier
+# Étape 19 — Création d’une branche de renforcement du dossier
 
 **Date :** 30/06/2026  
 **Statut :** validé
@@ -1429,18 +1127,14 @@ L'objectif de cette mise à jour est de garder une trace des ajouts récents san
 
 Créer une branche dédiée afin de renforcer le projet sans modifier directement la branche principale.
 
-L'objectif était de pouvoir ajouter les éléments demandés après le retour formateur tout en conservant une trace claire du travail effectué.
-
----
+L’objectif était de pouvoir ajouter les éléments demandés après le retour formateur tout en conservant une trace claire du travail effectué.
 
 ## Actions réalisées
 
-* Création d'une branche dédiée au renforcement du dossier.
+* Création d’une branche dédiée au renforcement du dossier.
 * Séparation entre la V1 déjà fonctionnelle et les ajouts de preuve.
 * Travail progressif sur les documents, les captures et les compléments techniques.
 * Vérification régulière avec Git.
-
----
 
 ## Commandes utilisées
 
@@ -1449,15 +1143,11 @@ git status
 git checkout -b v3-renforcement-dossier
 ```
 
----
-
 ## Décision prise
 
 Le renforcement ne devait pas transformer Frostia Games en nouveau projet.
 
-La branche avait pour objectif de compléter les preuves, pas d'ouvrir un nouveau chantier fonctionnel.
-
----
+La branche avait pour objectif de compléter les preuves, pas d’ouvrir un nouveau chantier fonctionnel.
 
 ## Validation
 
@@ -1467,7 +1157,7 @@ Le projet est resté stable pendant les ajouts.
 
 ---
 
-# Étape 20 — Création d'une documentation complémentaire de renforcement
+# Étape 20 — Création d’une documentation complémentaire de renforcement
 
 **Date :** 30/06/2026  
 **Statut :** validé
@@ -1486,8 +1176,6 @@ Le dossier projet devait mieux montrer :
 * les annexes ;
 * la règle des trois piliers.
 
----
-
 ## Dossiers créés
 
 ```text
@@ -1500,21 +1188,17 @@ docs/
 └─ sql/
 ```
 
----
-
 ## Rôle de ces dossiers
 
 Le dossier `doc/` reste la documentation principale historique du projet.
 
 Le dossier `docs/` sert de documentation complémentaire de renforcement.
 
-Cette séparation permet d'éviter de casser l'organisation déjà en place.
-
----
+Cette séparation permet d’éviter de casser l’organisation déjà en place.
 
 ## Décision prise
 
-La documentation principale n'a pas été renommée.
+La documentation principale n’a pas été renommée.
 
 Les nouveaux documents ont été ajoutés comme compléments pour le dossier projet final.
 
@@ -1532,10 +1216,8 @@ Répondre au manque de conception signalé dans le retour formateur.
 Les éléments attendus étaient :
 
 * un MCD ;
-* un diagramme de cas d'utilisation ;
+* un diagramme de cas d’utilisation ;
 * un diagramme de séquence.
-
----
 
 ## Documents créés
 
@@ -1545,8 +1227,6 @@ docs/conception/cas-utilisation.md
 docs/conception/diagramme-sequence.md
 ```
 
----
-
 ## Contenu ajouté
 
 Le MCD présente les entités principales :
@@ -1554,28 +1234,26 @@ Le MCD présente les entités principales :
 * `Creation` ;
 * `PlayableProject`.
 
-Le diagramme de cas d'utilisation présente les acteurs :
+Le diagramme de cas d’utilisation présente les acteurs :
 
 * visiteur ;
 * administrateur ;
 * compte temporaire de lecture seule.
 
-Le diagramme de séquence présente le parcours d'un visiteur :
+Le diagramme de séquence présente le parcours d’un visiteur :
 
-* ouverture d'une page ;
-* appel d'une route Django ;
+* ouverture d’une page ;
+* appel d’une route Django ;
 * traitement par une vue ;
 * récupération des données ;
 * rendu du template ;
 * affichage dans le navigateur.
 
----
-
 ## Validation
 
 Ces documents renforcent la partie conception du dossier projet.
 
-Ils montrent que le projet n'est pas seulement codé, mais aussi pensé et structuré.
+Ils montrent que le projet n’est pas seulement codé, mais aussi pensé et structuré.
 
 ---
 
@@ -1588,9 +1266,7 @@ Ils montrent que le projet n'est pas seulement codé, mais aussi pensé et struc
 
 Répondre à la demande de mieux montrer le SQL dans le dossier projet.
 
-Le projet utilise l'ORM Django, mais le dossier devait aussi présenter des extraits SQL natifs.
-
----
+Le projet utilise l’ORM Django, mais le dossier devait aussi présenter des extraits SQL natifs.
 
 ## Documents créés
 
@@ -1601,28 +1277,13 @@ docs/sql/exemples_insert.sql
 docs/sql/sql-natif.md
 ```
 
----
-
 ## Actions réalisées
 
 * Génération ou récupération des instructions SQL liées aux migrations Django.
-* Ajout d'exemples `CREATE TABLE`.
-* Ajout d'exemples `INSERT INTO`.
+* Ajout d’exemples `CREATE TABLE`.
+* Ajout d’exemples `INSERT INTO`.
 * Explication du lien entre les modèles Django et les tables SQL.
 * Explication de la différence entre ORM Django et SQL natif documentaire.
-
----
-
-## Exemples de contenu
-
-Le dossier SQL contient notamment :
-
-* une table liée aux créations ;
-* une table liée aux projets jouables ;
-* des exemples d'insertion de données ;
-* une explication du rôle des migrations.
-
----
 
 ## Validation
 
@@ -1641,26 +1302,20 @@ Ils complètent le fichier `doc/sql/schema.sql` déjà présent.
 
 Valoriser le JavaScript dynamique déjà présent dans le projet.
 
-Le menu mobile existait, mais il n'était pas assez expliqué dans le dossier projet.
-
----
+Le menu mobile existait, mais il n’était pas assez expliqué dans le dossier projet.
 
 ## Fichiers vérifiés
 
 ```text
 static/js/menu.js
-templates/base.html
+templates/partials/base.html
 ```
-
----
 
 ## Document créé
 
 ```text
 docs/frontend/javascript-menu-mobile.md
 ```
-
----
 
 ## Fonctionnement documenté
 
@@ -1670,10 +1325,8 @@ Le JavaScript :
 * récupère la sidebar ;
 * écoute le clic utilisateur ;
 * ajoute ou retire la classe `is-open` ;
-* modifie l'attribut `aria-expanded` ;
+* modifie l’attribut `aria-expanded` ;
 * referme le menu après un clic sur un lien.
-
----
 
 ## Validation
 
@@ -1699,16 +1352,12 @@ Mieux expliquer la partie backend Django dans le dossier projet.
 
 Le code existait déjà, mais il devait être davantage relié à des explications claires.
 
----
-
 ## Documents créés
 
 ```text
 docs/backend/modeles-django.md
 docs/backend/vues-et-routes.md
 ```
-
----
 
 ## Contenu ajouté
 
@@ -1721,11 +1370,9 @@ La documentation backend explique :
 * le rôle des vues Django ;
 * le lien entre les routes, les vues et les templates.
 
----
-
 ## Validation
 
-Ces documents permettent d'appuyer les captures de code dans le dossier projet.
+Ces documents permettent d’appuyer les captures de code dans le dossier projet.
 
 Ils donnent une explication lisible au lieu de simplement montrer du code.
 
@@ -1740,21 +1387,17 @@ Ils donnent une explication lisible au lieu de simplement montrer du code.
 
 Ajouter une preuve NoSQL simple et contrôlée.
 
-L'objectif n'était pas de remplacer SQLite, mais de montrer une expérimentation NoSQL cohérente avec le projet.
-
----
+L’objectif n’était pas de remplacer SQLite, mais de montrer une expérimentation NoSQL cohérente avec le projet.
 
 ## Actions réalisées
 
 * Installation de TinyDB.
 * Ajout de TinyDB dans `requirements.txt`.
-* Création d'un service Python dédié.
-* Création d'un script de démonstration.
-* Création d'une base JSON générée par TinyDB.
+* Création d’un service Python dédié.
+* Création d’un script de démonstration.
+* Création d’une base JSON générée par TinyDB.
 * Lecture des notes de progression.
-* Affichage des notes sur la page d'accueil.
-
----
+* Affichage des notes sur la page d’accueil.
 
 ## Fichiers concernés
 
@@ -1769,8 +1412,6 @@ templates/pages/home.html
 docs/nosql/tinydb-integration.md
 ```
 
----
-
 ## Chaîne technique
 
 ```text
@@ -1778,10 +1419,8 @@ TinyDB
 → core/services/nosql_notes.py
 → core/views.py
 → templates/pages/home.html
-→ affichage sur la page d'accueil
+→ affichage sur la page d’accueil
 ```
-
----
 
 ## Décision prise
 
@@ -1793,16 +1432,14 @@ Cette intégration reste volontairement limitée pour éviter de complexifier la
 
 ---
 
-# Étape 26 — Corrections réalisées pendant l'intégration TinyDB
+# Étape 26 — Corrections réalisées pendant l’intégration TinyDB
 
 **Date :** 30/06/2026 au 03/07/2026  
 **Statut :** validé
 
 ## Objectif
 
-Corriger les problèmes rencontrés pendant l'intégration NoSQL afin d'obtenir une version propre et stable.
-
----
+Corriger les problèmes rencontrés pendant l’intégration NoSQL afin d’obtenir une version propre et stable.
 
 ## Problèmes rencontrés
 
@@ -1810,14 +1447,12 @@ Plusieurs points ont dû être corrigés :
 
 * chemin de la base TinyDB à stabiliser ;
 * création du dossier `data/nosql/` ;
-* gestion propre de l'ouverture et de la fermeture de la base ;
+* gestion propre de l’ouverture et de la fermeture de la base ;
 * typage Python trop vague ;
 * nécessité de convertir les résultats TinyDB en liste exploitable ;
 * lancement correct du script avec `python -m` ;
 * ajout du fichier `scripts/__init__.py` ;
 * vérification que TinyDB ne casse pas Django.
-
----
 
 ## Corrections appliquées
 
@@ -1830,8 +1465,6 @@ Le service NoSQL a été organisé pour :
 * récupérer les notes par projet ;
 * retourner des données exploitables par la vue Django.
 
----
-
 ## Validation
 
 Commandes utilisées :
@@ -1843,13 +1476,13 @@ python -m scripts.demo_tinydb_notes
 
 Résultat :
 
-* Django ne signale pas d'erreur ;
+* Django ne signale pas d’erreur ;
 * les notes sont affichées dans le terminal ;
 * la base JSON TinyDB est générée correctement.
 
 ---
 
-# Étape 27 — Affichage des notes TinyDB sur la page d'accueil
+# Étape 27 — Affichage des notes TinyDB sur la page d’accueil
 
 **Date :** 03/07/2026  
 **Statut :** validé
@@ -1858,9 +1491,7 @@ Résultat :
 
 Ne pas garder TinyDB uniquement comme un test terminal.
 
-L'objectif était d'afficher les notes NoSQL directement dans le site afin de prouver l'intégration réelle.
-
----
+L’objectif était d’afficher les notes NoSQL directement dans le site afin de prouver l’intégration réelle.
 
 ## Actions réalisées
 
@@ -1868,9 +1499,8 @@ L'objectif était d'afficher les notes NoSQL directement dans le site afin de pr
 * Initialisation des notes de démonstration.
 * Récupération des notes du projet Frostia Games.
 * Envoi des notes au template `pages/home.html`.
-* Ajout d'une section visible sur la page d'accueil.
-
----
+* Ajout d’une section visible sur la page d’accueil.
+* Ajout d’un filet de sécurité dans la vue afin que la page d’accueil reste disponible même si TinyDB n’est pas accessible sur Render.
 
 ## Fichiers modifiés
 
@@ -1880,11 +1510,9 @@ templates/pages/home.html
 core/services/nosql_notes.py
 ```
 
----
-
 ## Résultat obtenu
 
-Une section de notes de progression apparaît sur la page d'accueil.
+Une section de notes de progression apparaît sur la page d’accueil.
 
 Elle affiche :
 
@@ -1893,11 +1521,9 @@ Elle affiche :
 * le statut ;
 * les tags.
 
----
-
 ## Validation
 
-La page d'accueil affiche correctement les notes issues de TinyDB.
+La page d’accueil affiche correctement les notes issues de TinyDB ou, en cas de difficulté sur l’environnement Render, les notes de secours prévues dans la vue.
 
 La fonctionnalité est donc démontrable avec les trois piliers :
 
@@ -1907,28 +1533,24 @@ La fonctionnalité est donc démontrable avec les trois piliers :
 
 ---
 
-# Étape 28 — Création d'un compte temporaire de lecture seule
+# Étape 28 — Création d’un accès temporaire de lecture seule
 
 **Date :** 03/07/2026  
 **Statut :** validé
 
 ## Objectif
 
-Créer un accès limité à l'administration Django pour l'évaluation.
+Créer un accès limité à l’administration Django pour l’évaluation.
 
-L'objectif était de permettre la consultation des données sans exposer les zones sensibles.
-
----
+L’objectif était de permettre la consultation des données sans exposer les zones sensibles.
 
 ## Actions réalisées
 
-* Création d'un groupe de lecture seule.
+* Création d’un groupe de lecture seule.
 * Attribution des permissions de consultation uniquement.
-* Création d'un utilisateur temporaire.
-* Association de l'utilisateur au groupe.
-* Vérification des accès depuis l'administration.
-
----
+* Création d’un utilisateur temporaire.
+* Association de l’utilisateur au groupe.
+* Vérification des accès depuis l’administration.
 
 ## Permissions conservées
 
@@ -1937,46 +1559,37 @@ Le compte peut consulter :
 * les créations ;
 * les projets jouables.
 
----
-
 ## Permissions non données
 
 Le compte ne doit pas accéder :
 
-* aux utilisateurs ;
-* aux groupes ;
-* aux permissions sensibles ;
-* aux paramètres administrateur ;
-* aux fonctions de modification importantes.
-
----
+* aux fonctions de modification importantes ;
+* aux fonctions de suppression ;
+* aux zones sensibles de l’administration ;
+* aux droits super-utilisateur.
 
 ## Correction réalisée
 
-Une première configuration donnait trop de visibilité dans l'administration.
+Une première configuration donnait trop de visibilité dans l’administration.
 
-Les permissions ont été corrigées pour limiter l'accès uniquement aux éléments utiles pour l'évaluation.
-
----
+Les permissions ont été corrigées pour limiter l’accès uniquement aux éléments utiles pour l’évaluation.
 
 ## Décision de sécurité
 
-Les identifiants réels du compte temporaire ne doivent pas être écrits dans le dossier projet public.
+Les identifiants réels du compte temporaire ne doivent pas être affichés dans les captures publiques.
 
-Ils peuvent être transmis séparément uniquement si nécessaire.
+Ils peuvent être transmis séparément au jury si nécessaire.
 
 ---
 
-# Étape 29 — Mise à jour de l'index documentaire
+# Étape 29 — Mise à jour de l’index documentaire
 
 **Date :** 03/07/2026  
 **Statut :** validé
 
 ## Objectif
 
-Mettre à jour l'index de documentation afin qu'il reflète les ajouts récents.
-
----
+Mettre à jour l’index de documentation afin qu’il reflète les ajouts récents.
 
 ## Fichier mis à jour
 
@@ -1984,28 +1597,23 @@ Mettre à jour l'index de documentation afin qu'il reflète les ajouts récents.
 doc/00-index-documentation.md
 ```
 
----
-
 ## Ajouts intégrés
 
-L'index mentionne maintenant :
+L’index mentionne maintenant :
 
 * la documentation complémentaire de renforcement ;
-* le futur fichier `19-renforcement-dossier-projet.md` ;
 * les livrables de conception ;
 * le SQL natif ;
 * le JavaScript dynamique ;
 * TinyDB ;
-* l'affichage des notes TinyDB ;
+* l’affichage des notes TinyDB ;
 * le compte temporaire de lecture seule ;
 * la règle des trois piliers ;
 * les captures et preuves à préparer.
 
----
-
 ## Validation
 
-L'index correspond mieux à l'état réel du projet.
+L’index correspond mieux à l’état réel du projet.
 
 Il conserve la structure historique du dossier `doc/` sans la casser.
 
@@ -2014,21 +1622,19 @@ Il conserve la structure historique du dossier `doc/` sans la casser.
 # Étape 30 — Mise à jour du journal de bord
 
 **Date :** 03/07/2026  
-**Statut :** en cours de validation
+**Statut :** validé
 
 ## Objectif
 
-Mettre à jour le journal de bord afin qu'il ne s'arrête pas à la première V1.
+Mettre à jour le journal de bord afin qu’il ne s’arrête pas à la première V1.
 
 Le projet a connu plusieurs ajouts et corrections après la première version documentée.
 
 Il était donc nécessaire de conserver une trace de ces éléments.
 
----
+## Éléments intégrés
 
-## Éléments à intégrer
-
-Le journal doit maintenant intégrer :
+Le journal intègre :
 
 * la branche de renforcement ;
 * la documentation complémentaire ;
@@ -2036,34 +1642,30 @@ Le journal doit maintenant intégrer :
 * le SQL natif ;
 * la documentation JavaScript ;
 * la documentation backend ;
-* l'intégration TinyDB ;
+* l’intégration TinyDB ;
 * les corrections TinyDB ;
-* l'affichage des notes sur l'accueil ;
+* l’affichage des notes sur l’accueil ;
 * le compte lecture seule ;
 * les corrections de permissions ;
-* la mise à jour de l'index ;
+* la mise à jour de l’index ;
 * la préparation des preuves.
 
----
+## Validation
 
-## Validation attendue
-
-Le journal doit devenir la trace complète du projet, depuis la création de la V1 jusqu'au renforcement du dossier.
+Le journal devient la trace complète du projet, depuis la création de la V1 jusqu’au renforcement du dossier.
 
 ---
 
 # Étape 31 — Préparation des captures et preuves
 
 **Date :** 03/07/2026  
-**Statut :** à finaliser
+**Statut :** validé
 
 ## Objectif
 
 Préparer les preuves visuelles nécessaires au dossier final.
 
-Le retour formateur indiquait qu'il fallait mieux prouver les compétences avec des éléments concrets.
-
----
+Le retour formateur indiquait qu’il fallait mieux prouver les compétences avec des éléments concrets.
 
 ## Règle retenue
 
@@ -2072,8 +1674,6 @@ Pour chaque compétence importante, il faut préparer trois éléments :
 1. une capture du code ou un extrait de code ;
 2. une explication du fonctionnement ;
 3. une capture du rendu final lorsque la fonctionnalité produit un résultat visible.
-
----
 
 ## Preuves à préparer
 
@@ -2085,14 +1685,12 @@ Les captures doivent couvrir notamment :
 * le rendu mobile ;
 * le SQL natif ;
 * le script TinyDB ;
-* l'affichage TinyDB sur l'accueil ;
-* l'administration Django ;
+* l’affichage TinyDB sur l’accueil ;
+* l’administration Django ;
 * le compte temporaire de lecture seule ;
 * Render ;
 * GitHub ;
 * Docker si nécessaire.
-
----
 
 ## Règle de sécurité
 
@@ -2100,12 +1698,12 @@ Aucune capture ne doit afficher :
 
 * de mot de passe ;
 * de clé secrète ;
-* de variable d'environnement sensible ;
-* d'identifiants privés.
+* de variable d’environnement sensible ;
+* d’identifiants privés.
 
 ---
 
-# Étape 32 — État actuel après renforcement
+# Étape 32 — État après renforcement
 
 **Date :** 03/07/2026  
 **Statut :** implantation terminée
@@ -2113,25 +1711,23 @@ Aucune capture ne doit afficher :
 ## Ce qui fonctionne maintenant
 
 * Le serveur Django local fonctionne.
-* `python manage.py check` ne signale pas d'erreur.
+* `python manage.py check` ne signale pas d’erreur.
 * Les pages principales sont accessibles.
-* L'administration Django fonctionne.
+* L’administration Django fonctionne.
 * Les données SQLite remontent dans les templates.
 * Le menu mobile JavaScript fonctionne.
 * La conception est documentée.
 * Les extraits SQL natifs sont documentés.
 * TinyDB est installé.
 * TinyDB est testé en terminal.
-* Les notes TinyDB sont affichées sur l'accueil.
-* Le compte temporaire de lecture seule fonctionne.
+* Les notes TinyDB sont affichées sur l’accueil.
+* Le compte temporaire de lecture seule fonctionne en local.
 * Le dépôt Git est propre après commit.
 * Le site reste déployé sur Render.
 
----
-
 ## Ce qui reste à faire
 
-Les prochaines actions ne sont plus de l'implantation lourde.
+Les prochaines actions ne sont plus de l’implantation lourde.
 
 Il reste à faire :
 
@@ -2139,16 +1735,14 @@ Il reste à faire :
 * mettre à jour les fichiers restants ;
 * préparer les captures propres ;
 * vérifier les trois piliers pour chaque compétence importante ;
-* intégrer les captures dans le dossier Word final ;
+* intégrer les captures dans le dossier final ;
 * préparer les annexes ;
 * exporter le dossier en PDF ;
 * faire le commit final de documentation.
 
----
-
 ## Ce qui ne doit plus être ajouté dans Frostia Games V1
 
-Pour éviter d'élargir le périmètre, les éléments suivants restent reportés :
+Pour éviter d’élargir le périmètre, les éléments suivants restent reportés :
 
 * PostgreSQL ;
 * administration personnalisée ;
@@ -2163,15 +1757,379 @@ Pour éviter d'élargir le périmètre, les éléments suivants restent reporté
 * tests automatisés complets ;
 * refonte graphique complète.
 
-Le projet est suffisamment renforcé pour répondre au retour formateur.
+---
+
+# Mise à jour finale — Stabilisation Render et accès d’évaluation en ligne
+
+Cette partie complète le journal après les derniers tests réalisés directement sur la version déployée.
+
+L’objectif est de garder une trace du problème rencontré avec Render et de la solution retenue.
 
 ---
 
-# Bilan complémentaire après renforcement
+# Étape 33 — Nettoyage des références localhost dans la documentation
 
-Le projet Frostia Games dispose maintenant d'une V1 Django fonctionnelle, documentée, déployée et renforcée.
+**Date :** 06/07/2026 au 07/07/2026  
+**Statut :** validé
 
-Il contient désormais :
+## Objectif
+
+Nettoyer les anciennes références à `localhost` dans les documents destinés au dossier final.
+
+L’objectif était d’éviter que les preuves finales donnent l’impression que le projet n’est vérifié qu’en local.
+
+## Actions réalisées
+
+* Recherche des références `localhost` et `127.0.0.1` dans les fichiers Markdown.
+* Remplacement des références de test par l’URL de production Render lorsque c’était pertinent.
+* Conservation des mentions techniques nécessaires dans `frostia_config/settings.py`, car elles servent au développement local.
+* Commit et push des corrections documentaires.
+
+## Commandes utilisées
+
+```powershell
+git grep -n -E "localhost|127\.0\.0\.1"
+git status
+git add .
+git commit -m "Nettoie references localhost dans la documentation"
+git push origin main
+```
+
+## Décision prise
+
+Les références à `localhost` restent acceptables uniquement lorsqu’elles concernent la configuration technique locale.
+
+Les preuves finales doivent plutôt pointer vers :
+
+```text
+https://frostia-games.onrender.com
+```
+
+## Validation
+
+La documentation destinée au dossier final a été nettoyée.
+
+Les seules traces locales restantes concernent la configuration Django nécessaire au développement.
+
+---
+
+# Étape 34 — Problème de base vide sur Render
+
+**Date :** 07/07/2026  
+**Statut :** analysé et corrigé
+
+## Objectif
+
+Comprendre pourquoi les données créées dans l’administration Render disparaissaient ou n’étaient pas toujours présentes.
+
+## Problème rencontré
+
+Sur Render, l’administration Django était accessible, mais certaines sections pouvaient apparaître vides :
+
+* aucune création ;
+* aucun projet jouable ;
+* compte d’évaluation absent ou non fonctionnel après redémarrage ;
+* données créées manuellement non conservées de manière fiable.
+
+Le problème venait du fait que la base SQLite utilisée sur Render n’était pas une solution de persistance fiable sur l’offre gratuite.
+
+## Analyse
+
+GitHub synchronise le code, mais pas la base locale `db.sqlite3`.
+
+Les données créées localement ne sont donc pas automatiquement présentes sur Render.
+
+De plus, une base SQLite sur un environnement d’hébergement peut être réinitialisée ou ne pas se comporter comme une base persistante durable.
+
+## Décision prise
+
+Les données nécessaires à la démonstration ne doivent pas dépendre uniquement d’une création manuelle dans l’admin Render.
+
+Elles doivent pouvoir être recréées automatiquement au démarrage du service.
+
+---
+
+# Étape 35 — Création de la commande `setup_render_data`
+
+**Date :** 07/07/2026  
+**Statut :** validé
+
+## Objectif
+
+Créer une commande Django personnalisée capable de recréer automatiquement les données nécessaires à la démonstration Render.
+
+## Fichier créé
+
+```text
+core/management/commands/setup_render_data.py
+```
+
+## Rôle de la commande
+
+La commande permet de recréer automatiquement :
+
+* la création principale `Frostia Games` ;
+* le projet jouable `Prototype jouable à venir` ;
+* le groupe `Evaluation lecture seule` ;
+* le compte d’évaluation `evaluation_temp` ;
+* les droits de consultation uniquement.
+
+## Données recréées
+
+La commande utilise `update_or_create` afin d’éviter les doublons.
+
+Cela permet de relancer la commande sans créer plusieurs fois les mêmes données.
+
+## Sécurité
+
+Le mot de passe du compte d’évaluation n’est pas écrit directement dans le code.
+
+Il est lu depuis une variable d’environnement Render :
+
+```text
+EVALUATION_USER_PASSWORD
+```
+
+## Validation locale
+
+Commande testée en local :
+
+```powershell
+python manage.py setup_render_data --password "mot-de-passe-temporaire"
+python manage.py check
+```
+
+Résultat attendu :
+
+```text
+Données initiales créées.
+Accès d'évaluation configuré.
+System check identified no issues.
+```
+
+---
+
+# Étape 36 — Mise à jour du démarrage Render
+
+**Date :** 07/07/2026  
+**Statut :** validé
+
+## Objectif
+
+Faire exécuter automatiquement la commande `setup_render_data` sur Render.
+
+Comme l’accès au Shell Render n’était pas disponible, la solution retenue a été de modifier le Start Command du service.
+
+## Start Command final
+
+```bash
+python manage.py migrate --noinput && python manage.py setup_render_data && gunicorn frostia_config.wsgi:application --bind 0.0.0.0:$PORT
+```
+
+## Fonctionnement
+
+À chaque démarrage ou redéploiement, Render exécute :
+
+1. les migrations Django ;
+2. la commande d’initialisation des données ;
+3. le lancement du serveur Gunicorn.
+
+## Variable d’environnement Render
+
+La variable suivante a été ajoutée :
+
+```text
+EVALUATION_USER_PASSWORD
+```
+
+Elle permet à Render de créer le compte d’évaluation sans stocker le mot de passe dans le code.
+
+## Validation Render
+
+Les logs Render ont affiché :
+
+```text
+Données initiales créées.
+Accès d'évaluation configuré.
+Utilisateur : evaluation_temp
+Droits : lecture seule
+Staff : oui
+Superutilisateur : non
+```
+
+Cette validation confirme que la commande s’exécute bien en production.
+
+---
+
+# Étape 37 — Stabilisation de la page d’accueil Render
+
+**Date :** 07/07/2026  
+**Statut :** validé
+
+## Objectif
+
+Éviter qu’un problème lié à TinyDB ou à la base de données NoSQL légère provoque une erreur 500 sur la page d’accueil Render.
+
+## Problème rencontré
+
+Après une modification de configuration, la page publique pouvait afficher une erreur serveur 500.
+
+L’administration Django restait accessible, ce qui montrait que Django démarrait correctement.
+
+Le problème concernait surtout le rendu de la page d’accueil.
+
+## Correction appliquée
+
+La vue d’accueil a été sécurisée afin d’éviter qu’une erreur TinyDB bloque toute la page.
+
+Un système de notes de secours a été prévu si les notes TinyDB ne sont pas disponibles.
+
+## Résultat
+
+La page d’accueil redevient accessible sur Render.
+
+Les notes de progression peuvent être affichées soit depuis TinyDB, soit depuis les données de secours prévues dans la vue.
+
+---
+
+# Étape 38 — Validation de l’accès d’évaluation en ligne
+
+**Date :** 07/07/2026  
+**Statut :** validé
+
+## Objectif
+
+Valider que le compte d’évaluation fonctionne réellement sur la version en ligne, et pas seulement en local.
+
+## Actions réalisées
+
+* Vérification du site public Render.
+* Vérification de l’administration Render.
+* Vérification de la présence des données recréées automatiquement.
+* Test du compte `evaluation_temp`.
+* Vérification des permissions limitées.
+* Vérification du statut non super-utilisateur.
+
+## Résultat attendu
+
+Le compte d’évaluation peut consulter :
+
+* les créations ;
+* les projets jouables.
+
+Il ne doit pas disposer de droits super-utilisateur.
+
+Il ne doit pas être utilisé pour modifier ou supprimer des données.
+
+## Validation
+
+Le compte `evaluation_temp` fonctionne sur la version en ligne Render.
+
+Les droits sont limités à la lecture.
+
+La configuration est suffisante pour permettre une consultation par le jury si nécessaire.
+
+---
+
+# Étape 39 — Préparation des captures finales Render
+
+**Date :** 08/07/2026 au 09/07/2026  
+**Statut :** à finaliser
+
+## Objectif
+
+Réaliser des captures propres et récentes de la version en ligne.
+
+Les anciennes captures locales ou trop techniques doivent être remplacées par des captures Render plus représentatives.
+
+## Captures à préparer
+
+Captures recommandées :
+
+```text
+docs/preuves/admin/capture-admin-evaluation-accueil-render.png
+docs/preuves/admin/capture-admin-evaluation-creations-render.png
+docs/preuves/admin/capture-admin-evaluation-projets-jouables-render.png
+docs/preuves/admin/capture-admin-evaluation-compte-render.png
+docs/preuves/render/capture-site-accueil-render.png
+```
+
+## Règles de sécurité
+
+Les captures ne doivent pas afficher :
+
+* mot de passe ;
+* clé secrète ;
+* valeur complète de variable d’environnement ;
+* token ;
+* information privée non nécessaire.
+
+## Validation attendue
+
+Les captures doivent prouver :
+
+* que le site est en ligne ;
+* que l’administration est accessible ;
+* que les données initiales existent ;
+* que le compte d’évaluation fonctionne ;
+* que les droits sont limités.
+
+---
+
+# Étape 40 — État final avant dossier projet
+
+**Date :** 09/07/2026  
+**Statut :** finalisation documentaire
+
+## Ce qui est désormais validé
+
+* Le site public Render fonctionne.
+* L’administration Render fonctionne.
+* La commande `setup_render_data` fonctionne.
+* Les données de démonstration sont recréées automatiquement.
+* Le compte `evaluation_temp` fonctionne en ligne.
+* Les droits du compte sont limités.
+* Le compte n’est pas super-utilisateur.
+* Le dépôt GitHub est à jour.
+* Les références `localhost` ont été nettoyées dans la documentation finale.
+* La page d’accueil Render a été stabilisée.
+* Le projet reste volontairement limité à une V1 claire.
+
+## Ce qu’il reste à faire
+
+Les dernières actions sont documentaires :
+
+* faire ou ranger les captures finales ;
+* mettre à jour les fichiers de documentation restants ;
+* vérifier le README ;
+* vérifier `PREUVES-FONCTIONNEMENT.md` ;
+* vérifier `doc/09-deploiement-render.md` ;
+* vérifier `doc/14-Capture-et-Preuve.md` ;
+* faire le commit final ;
+* commencer le dossier projet final.
+
+## Ce qui ne doit plus être ajouté
+
+Pour éviter de casser une version maintenant stable, il ne faut plus ajouter :
+
+* nouvelle fonctionnalité lourde ;
+* nouveau système d’authentification ;
+* upload réel ;
+* refonte graphique ;
+* modification Render non nécessaire ;
+* changement de base de données ;
+* intégration de jeu jouable ;
+* nouveau framework.
+
+Le projet est maintenant dans une phase de finition, pas dans une phase d’extension.
+
+---
+
+# Bilan final du journal
+
+Le projet Frostia Games dispose maintenant d’une V1 Django fonctionnelle, documentée, déployée et renforcée.
+
+Il contient :
 
 * une interface responsive ;
 * un backend Django ;
@@ -2184,17 +2142,17 @@ Il contient désormais :
 * un déploiement Render ;
 * un README racine ;
 * un fichier de choix techniques ;
-* un exemple de variables d'environnement ;
+* un exemple de variables d’environnement ;
 * une documentation SQL ;
 * des extraits SQL natifs ;
 * une expérimentation NoSQL avec TinyDB ;
-* un affichage des notes TinyDB sur la page d'accueil ;
+* un affichage des notes TinyDB ou de notes de secours sur la page d’accueil ;
 * une documentation de conception ;
 * un MCD ;
-* un diagramme de cas d'utilisation ;
+* un diagramme de cas d’utilisation ;
 * un diagramme de séquence ;
 * une documentation de sécurité ;
-* un compte temporaire de lecture seule ;
+* un compte temporaire de lecture seule fonctionnel en ligne ;
 * un manuel utilisateur ;
 * un changelog ;
 * une documentation de tests ;
@@ -2204,10 +2162,8 @@ Il contient désormais :
 * un plan de finalisation V1 ;
 * une préparation des preuves pour le dossier final.
 
-Le projet reste volontairement limité afin d'éviter une complexité inutile.
+Le projet reste volontairement limité afin d’éviter une complexité inutile.
 
-L'objectif n'est plus d'ajouter de nouvelles fonctionnalités dans Frostia Games V1.
+L’objectif n’est plus d’ajouter de nouvelles fonctionnalités dans Frostia Games V1.
 
-L'objectif est maintenant de finaliser les documents, préparer les captures, vérifier les preuves et intégrer les éléments dans le dossier projet final.
-
-
+L’objectif est maintenant de finaliser les documents, préparer les captures, vérifier les preuves et intégrer les éléments dans le dossier projet final.

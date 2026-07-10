@@ -1,47 +1,49 @@
-# Journal de déploiement Render - Frostia Games
+# Journal de déploiement Render — Frostia Games
 
-## Objectif
+## Objectif du document
 
-Déployer le projet Django **Frostia Games** sur Render afin d'obtenir une version accessible en ligne.
+Ce document décrit la configuration réelle utilisée pour déployer **Frostia Games** sur Render.
 
-Ce déploiement permet de vérifier que le projet fonctionne hors de l'environnement local, avec :
+Il sert à expliquer :
 
-* une URL publique ;
-* une configuration serveur ;
-* les fichiers statiques ;
-* les migrations Django ;
-* l'accès à l'administration Django ;
-* l'affichage des pages publiques ;
-* l'affichage des données SQLite ;
-* l'affichage des notes TinyDB sur l'accueil ;
-* une configuration compatible avec le dossier projet.
+- comment le site est lancé en ligne ;
+- comment les fichiers statiques et les migrations sont gérés ;
+- comment les variables d'environnement sont utilisées ;
+- pourquoi une commande d'initialisation automatique a été ajoutée ;
+- comment l'accès d'évaluation en lecture seule est recréé sur la version en ligne ;
+- quelles limites sont liées à l'utilisation de SQLite et TinyDB sur Render.
 
-Ce document garde une trace des réglages utilisés, des problèmes rencontrés, des vérifications réalisées et des limites connues du déploiement.
+Ce fichier complète le journal de bord général. Il ne reprend pas tout l'historique du projet : il se concentre uniquement sur le déploiement et la configuration Render.
 
 ---
 
 # 1. Plateforme utilisée
 
-* Hébergeur : Render
-* Type de service : Web Service
-* Environnement : Python 3
-* Branche déployée : `main`
-* Région : Frankfurt
-* URL de production : `https://frostia-games.onrender.com`
+La V1 de Frostia Games est déployée sur Render.
 
-Render est utilisé pour rendre la V1 accessible en ligne.
+Informations principales :
 
-Docker n'est pas utilisé comme méthode de production dans cette V1.
+```text
+Hébergeur : Render
+Type de service : Web Service
+Runtime : Python
+Branche déployée : main
+URL de production : https://frostia-games.onrender.com
+```
 
-Docker reste utilisé comme outil de lancement local, de test et de reproductibilité.
+Render permet d'obtenir une version accessible en ligne sans dépendre du serveur local de développement.
+
+Docker reste documenté et utilisable comme environnement local de test, mais il n'est pas utilisé comme méthode de production dans cette V1.
 
 ---
 
-# 2. Structure du projet
+# 2. Organisation du projet pour Render
 
-Le projet Django possède une structure simple avec le fichier `manage.py` placé à la racine du dépôt GitHub.
+Le fichier `manage.py` se trouve à la racine du dépôt.
 
-Éléments importants du projet :
+Render peut donc lancer directement les commandes Django sans définir de dossier racine particulier.
+
+Structure simplifiée utile au déploiement :
 
 ```text
 frostia-games/
@@ -51,74 +53,96 @@ frostia-games/
 │   └── wsgi.py
 ├── core/
 │   ├── views.py
-│   └── services/
-│       └── nosql_notes.py
+│   ├── services/
+│   │   └── nosql_notes.py
+│   └── management/
+│       └── commands/
+│           └── setup_render_data.py
 ├── creations/
 ├── playable/
-├── data/
-│   └── nosql/
-│       └── project_notes_db.json
-├── scripts/
-│   ├── __init__.py
-│   └── demo_tinydb_notes.py
 ├── static/
-├── staticfiles/
 ├── templates/
-├── doc/
-├── docs/
 ├── build.sh
 ├── manage.py
-├── requirements.txt
-└── db.sqlite3
+└── requirements.txt
 ```
 
-Le dossier `frostia_config` contient la configuration principale du projet Django.
-
-Le fichier `wsgi.py` est utilisé par Gunicorn pour lancer l'application Django en production.
-
-Le dossier `core/services/` contient le service Python utilisé pour l'expérimentation NoSQL TinyDB.
-
-Le dossier `data/nosql/` contient la base JSON TinyDB utilisée pour les notes de progression.
-
-Le dossier `scripts/` contient un script de démonstration permettant de tester TinyDB depuis le terminal.
+Le fichier `frostia_config/wsgi.py` est utilisé par Gunicorn pour lancer l'application Django en production.
 
 ---
 
-# 3. Configuration Render
-
-Le champ **Root Directory** a été laissé vide, car le fichier `manage.py` se trouve directement à la racine du projet.
+# 3. Configuration Render actuelle
 
 ## Root Directory
 
+Le champ **Root Directory** est laissé vide.
+
 ```text
-vide
+Root Directory : vide
 ```
 
+Cette configuration est correcte car `manage.py` est directement à la racine du projet.
+
+---
+
 ## Build Command
+
+La commande de build utilisée par Render est :
 
 ```bash
 bash build.sh
 ```
 
-## Start Command
-
-```bash
-gunicorn frostia_config.wsgi:application --bind 0.0.0.0:$PORT
-```
-
-Cette configuration permet à Render :
-
-* d'installer les dépendances ;
-* de collecter les fichiers statiques ;
-* d'appliquer les migrations ;
-* de lancer l'application Django avec Gunicorn ;
-* d'exposer l'application sur le port fourni par Render.
+Render exécute donc le fichier `build.sh` pendant la phase de construction.
 
 ---
 
-# 4. Explication du Start Command
+## Start Command
 
-La commande suivante permet de lancer le projet Django avec Gunicorn :
+La commande de démarrage utilisée est :
+
+```bash
+python manage.py migrate --noinput && python manage.py setup_render_data && gunicorn frostia_config.wsgi:application --bind 0.0.0.0:$PORT
+```
+
+Cette commande fait trois choses dans l'ordre :
+
+1. applique les migrations Django ;
+2. recrée les données nécessaires à la démonstration ;
+3. lance le serveur avec Gunicorn.
+
+Cette configuration a été retenue pour éviter que la base en ligne reste vide après un redémarrage ou un redéploiement.
+
+---
+
+# 4. Rôle du fichier `build.sh`
+
+Le fichier `build.sh` est exécuté par Render au moment du build.
+
+Contenu utilisé :
+
+```bash
+pip install -r requirements.txt
+
+python manage.py collectstatic --noinput
+python manage.py migrate --noinput
+python manage.py createsuperuser --noinput || true
+```
+
+Rôle des commandes :
+
+- `pip install -r requirements.txt` installe les dépendances Python ;
+- `collectstatic` prépare les fichiers statiques pour la production ;
+- `migrate` applique les migrations Django ;
+- `createsuperuser --noinput || true` tente de créer le compte administrateur sans faire échouer le déploiement si le compte existe déjà.
+
+Le fichier `build.sh` ne doit pas contenir de mot de passe, de clé secrète ou d'identifiant sensible en clair.
+
+---
+
+# 5. Lancement avec Gunicorn
+
+Render lance Django avec Gunicorn grâce à la partie suivante du Start Command :
 
 ```bash
 gunicorn frostia_config.wsgi:application --bind 0.0.0.0:$PORT
@@ -126,211 +150,134 @@ gunicorn frostia_config.wsgi:application --bind 0.0.0.0:$PORT
 
 Explication :
 
-* `gunicorn` lance le serveur Python utilisé en production.
-* `frostia_config.wsgi:application` indique à Gunicorn où se trouve l'application Django.
-* `--bind 0.0.0.0:$PORT` indique au serveur d'écouter sur le port fourni automatiquement par Render.
+- `gunicorn` lance le serveur applicatif Python ;
+- `frostia_config.wsgi:application` indique le point d'entrée WSGI de Django ;
+- `--bind 0.0.0.0:$PORT` indique que le serveur doit écouter sur le port fourni automatiquement par Render.
 
-Cette configuration est importante car Render fournit lui-même le port à utiliser via la variable `$PORT`.
-
-Il ne faut donc pas écrire un port fixe dans la commande de démarrage.
+Il ne faut pas utiliser un port fixe, car Render fournit lui-même la valeur de `$PORT`.
 
 ---
 
-# 5. Variables d'environnement Render
+# 6. Variables d'environnement Render
 
-Les variables d'environnement ont été ajoutées dans Render, dans la section **Environment Variables**.
+Les variables d'environnement sont configurées dans Render, dans la section **Environment**.
 
-Les valeurs secrètes ne doivent pas être écrites directement dans la documentation du projet.
+Les valeurs sensibles ne sont pas écrites dans le code source.
 
-| Variable                    | Rôle                                     |
-| --------------------------- | ---------------------------------------- |
-| `DJANGO_DEBUG`              | Active ou désactive le mode debug Django |
-| `DJANGO_SECRET_KEY`         | Clé secrète utilisée par Django          |
-| `DJANGO_SUPERUSER_USERNAME` | Nom du compte administrateur Django      |
-| `DJANGO_SUPERUSER_EMAIL`    | Adresse email du compte administrateur   |
-| `DJANGO_SUPERUSER_PASSWORD` | Mot de passe du compte administrateur    |
+Variables principales :
 
-Configuration utilisée dans le principe :
+| Variable | Rôle |
+| --- | --- |
+| `DJANGO_DEBUG` | Désactive ou active le mode debug |
+| `DJANGO_SECRET_KEY` | Clé secrète Django |
+| `DJANGO_SUPERUSER_USERNAME` | Nom du compte administrateur |
+| `DJANGO_SUPERUSER_EMAIL` | Email du compte administrateur |
+| `DJANGO_SUPERUSER_PASSWORD` | Mot de passe du compte administrateur |
+| `EVALUATION_USER_PASSWORD` | Mot de passe du compte d'évaluation en lecture seule |
 
-```text
-DJANGO_DEBUG=False
-DJANGO_SECRET_KEY=valeur masquée pour sécurité
-DJANGO_SUPERUSER_USERNAME=admin
-DJANGO_SUPERUSER_EMAIL=valeur masquée ou email personnel
-DJANGO_SUPERUSER_PASSWORD=valeur masquée pour sécurité
-```
+La variable `EVALUATION_USER_PASSWORD` permet de créer ou mettre à jour le compte d'évaluation sans écrire le mot de passe dans le code source.
 
-Les variables sensibles comme `DJANGO_SECRET_KEY` et `DJANGO_SUPERUSER_PASSWORD` ne doivent jamais être publiées dans GitHub.
-
-Les captures d'écran Render ne doivent pas afficher les vraies valeurs sensibles.
+Les captures Render ne doivent pas afficher les vraies valeurs des variables sensibles.
 
 ---
 
-# 6. Fichier `.env.example`
+# 7. Initialisation automatique des données Render
 
-Le fichier `.env.example` sert uniquement de modèle.
+Une difficulté a été rencontrée sur Render : la base SQLite en ligne pouvait se retrouver vide après un redémarrage ou un redéploiement.
 
-Il permet de documenter les variables attendues sans exposer les vraies valeurs.
+Les données créées manuellement depuis l'administration Django n'étaient donc pas une solution fiable pour la démonstration.
 
-Exemple :
-
-```text
-DJANGO_DEBUG=False
-DJANGO_SECRET_KEY=change-me
-DJANGO_SUPERUSER_USERNAME=admin
-DJANGO_SUPERUSER_EMAIL=admin@example.com
-DJANGO_SUPERUSER_PASSWORD=change-me
-```
-
-Ce fichier peut être publié dans GitHub car il ne contient pas les vraies valeurs.
-
-Il ne doit pas contenir :
-
-* la vraie clé secrète ;
-* le vrai mot de passe administrateur ;
-* les identifiants complets du compte temporaire de lecture seule ;
-* une information privée inutile.
-
----
-
-# 7. Script de build
-
-Le fichier `build.sh` est utilisé par Render pendant la phase de construction du projet.
-
-Contenu du fichier :
+Pour corriger ce problème, une commande Django personnalisée a été ajoutée :
 
 ```bash
-#!/usr/bin/env bash
-
-set -o errexit
-
-pip install -r requirements.txt
-
-python manage.py collectstatic --noinput
-python manage.py migrate
-python manage.py createsuperuser --noinput || true
+python manage.py setup_render_data
 ```
 
----
-
-# 8. Rôle du script de build
-
-Le script effectue plusieurs actions automatiquement :
-
-1. Installation des dépendances Python.
-2. Collecte des fichiers statiques.
-3. Application des migrations Django.
-4. Tentative de création d'un superutilisateur.
-
-La ligne suivante permet d'éviter que le déploiement échoue si le superutilisateur existe déjà :
-
-```bash
-python manage.py createsuperuser --noinput || true
-```
-
-Le script ne doit pas contenir directement d'identifiant, de mot de passe ou de clé secrète.
-
-Les valeurs sensibles doivent rester dans les variables d'environnement Render.
-
----
-
-# 9. Dépendances nécessaires
-
-Le fichier `requirements.txt` doit contenir les dépendances nécessaires au fonctionnement du projet Django sur Render.
-
-Dépendances importantes :
+Fichier concerné :
 
 ```text
-Django
-gunicorn
-whitenoise
-tinydb
+core/management/commands/setup_render_data.py
 ```
 
-Rôle des dépendances :
+Cette commande recrée automatiquement :
 
-* `Django` permet de faire fonctionner le projet.
-* `gunicorn` permet de lancer le projet en production.
-* `whitenoise` permet de servir les fichiers statiques plus simplement en production.
-* `tinydb` permet de faire fonctionner l'expérimentation NoSQL légère.
+- la création principale `Frostia Games` ;
+- le projet jouable de démonstration `Prototype jouable à venir` ;
+- le groupe `Evaluation lecture seule` ;
+- le compte `evaluation_temp` ;
+- les permissions de lecture seule nécessaires.
 
-TinyDB est nécessaire depuis l'ajout des notes de progression affichées sur la page d'accueil.
+La commande est exécutée dans le Start Command Render, juste avant Gunicorn.
 
 ---
 
-# 10. Fichiers statiques
+# 8. Accès d'évaluation en lecture seule
 
-Le projet utilise des fichiers statiques pour :
+Le projet prévoit un compte d'évaluation limité.
 
-* le CSS ;
-* le JavaScript ;
-* les images ;
-* les éléments d'interface.
+Ce compte sert à permettre au jury de consulter l'administration Django sans obtenir un accès complet.
 
-Pendant le déploiement, la commande suivante est exécutée :
-
-```bash
-python manage.py collectstatic --noinput
-```
-
-Cette commande collecte les fichiers statiques dans le dossier prévu pour la production.
-
-WhiteNoise permet ensuite de servir ces fichiers statiques sur Render.
-
-Les fichiers concernés sont notamment :
+Configuration attendue :
 
 ```text
-static/css/main.css
-static/js/menu.js
-static/images/
+Utilisateur : evaluation_temp
+Groupe : Evaluation lecture seule
+Statut équipe : oui
+Superutilisateur : non
 ```
 
-Le fichier JavaScript `static/js/menu.js` est utilisé pour le menu mobile.
-
----
-
-# 11. Base SQLite et migrations
-
-La V1 utilise SQLite comme base principale.
-
-Les migrations sont appliquées pendant le build Render avec :
-
-```bash
-python manage.py migrate
-```
-
-Cette commande crée ou met à jour les tables nécessaires.
-
-Tables principales :
+Permissions accordées :
 
 ```text
-creations_creation
-playable_playableproject
+Can view Création
+Can view Projet jouable
 ```
 
-Ces tables correspondent aux modèles Django :
+Permissions non accordées :
 
-* `Creation` ;
-* `PlayableProject`.
+```text
+Can add
+Can change
+Can delete
+```
 
-La base SQLite reste adaptée à la V1, car le projet reste un portfolio simple avec un volume de données limité.
+L'objectif est de montrer une logique de sécurité minimale : l'évaluateur peut consulter les données, mais ne peut pas administrer complètement le site.
 
-Pour une version plus avancée, PostgreSQL pourra être envisagé.
+Les identifiants exacts peuvent être transmis séparément si nécessaire, mais ils ne doivent pas apparaître dans les captures publiques ni dans un dossier public.
 
 ---
 
-# 12. TinyDB sur Render
+# 9. Base SQLite sur Render
 
-Le projet utilise aussi TinyDB pour une expérimentation NoSQL légère.
+La V1 utilise SQLite comme base relationnelle principale.
 
-TinyDB sert à stocker et afficher des notes de progression liées au projet Frostia Games.
+SQLite est suffisante pour une V1 de portfolio simple, mais elle présente une limite importante sur Render : elle ne doit pas être considérée comme une base persistante robuste pour une application de production complète.
+
+Dans ce projet, cette limite est acceptée car :
+
+- le volume de données est très faible ;
+- le site sert de démonstration ;
+- les données essentielles sont recréées automatiquement par `setup_render_data` ;
+- une migration vers PostgreSQL reste prévue comme évolution possible.
+
+Pour une version plus avancée, PostgreSQL serait plus adapté.
+
+---
+
+# 10. TinyDB sur Render
+
+TinyDB est utilisé comme démonstration NoSQL légère.
+
+Il ne remplace pas SQLite.
+
+Il sert à présenter des notes de progression sous forme de documents JSON.
 
 Fichiers concernés :
 
 ```text
 core/services/nosql_notes.py
-scripts/demo_tinydb_notes.py
 data/nosql/project_notes_db.json
+scripts/demo_tinydb_notes.py
 templates/pages/home.html
 ```
 
@@ -344,175 +291,222 @@ TinyDB
 → affichage sur la page d'accueil
 ```
 
-TinyDB ne remplace pas SQLite.
+Sur Render, TinyDB ne doit pas être utilisé comme stockage critique.
 
-SQLite reste la base principale.
-
-TinyDB sert seulement à démontrer une logique NoSQL simple dans le cadre du dossier projet.
+La partie NoSQL est volontairement limitée à une démonstration documentaire.
 
 ---
 
-# 13. Limite de TinyDB sur Render
+# 11. Sécurisation de l'affichage des notes NoSQL
 
-TinyDB utilise un fichier JSON.
+Pendant les tests Render, la page d'accueil a pu renvoyer une erreur si la partie TinyDB n'était pas disponible correctement.
 
-Sur Render, l'environnement d'exécution gratuit n'est pas conçu comme un stockage de données durable avancé.
+Pour éviter qu'une erreur NoSQL fasse tomber la page d'accueil, l'affichage des notes a été sécurisé côté vue Django.
 
-Dans cette V1, ce n'est pas un problème majeur, car TinyDB sert uniquement à afficher des notes de démonstration.
+Principe retenu :
 
-Il ne doit pas être utilisé pour stocker :
+- tenter d'initialiser et de lire les notes TinyDB ;
+- si TinyDB fonctionne, afficher les notes issues de TinyDB ;
+- si TinyDB échoue ou retourne une liste vide, afficher des notes de secours ;
+- ne pas bloquer l'affichage de la page d'accueil.
 
-* des mots de passe ;
-* des clés secrètes ;
-* des données personnelles sensibles ;
-* des données utilisateur importantes ;
-* des informations critiques.
-
-Si le projet évolue vers une vraie persistance NoSQL, une solution plus adaptée comme MongoDB pourra être envisagée.
+Cette décision permet de conserver une page d'accueil stable même si la démonstration NoSQL rencontre une limite liée à l'environnement Render.
 
 ---
 
-# 14. Administration Django en ligne
+# 12. Fichiers statiques
 
-L'administration Django est accessible en ligne à l'adresse :
-
-```text
-https://frostia-games.onrender.com/admin/
-```
-
-Elle permet de gérer :
-
-* les créations ;
-* les projets jouables.
-
-L'accès administrateur complet doit rester privé.
-
-Aucun identifiant administrateur ne doit être publié dans :
-
-* GitHub ;
-* les fichiers Markdown ;
-* les captures ;
-* le dossier projet public.
-
----
-
-# 15. Compte temporaire de lecture seule
-
-Un compte temporaire de lecture seule peut être utilisé pour l'évaluation.
-
-Ce compte permet de consulter certaines données dans l'administration Django sans donner un accès complet.
-
-Il peut voir :
-
-* les créations ;
-* les projets jouables.
-
-Il ne doit pas voir :
-
-* les utilisateurs ;
-* les groupes ;
-* les permissions sensibles ;
-* les variables d'environnement ;
-* les secrets du projet.
-
-Les identifiants réels de ce compte ne doivent pas être écrits dans la documentation publique.
-
-Ils peuvent être transmis séparément uniquement si nécessaire.
-
----
-
-# 16. Problèmes rencontrés
-
-## Confusion entre variables d'environnement et commandes Render
-
-Une confusion a eu lieu entre la section **Environment Variables** et les commandes de déploiement.
-
-Correction effectuée :
-
-* Les variables Django doivent rester dans **Environment Variables**.
-* La commande `bash build.sh` doit être placée dans **Build Command**.
-* La commande Gunicorn doit être placée dans **Start Command**.
-
----
-
-## Erreur locale avec PowerShell
-
-Une erreur est apparue en local sous PowerShell avec la commande :
+Les fichiers statiques sont collectés avec :
 
 ```bash
-bash build.sh
+python manage.py collectstatic --noinput
 ```
 
-Erreur rencontrée :
+WhiteNoise permet ensuite à Django de servir les fichiers statiques en production.
+
+Fichiers concernés :
 
 ```text
-failed: No such file or directory
+static/css/main.css
+static/js/menu.js
+static/images/
 ```
 
-Cette erreur venait de l'environnement Windows local, car PowerShell ne gère pas Bash comme un environnement Linux standard.
-
-Sur Render, cette commande fonctionne car le service tourne dans un environnement Linux.
+Le fichier `static/js/menu.js` est utilisé pour le menu mobile responsive.
 
 ---
 
-## Différence entre Docker et Render
+# 13. Dépendances utilisées
 
-Docker et Render n'ont pas le même rôle dans le projet.
+Le fichier `requirements.txt` contient les dépendances nécessaires au fonctionnement du projet sur Render.
 
-Docker sert à tester le projet dans un environnement local reproductible.
+Dépendances principales :
 
-Render sert à publier le site en ligne.
+```text
+Django
+gunicorn
+whitenoise
+tinydb
+```
 
-Dans cette V1, Docker n'est pas utilisé comme solution de production.
+Rôle des dépendances :
+
+- `Django` fournit le framework web ;
+- `gunicorn` lance l'application en production ;
+- `whitenoise` sert les fichiers statiques ;
+- `tinydb` permet la démonstration NoSQL légère.
 
 ---
 
-# 17. Résultat du déploiement
+# 14. Problèmes rencontrés pendant le déploiement
 
-Le déploiement Render a réussi.
+## Confusion entre Build Command et Start Command
 
-Message observé dans les logs Render :
+Une confusion a eu lieu entre les variables d'environnement et les commandes Render.
 
-```text
-Your service is live
-```
-
-Render indique également que l'application écoute correctement sur le port fourni :
+Correction retenue :
 
 ```text
-Listening at: http://0.0.0.0:10000
-```
-
-Le site est accessible publiquement à l'adresse suivante :
-
-```text
-https://frostia-games.onrender.com
+Build Command : bash build.sh
+Start Command : python manage.py migrate --noinput && python manage.py setup_render_data && gunicorn frostia_config.wsgi:application --bind 0.0.0.0:$PORT
 ```
 
 ---
 
-# 18. Vérifications effectuées
+## Données Render vides
 
-Les vérifications suivantes ont été réalisées après le déploiement :
+Les données créées manuellement dans l'administration Render pouvaient disparaître.
 
-* Page d'accueil accessible.
-* CSS chargé correctement.
-* Navigation fonctionnelle.
-* Menu mobile fonctionnel.
-* Interface `/admin/` accessible.
-* Connexion à l'administration Django fonctionnelle.
-* Données SQLite visibles sur les pages publiques.
-* Page **Mes créations** accessible.
-* Page **Projets jouables** accessible.
-* Notes TinyDB visibles sur l'accueil.
-* Déploiement Render actif.
-* Service indiqué comme live dans les logs Render.
+Correction retenue :
+
+```bash
+python manage.py setup_render_data
+```
+
+Cette commande est exécutée automatiquement au démarrage.
 
 ---
 
-# 19. Vérifications techniques utiles
+## Erreur 500 sur la page d'accueil
 
-Avant ou après un déploiement, les commandes locales suivantes peuvent être utilisées :
+La page d'accueil a pu générer une erreur 500 lorsque la partie TinyDB posait problème sur Render.
+
+Correction retenue :
+
+- sécurisation de la récupération des notes ;
+- ajout d'un comportement de secours ;
+- maintien de l'affichage de la page même si TinyDB échoue.
+
+---
+
+## Absence de Shell Render
+
+L'offre ou la configuration utilisée ne permettait pas d'utiliser directement un shell Render.
+
+Correction retenue :
+
+- ne pas dépendre du Shell Render ;
+- passer par le Start Command ;
+- utiliser les variables d'environnement Render.
+
+---
+
+# 15. Vérifications effectuées
+
+Après correction, les éléments suivants ont été vérifiés :
+
+- le service Render démarre ;
+- les logs indiquent que `setup_render_data` s'exécute ;
+- le site public est accessible ;
+- l'administration Django est accessible ;
+- la création `Frostia Games` est présente ;
+- le projet jouable `Prototype jouable à venir` est présent ;
+- le groupe `Evaluation lecture seule` est présent ;
+- le compte `evaluation_temp` est présent ;
+- le compte d'évaluation peut se connecter ;
+- le compte d'évaluation possède uniquement des droits de lecture ;
+- le compte n'est pas superutilisateur.
+
+Logs attendus :
+
+```text
+Données initiales créées.
+Accès d'évaluation configuré.
+Utilisateur : evaluation_temp
+Droits : lecture seule
+Staff : oui
+Superutilisateur : non
+```
+
+---
+
+# 16. Captures de preuve
+
+Les captures finales doivent montrer la version en ligne Render, et non le serveur local.
+
+Captures utiles :
+
+```text
+docs/preuves/admin/capture-admin-evaluation-accueil-render.png
+docs/preuves/admin/capture-admin-evaluation-creations-render.png
+docs/preuves/admin/capture-admin-evaluation-projets-jouables-render.png
+docs/preuves/admin/capture-admin-evaluation-compte-render.png
+```
+
+Autres captures utiles :
+
+```text
+docs/preuves/render/
+docs/preuves/sql/
+docs/preuves/nosql/
+docs/preuves/test/
+```
+
+Aucune capture ne doit afficher :
+
+- un mot de passe ;
+- une clé secrète ;
+- une valeur complète de variable d'environnement ;
+- un token ;
+- une information personnelle inutile.
+
+---
+
+# 17. Limites de l'offre Render gratuite
+
+Le service Render utilisé peut se mettre en veille après une période d'inactivité.
+
+Conséquences possibles :
+
+- premier chargement plus lent ;
+- délai avant que le site réponde ;
+- redémarrage automatique du service ;
+- nécessité de recréer certaines données si elles sont liées à SQLite.
+
+La commande `setup_render_data` limite l'impact de ces redémarrages en recréant les données nécessaires à la démonstration.
+
+---
+
+# 18. Limites assumées du déploiement
+
+Ce déploiement ne transforme pas Frostia Games en application de production complète.
+
+Limites assumées :
+
+- SQLite reste une solution simple pour la V1 ;
+- TinyDB est utilisé comme démonstration NoSQL légère ;
+- Render gratuit peut mettre le service en veille ;
+- PostgreSQL n'est pas encore intégré ;
+- l'administration Django reste l'administration standard ;
+- aucun espace utilisateur public n'est prévu dans cette V1.
+
+Ces limites sont cohérentes avec le périmètre du projet.
+
+---
+
+# 19. Commandes utiles
+
+Commandes locales de vérification :
 
 ```powershell
 python manage.py check
@@ -520,155 +514,29 @@ python -m scripts.demo_tinydb_notes
 git status
 ```
 
-Résultats attendus :
+Commandes Git après modification documentaire :
 
-```text
-System check identified no issues
-```
-
-et :
-
-```text
-nothing to commit, working tree clean
-```
-
-Ces commandes permettent de vérifier :
-
-* la configuration Django ;
-* le fonctionnement de TinyDB ;
-* l'état du dépôt Git.
-
----
-
-# 20. Limite de l'offre gratuite Render
-
-Le service utilise une instance gratuite Render.
-
-Render peut mettre le service en veille après une période d'inactivité.
-
-Conséquence :
-
-* le premier chargement peut être plus lent ;
-* le site peut mettre plusieurs secondes à se réveiller ;
-* ce comportement n'est pas une erreur du projet Django.
-
-Cette limite doit être connue lors d'une démonstration.
-
-Si le site met du temps à répondre au premier chargement, il faut attendre le réveil du service.
-
----
-
-# 21. Sécurité du déploiement
-
-Les règles suivantes doivent être respectées :
-
-* ne pas publier les vraies variables d'environnement ;
-* ne pas publier la vraie clé secrète Django ;
-* ne pas publier le mot de passe administrateur ;
-* ne pas publier les identifiants du compte temporaire ;
-* ne pas afficher les secrets dans les captures ;
-* garder `DJANGO_DEBUG=False` en production ;
-* vérifier que `ALLOWED_HOSTS` contient bien le domaine Render ;
-* utiliser `.env.example` uniquement comme modèle.
-
-Ces règles permettent de conserver une V1 présentable sans exposer d'informations sensibles.
-
----
-
-# 22. Captures et preuves à préparer
-
-Pour le dossier projet, les captures suivantes peuvent être utiles :
-
-* page du service Render actif ;
-* URL de production ;
-* logs indiquant que le service est live ;
-* Build Command ;
-* Start Command ;
-* variables d'environnement masquées ;
-* fichier `build.sh` ;
-* fichier `requirements.txt` ;
-* site en ligne ;
-* page d'accueil avec notes TinyDB ;
-* page **Mes créations** ;
-* page **Projets jouables** ;
-* administration Django ;
-* compte temporaire de lecture seule ;
-* terminal avec `python manage.py check` ;
-* terminal avec `python -m scripts.demo_tinydb_notes`.
-
-Aucune capture ne doit afficher :
-
-* mot de passe ;
-* clé secrète ;
-* vraie valeur de variable sensible ;
-* identifiant privé inutile ;
-* information personnelle inutile.
-
----
-
-# 23. Commandes Git utilisées
-
-Après création ou modification de ce fichier de documentation, les commandes Git suivantes peuvent être utilisées :
-
-```bash
-git add .
-git commit -m "Update Render deployment journal"
-git push
-```
-
-Avant le commit, vérifier l'état du dépôt avec :
-
-```bash
+```powershell
 git status
+git add .
+git commit -m "Mise a jour documentation deploiement Render"
+git push origin main
 ```
 
 ---
 
-# 24. État final
+# 20. Conclusion
 
-Le projet Django **Frostia Games** est déployé sur Render.
+La version Render de Frostia Games est maintenant fonctionnelle et vérifiable.
 
-Le site fonctionne en ligne.
+Le site public est accessible en ligne.
 
 L'administration Django est accessible.
 
-La configuration Render est opérationnelle.
+Les données nécessaires à la démonstration sont recréées automatiquement.
 
-Les fichiers statiques sont chargés.
+Le compte d'évaluation en lecture seule fonctionne sur la version en ligne.
 
-Les migrations Django sont appliquées.
+Le déploiement reste volontairement simple, mais il prouve que la V1 peut fonctionner hors de l'environnement local.
 
-La page d'accueil peut afficher les notes TinyDB.
-
-Le compte temporaire de lecture seule peut être utilisé pour une consultation limitée de l'administration.
-
-Cette étape valide une première mise en production fonctionnelle du projet.
-
-La V1 reste volontairement limitée afin de rester stable, documentée, testable et présentable.
-
----
-
-# 25. Conclusion
-
-Le déploiement Render permet de montrer que Frostia Games fonctionne hors de l'environnement local.
-
-La V1 est accessible en ligne, documentée et vérifiable.
-
-Le projet utilise :
-
-* Django ;
-* SQLite ;
-* TinyDB ;
-* Gunicorn ;
-* WhiteNoise ;
-* Render ;
-* des variables d'environnement ;
-* un script de build.
-
-Le déploiement ne transforme pas le projet en plateforme de production complète.
-
-Il permet de présenter une V1 fonctionnelle, déployée et cohérente avec le périmètre du dossier projet.
-
-La priorité après cette étape est de préparer les captures, les preuves et les annexes du dossier final.
-
-
+Cette configuration est suffisante pour le dossier projet, tout en laissant des pistes d'évolution claires comme PostgreSQL, une persistance plus robuste et une administration plus avancée.

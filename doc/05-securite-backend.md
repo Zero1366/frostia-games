@@ -1,4 +1,4 @@
-# Sécurité backend - Frostia Games
+# Sécurité backend — Frostia Games
 
 ## Objectif du document
 
@@ -6,26 +6,18 @@ Ce document présente les choix de sécurité appliqués ou prévus dans la V1 d
 
 L'objectif est de montrer que le backend Django est conçu avec une attention particulière à la sécurité, même si le projet reste une V1 volontairement limitée.
 
-La sécurité du projet repose sur plusieurs principes :
+La sécurité repose sur plusieurs principes :
 
-* utiliser les protections intégrées de Django ;
-* éviter les requêtes SQL écrites manuellement dans les vues ;
-* protéger l'administration ;
-* limiter les fonctionnalités sensibles ;
-* ne pas exposer les secrets dans GitHub ;
-* documenter les variables d'environnement ;
-* distinguer clairement développement local et déploiement en ligne ;
-* limiter les permissions du compte temporaire de lecture seule ;
-* ne pas stocker de données sensibles dans TinyDB ;
-* éviter les captures contenant des mots de passe, clés ou variables sensibles.
-
-Ce document a été mis à jour après le renforcement du dossier projet afin d'intégrer :
-
-* le compte temporaire de lecture seule ;
-* l'expérimentation NoSQL TinyDB ;
-* l'affichage des notes TinyDB sur la page d'accueil ;
-* les extraits SQL natifs documentaires ;
-* les nouvelles preuves à préparer pour le dossier final.
+- utiliser les protections intégrées de Django ;
+- manipuler les données avec l'ORM Django ;
+- éviter le SQL brut dans les vues ;
+- protéger l'administration Django ;
+- limiter les droits du compte d'évaluation ;
+- ne pas exposer les secrets dans le code source ;
+- utiliser les variables d'environnement Render ;
+- éviter les captures contenant des mots de passe ou des clés ;
+- limiter les fonctionnalités sensibles non maîtrisées ;
+- documenter clairement les limites de la V1.
 
 ---
 
@@ -33,29 +25,28 @@ Ce document a été mis à jour après le renforcement du dossier projet afin d'
 
 Frostia Games utilise Django pour gérer :
 
-* les routes ;
-* les vues ;
-* les modèles ;
-* l'administration ;
-* la base de données SQLite ;
-* les templates ;
-* les fichiers statiques.
+- les routes ;
+- les vues ;
+- les modèles ;
+- l'administration ;
+- la base de données SQLite ;
+- les templates ;
+- les fichiers statiques ;
+- l'intégration NoSQL légère avec TinyDB.
 
 Django fournit plusieurs protections intégrées.
 
-La V1 s'appuie sur ces protections tout en limitant volontairement les fonctionnalités sensibles.
-
-L'objectif n'est pas de prétendre que le projet est une plateforme complète de production, mais de montrer que les risques principaux ont été identifiés et que les fonctionnalités sensibles sont encadrées ou reportées.
+La V1 s'appuie sur ces protections tout en évitant d'ajouter des fonctionnalités sensibles non nécessaires.
 
 Le projet est actuellement :
 
-* exécutable en local ;
-* exécutable avec Docker ;
-* déployé en ligne sur Render ;
-* documenté avec un README, un fichier de choix techniques et un exemple de variables d'environnement ;
-* renforcé avec une expérimentation NoSQL légère ;
-* renforcé avec un compte temporaire de lecture seule ;
-* renforcé avec des documents complémentaires pour le dossier projet.
+- exécutable en local ;
+- testable avec Docker ;
+- déployé en ligne sur Render ;
+- documenté avec un README et des fichiers Markdown ;
+- renforcé avec une démonstration NoSQL légère ;
+- protégé par un accès administrateur ;
+- consultable avec un compte d'évaluation en lecture seule.
 
 ---
 
@@ -74,9 +65,7 @@ Creation.objects.filter(is_visible=True).order_by(
 
 L'ORM permet d'éviter d'écrire directement des requêtes SQL brutes dans les vues.
 
-Cela réduit le risque d'injection SQL, car Django prépare les requêtes et protège les valeurs utilisées dans les filtres.
-
-L'ORM permet aussi de garder une logique plus lisible et plus maintenable.
+Cela réduit le risque d'injection SQL, car Django prépare les requêtes et encadre les valeurs utilisées dans les filtres.
 
 Les modèles Django servent de couche intermédiaire entre le code Python et la base SQLite.
 
@@ -84,7 +73,7 @@ Les modèles Django servent de couche intermédiaire entre le code Python et la 
 
 # 3. Absence de SQL brut dans les vues
 
-Dans la V1, le projet n'utilise pas de requêtes SQL construites manuellement avec des chaînes de caractères dans les vues.
+Dans la V1, le projet n'utilise pas de requêtes SQL construites manuellement dans les vues.
 
 Exemple de pratique évitée :
 
@@ -100,7 +89,7 @@ Le projet utilise plutôt les modèles Django :
 Creation.objects.filter(slug=slug)
 ```
 
-Cette approche permet de garder un code plus sûr, plus lisible et mieux intégré à Django.
+Cette approche est plus sûre, plus lisible et mieux intégrée à Django.
 
 ---
 
@@ -108,18 +97,18 @@ Cette approche permet de garder un code plus sûr, plus lisible et mieux intégr
 
 Le risque d'injection SQL est limité par plusieurs choix :
 
-* utilisation des modèles Django ;
-* utilisation de l'ORM ;
-* absence de SQL brut dans les vues ;
-* champs structurés dans les modèles ;
-* routes contrôlées par Django ;
-* absence de formulaire public manipulant directement la base dans la V1.
+- utilisation des modèles Django ;
+- utilisation de l'ORM ;
+- absence de SQL brut dans les vues ;
+- champs structurés dans les modèles ;
+- routes contrôlées par Django ;
+- absence de formulaire public manipulant directement la base dans la V1.
 
-La base SQLite est manipulée par Django, pas directement par du SQL écrit dans les pages.
+La base SQLite est manipulée par Django, pas directement par des chaînes SQL écrites dans les templates ou dans les vues.
 
-Le fichier `doc/sql/schema.sql` existe uniquement comme document explicatif.
+Les fichiers SQL du projet sont documentaires.
 
-Il ne remplace pas les migrations Django et n'est pas utilisé comme source principale de création des tables dans l'application.
+Ils servent à expliquer la structure de la base, mais ne remplacent pas les migrations Django.
 
 ---
 
@@ -127,11 +116,7 @@ Il ne remplace pas les migrations Django et n'est pas utilisé comme source prin
 
 Le projet contient des fichiers SQL documentaires.
 
-Ces fichiers servent à montrer la structure de la base et à répondre aux attendus du dossier projet.
-
-Ils ne sont pas utilisés comme source principale de création des tables.
-
-Les tables réelles sont créées par les migrations Django.
+Ils permettent de montrer la structure de la base et de répondre aux attendus du dossier projet.
 
 Fichiers concernés :
 
@@ -143,38 +128,43 @@ docs/sql/exemples_insert.sql
 docs/sql/sql-natif.md
 ```
 
-Ces fichiers permettent de présenter :
+Ces fichiers présentent :
 
-* des exemples `CREATE TABLE` ;
-* des exemples `INSERT INTO` ;
-* le lien entre les modèles Django et les tables SQLite ;
-* la différence entre ORM Django et SQL natif documentaire.
+- des exemples `CREATE TABLE` ;
+- des exemples `INSERT INTO` ;
+- le lien entre les modèles Django et les tables SQLite ;
+- la différence entre l'ORM Django et le SQL natif documentaire.
 
-Ces fichiers ne doivent pas contenir d'identifiants, de mots de passe, de clés ou de données personnelles sensibles.
+Ces fichiers ne doivent contenir aucun identifiant, mot de passe, secret ou donnée personnelle sensible.
 
 ---
 
-# 6. Administration protégée
+# 6. Administration Django protégée
 
 L'administration Django est accessible via :
 
 ```text
-/admin/
+https://frostia-games.onrender.com/admin/
 ```
 
 Elle est protégée par le système d'authentification Django.
 
-Seul un utilisateur autorisé peut :
+Elle permet de gérer :
 
-* ajouter une création ;
-* modifier une création ;
-* ajouter un projet jouable ;
-* modifier un projet jouable ;
-* rendre un contenu visible ou invisible.
+- les créations ;
+- les projets jouables à venir ;
+- les comptes autorisés ;
+- les groupes et permissions.
 
-Dans la V1, l'administration sert à gérer les contenus sans modifier directement les templates HTML.
+L'accès administrateur complet doit rester privé.
 
-Aucun identifiant administrateur ni mot de passe ne doit être publié dans le dépôt GitHub ou dans la documentation publique.
+Aucun identifiant administrateur ni mot de passe administrateur ne doit être publié dans :
+
+- le code source ;
+- le README ;
+- les captures ;
+- le dossier projet public ;
+- les fichiers de documentation publics.
 
 ---
 
@@ -182,13 +172,7 @@ Aucun identifiant administrateur ni mot de passe ne doit être publié dans le d
 
 Un compte administrateur existe pour gérer le contenu du projet.
 
-En local, il peut être créé avec :
-
-```powershell
-python manage.py createsuperuser
-```
-
-Sur Render, la création du superutilisateur peut être automatisée avec le fichier `build.sh` et des variables d'environnement.
+Sur Render, le superutilisateur peut être créé à partir de variables d'environnement.
 
 Variables utilisées :
 
@@ -198,84 +182,132 @@ DJANGO_SUPERUSER_EMAIL
 DJANGO_SUPERUSER_PASSWORD
 ```
 
-Ces valeurs ne doivent pas être écrites directement dans le code.
+Ces valeurs ne sont pas écrites directement dans le code.
 
-Elles doivent rester dans l'environnement local ou dans les variables d'environnement Render.
+Elles sont stockées dans les variables d'environnement Render.
 
-Le compte administrateur complet ne doit pas être utilisé comme compte de démonstration publique.
+Le compte administrateur complet ne doit pas être utilisé comme compte de démonstration pour le jury.
 
-Pour une évaluation, un compte temporaire limité est préférable.
+Pour une évaluation, un compte limité en lecture seule est préférable.
 
 ---
 
-# 8. Compte temporaire de lecture seule
+# 8. Accès d'évaluation en lecture seule
 
-Un compte temporaire de lecture seule a été ajouté afin de permettre une consultation limitée de l'administration Django.
+Un compte d'évaluation en lecture seule est prévu pour permettre au jury de consulter l'administration Django sans pouvoir modifier les données.
 
-Ce compte permet de montrer l'administration sans donner un accès complet au backend.
+Configuration :
 
-Le compte temporaire :
+| Élément | Configuration |
+| ------- | ------------- |
+| Groupe | `Evaluation lecture seule` |
+| Utilisateur | `evaluation_temp` |
+| Type de compte | Staff Django |
+| Superutilisateur | Non |
+| Droits | Lecture seule |
+| Ajout | Non |
+| Modification | Non |
+| Suppression | Non |
 
-* est actif ;
-* peut se connecter à l'administration ;
-* est membre de l'équipe ;
-* n'est pas superutilisateur ;
-* appartient à un groupe de lecture seule ;
-* possède uniquement les permissions nécessaires à la consultation.
+Le compte peut consulter uniquement :
 
-Le groupe associé permet seulement de consulter :
-
-* les créations ;
-* les projets jouables.
+- les créations ;
+- les projets jouables.
 
 Il ne doit pas permettre :
 
-* d'ajouter des utilisateurs ;
-* de modifier des utilisateurs ;
-* de supprimer des utilisateurs ;
-* de modifier des groupes ;
-* de modifier les permissions ;
-* de consulter des secrets ;
-* de modifier la configuration du projet.
-
-Les identifiants réels de ce compte ne doivent pas être écrits dans le dossier projet public.
-
-Ils peuvent être transmis séparément uniquement si nécessaire.
+- d'ajouter des contenus ;
+- de modifier des contenus ;
+- de supprimer des contenus ;
+- de modifier les utilisateurs ;
+- de modifier les groupes ;
+- de modifier les permissions ;
+- de consulter des secrets ;
+- d'accéder aux variables d'environnement.
 
 ---
 
-# 9. Validation des mots de passe
+# 9. Initialisation automatique de l'accès d'évaluation
 
-Le fichier `settings.py` conserve les validateurs de mots de passe Django.
+Sur Render, la base SQLite peut être réinitialisée lors d'un redémarrage ou d'un redéploiement.
+
+Pour éviter que les données de démonstration disparaissent, une commande Django personnalisée a été ajoutée :
+
+```bash
+python manage.py setup_render_data
+```
+
+Cette commande recrée automatiquement :
+
+- la création principale **Frostia Games** ;
+- le projet jouable de démonstration ;
+- le groupe `Evaluation lecture seule` ;
+- le compte `evaluation_temp` ;
+- les permissions de lecture seule.
+
+Le mot de passe du compte d'évaluation n'est pas stocké directement dans le code source.
+
+Il est fourni par une variable d'environnement Render :
+
+```text
+EVALUATION_USER_PASSWORD
+```
+
+Cette approche évite de mettre le mot de passe dans `build.sh`, dans `settings.py` ou dans le code Python.
+
+---
+
+# 10. Permissions du compte d'évaluation
+
+Les permissions accordées au compte d'évaluation sont limitées aux permissions `view`.
+
+Permissions utilisées :
+
+```text
+Can view Création
+Can view Projet jouable
+```
+
+Permissions non accordées :
+
+```text
+Can add
+Can change
+Can delete
+```
+
+Le compte d'évaluation peut donc consulter les éléments utiles sans pouvoir altérer les données.
+
+---
+
+# 11. Validation des mots de passe
+
+Django conserve ses validateurs de mots de passe.
 
 Ces validateurs permettent notamment :
 
-* la vérification de similarité avec les informations utilisateur ;
-* l'imposition d'une longueur minimale ;
-* la détection des mots de passe trop communs ;
-* le refus des mots de passe uniquement numériques.
+- de refuser les mots de passe trop courts ;
+- de refuser les mots de passe trop communs ;
+- de refuser les mots de passe uniquement numériques ;
+- de détecter les mots de passe trop proches des informations utilisateur.
 
-Ces règles renforcent la sécurité des comptes administrateurs.
-
-Même pour une V1, il est préférable d'éviter les mots de passe trop simples.
+Même dans une V1, ces règles permettent d'éviter des comptes trop faibles.
 
 ---
 
-# 10. Protection CSRF
+# 12. Protection CSRF
 
 Django inclut une protection CSRF pour les formulaires.
 
-La protection CSRF permet de limiter les attaques où un site externe essaie de soumettre une requête à la place d'un utilisateur connecté.
+Cette protection permet de limiter les attaques où un site externe tente de soumettre une action à la place d'un utilisateur connecté.
 
 Dans la V1 actuelle, les formulaires publics ne sont pas encore développés.
-
-Cependant, la protection CSRF reste disponible dans la configuration Django pour les évolutions futures.
 
 L'administration Django bénéficie déjà des mécanismes de sécurité fournis par Django.
 
 ---
 
-# 11. Échappement automatique dans les templates
+# 13. Échappement automatique dans les templates
 
 Les templates Django échappent automatiquement les variables affichées dans les pages.
 
@@ -285,50 +317,48 @@ Exemple :
 {{ creation.title }}
 ```
 
-Django évite que du code HTML ou JavaScript non souhaité soit exécuté directement dans le navigateur lorsque les variables sont affichées normalement.
+Django évite que du HTML ou du JavaScript non souhaité soit exécuté directement dans le navigateur lorsque les variables sont affichées normalement.
 
 Cela réduit le risque d'injection de code dans les pages.
 
 Dans la V1, les données affichées publiquement proviennent principalement :
 
-* des modèles Django `Creation` et `PlayableProject` ;
-* des notes de progression TinyDB ;
-* de contenus écrits et contrôlés dans le projet.
+- des modèles Django `Creation` et `PlayableProject` ;
+- des notes de progression TinyDB ;
+- de contenus contrôlés dans le projet.
 
-Aucun contenu public librement saisi par des visiteurs n'est implanté dans la V1.
+Aucun contenu libre saisi par des visiteurs n'est implanté dans cette V1.
 
 ---
 
-# 12. Gestion de la visibilité des contenus
+# 14. Gestion de la visibilité des contenus
 
-Les modèles utilisent des champs de visibilité :
+Les modèles utilisent des champs de visibilité.
+
+Exemple :
 
 ```python
 is_visible = models.BooleanField(default=True)
 ```
 
-Ces champs permettent de masquer un contenu sans le supprimer de la base.
-
-Les vues utilisent ce type de filtre :
+Les vues filtrent les contenus visibles :
 
 ```python
 Creation.objects.filter(is_visible=True)
 PlayableProject.objects.filter(is_visible=True)
 ```
 
-Cela permet de contrôler ce qui est réellement affiché sur le site public.
-
-Un contenu peut donc exister dans l'administration sans être visible par les visiteurs.
+Cela permet de garder un contenu dans l'administration sans forcément l'afficher sur le site public.
 
 ---
 
-# 13. Sécurité de TinyDB
+# 15. Sécurité de TinyDB
 
 TinyDB est utilisé comme expérimentation NoSQL légère.
 
-Il ne remplace pas la base SQLite principale.
+Il ne remplace pas SQLite.
 
-Il sert uniquement à stocker et afficher des notes de progression liées au projet Frostia Games.
+Il sert uniquement à stocker et afficher des notes de progression liées au projet.
 
 Fichiers concernés :
 
@@ -341,13 +371,13 @@ docs/nosql/tinydb-integration.md
 
 La base TinyDB ne doit pas contenir :
 
-* mot de passe ;
-* clé secrète ;
-* jeton d'accès ;
-* variable d'environnement ;
-* information personnelle sensible ;
-* identifiant administrateur réel ;
-* donnée confidentielle.
+- mot de passe ;
+- clé secrète ;
+- jeton d'accès ;
+- variable d'environnement ;
+- information personnelle sensible ;
+- identifiant administrateur ;
+- donnée confidentielle.
 
 Les notes TinyDB sont des données documentaires.
 
@@ -355,7 +385,7 @@ Elles servent à démontrer une logique NoSQL simple dans le cadre du dossier pr
 
 ---
 
-# 14. Fonctionnement sécurisé de TinyDB dans la V1
+# 16. Fonctionnement sécurisé de TinyDB dans la V1
 
 La logique TinyDB est isolée dans un service Python :
 
@@ -365,14 +395,14 @@ core/services/nosql_notes.py
 
 Ce service permet :
 
-* d'ouvrir la base TinyDB ;
-* de créer le dossier nécessaire si besoin ;
-* de créer des notes de démonstration ;
-* de lire les notes ;
-* de rechercher les notes liées au projet ;
-* de fermer la base après utilisation.
+- de créer le dossier de données si besoin ;
+- d'ouvrir la base TinyDB ;
+- de créer des notes de démonstration ;
+- de lire les notes ;
+- de rechercher les notes liées au projet ;
+- de fermer la base après utilisation.
 
-Le script suivant permet de tester la lecture TinyDB :
+Le script suivant permet de tester TinyDB :
 
 ```powershell
 python -m scripts.demo_tinydb_notes
@@ -380,52 +410,49 @@ python -m scripts.demo_tinydb_notes
 
 TinyDB reste limité à un rôle documentaire.
 
-Il n'est pas utilisé pour l'authentification, les permissions ou les données sensibles.
+Il n'est pas utilisé pour l'authentification, les permissions ou les secrets.
 
 ---
 
-# 15. Upload réel non implanté dans la V1
+# 17. Upload réel non implanté dans la V1
 
-La page **Projets jouables** contient une interface préparatoire permettant de sélectionner un fichier local.
+La page **Projets jouables** contient une interface préparatoire.
 
 Cependant, aucun vrai upload serveur n'est implanté dans la V1.
 
 Cela signifie que :
 
-* aucun fichier n'est envoyé au serveur ;
-* aucun fichier n'est stocké côté backend ;
-* aucun fichier utilisateur n'est exécuté ;
-* aucune gestion de média uploadé n'est active ;
-* aucun fichier exécutable n'est proposé en téléchargement public.
+- aucun fichier n'est envoyé au serveur ;
+- aucun fichier n'est stocké côté backend ;
+- aucun fichier utilisateur n'est exécuté ;
+- aucune gestion de média uploadé n'est active ;
+- aucun fichier exécutable n'est proposé en téléchargement public.
 
 Ce choix est volontaire.
 
-L'upload de fichiers est une fonctionnalité sensible qui demande des protections supplémentaires.
+L'upload de fichiers est une fonctionnalité sensible qui demande des protections spécifiques.
 
 ---
 
-# 16. Risques liés à un futur upload
+# 18. Risques liés à un futur upload
 
 Si un vrai upload est ajouté plus tard, il faudra prévoir :
 
-* validation des extensions ;
-* limitation de la taille des fichiers ;
-* stockage dans un dossier sécurisé ;
-* renommage des fichiers ;
-* contrôle des types MIME ;
-* interdiction d'exécuter les fichiers uploadés ;
-* séparation entre fichiers publics et fichiers internes ;
-* suppression sécurisée ;
-* éventuellement scan antivirus ou contrôle externe ;
-* règles spécifiques pour les fichiers vidéo, images ou archives.
+- validation des extensions ;
+- limitation de la taille des fichiers ;
+- stockage dans un dossier sécurisé ;
+- renommage des fichiers ;
+- contrôle des types MIME ;
+- interdiction d'exécuter les fichiers uploadés ;
+- séparation entre fichiers publics et fichiers internes ;
+- suppression sécurisée ;
+- éventuellement scan antivirus ou contrôle externe.
 
-Pour cette raison, l'upload réel est placé hors périmètre de la V1.
-
-Cela permet d'éviter d'ajouter une fonctionnalité sensible sans sécurité adaptée.
+Pour cette raison, l'upload réel est hors périmètre de la V1.
 
 ---
 
-# 17. Configuration locale
+# 19. Configuration locale
 
 En développement local, Django peut être lancé avec :
 
@@ -433,11 +460,9 @@ En développement local, Django peut être lancé avec :
 python manage.py runserver
 ```
 
-Le mode développement permet d'afficher des erreurs détaillées afin de faciliter le débogage.
+Le mode développement peut afficher des erreurs détaillées pour faciliter le débogage.
 
-Cependant, ce comportement ne doit pas être utilisé tel quel en production.
-
-En local, il est acceptable d'utiliser une configuration plus permissive, mais les valeurs sensibles ne doivent pas être publiées dans GitHub.
+Ce comportement ne doit pas être utilisé tel quel en production.
 
 Les vérifications principales en local sont :
 
@@ -446,13 +471,13 @@ python manage.py check
 python -m scripts.demo_tinydb_notes
 ```
 
-La première commande vérifie Django.
+La première commande vérifie la configuration Django.
 
-La seconde vérifie l'expérimentation NoSQL TinyDB.
+La seconde vérifie l'expérimentation TinyDB.
 
 ---
 
-# 18. Configuration Render
+# 20. Configuration Render
 
 Le projet est déployé sur Render.
 
@@ -462,27 +487,26 @@ URL de production :
 https://frostia-games.onrender.com
 ```
 
-Sur Render, les informations sensibles sont stockées dans les variables d'environnement.
+Les informations sensibles sont stockées dans les variables d'environnement Render.
 
 Variables principales :
 
 ```text
-DJANGO_DEBUG=False
-DJANGO_SECRET_KEY=valeur-secrète
-DJANGO_SUPERUSER_USERNAME=admin
-DJANGO_SUPERUSER_EMAIL=adresse-email
-DJANGO_SUPERUSER_PASSWORD=mot-de-passe
+DJANGO_DEBUG
+DJANGO_SECRET_KEY
+DJANGO_SUPERUSER_USERNAME
+DJANGO_SUPERUSER_EMAIL
+DJANGO_SUPERUSER_PASSWORD
+EVALUATION_USER_PASSWORD
 ```
 
-Ces variables ne sont pas publiées dans le dépôt.
+Les valeurs ne doivent pas être publiées dans le dépôt.
 
-Le fichier `.env.example` sert uniquement de modèle.
-
-Les captures Render ne doivent pas afficher les vraies valeurs sensibles.
+Les captures Render ne doivent pas afficher les vraies valeurs.
 
 ---
 
-# 19. Mode DEBUG
+# 21. Mode DEBUG
 
 En production, le mode debug doit être désactivé.
 
@@ -492,13 +516,13 @@ Sur Render, la variable utilisée est :
 DJANGO_DEBUG=False
 ```
 
-Cela permet d'éviter l'affichage d'informations techniques sensibles en cas d'erreur.
+Cela évite l'affichage d'informations techniques sensibles en cas d'erreur.
 
 Le mode `DEBUG=True` doit rester réservé au développement local.
 
 ---
 
-# 20. SECRET_KEY
+# 22. SECRET_KEY
 
 La clé secrète Django ne doit pas être publiée dans GitHub.
 
@@ -506,14 +530,6 @@ Pour le déploiement, elle est placée dans une variable d'environnement :
 
 ```text
 DJANGO_SECRET_KEY
-```
-
-Dans le code, elle peut être récupérée depuis l'environnement.
-
-Exemple de principe :
-
-```python
-SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")
 ```
 
 Le fichier `.env.example` indique seulement la variable attendue :
@@ -526,27 +542,25 @@ Il ne contient pas la vraie clé.
 
 ---
 
-# 21. ALLOWED_HOSTS
+# 23. ALLOWED_HOSTS
 
 Django utilise `ALLOWED_HOSTS` pour limiter les domaines autorisés à servir l'application.
 
-Pour le projet Frostia Games, les hôtes nécessaires peuvent inclure :
+Pour la production Render, le domaine principal est :
 
-```python
-ALLOWED_HOSTS = [
-    "frostia-games.onrender.com",
-    "frostia-games.onrender.com",
-    "frostia-games.onrender.com",
-]
+```text
+frostia-games.onrender.com
 ```
 
-Cette configuration permet d'éviter que l'application réponde à n'importe quel domaine.
+Des valeurs locales comme `localhost` ou `127.0.0.1` peuvent être conservées pour le développement local.
 
-Elle est importante pour le déploiement en ligne.
+Cette présence dans `settings.py` n'est pas une fuite de secret.
+
+Elle sert uniquement au fonctionnement en développement.
 
 ---
 
-# 22. Fichier .env.example
+# 24. Fichier .env.example
 
 Le fichier `.env.example` permet de documenter les variables nécessaires sans exposer les vraies valeurs.
 
@@ -558,76 +572,62 @@ DJANGO_SECRET_KEY=change-me
 DJANGO_SUPERUSER_USERNAME=admin
 DJANGO_SUPERUSER_EMAIL=admin@example.com
 DJANGO_SUPERUSER_PASSWORD=change-me
+EVALUATION_USER_PASSWORD=change-me
 ```
 
-Ce fichier peut être partagé sur GitHub.
+Ce fichier peut être partagé car il ne contient pas les vraies valeurs.
 
-Il sert de modèle pour comprendre la configuration attendue.
-
-Il ne doit contenir aucune vraie valeur sensible.
-
-Il ne doit pas contenir non plus les vrais identifiants du compte temporaire de lecture seule.
+Il sert uniquement de modèle.
 
 ---
 
-# 23. Fichier .gitignore
+# 25. Fichier .gitignore
 
-Le fichier `.gitignore` permet d'éviter l'envoi de fichiers sensibles ou inutiles dans GitHub.
+Le fichier `.gitignore` permet d'éviter l'envoi de fichiers sensibles ou inutiles.
 
 Il ignore notamment :
 
-* `.env` ;
-* `.env.local` ;
-* `.venv/` ;
-* `__pycache__/` ;
-* `*.pyc` ;
-* `db.sqlite3` ;
-* `staticfiles/` ;
-* `media/` ;
-* fichiers temporaires de l'éditeur.
-
-Ce fichier participe à la sécurité du projet, car il évite l'envoi accidentel de secrets ou de fichiers locaux.
+- `.env` ;
+- `.env.local` ;
+- `.venv/` ;
+- `__pycache__/` ;
+- `*.pyc` ;
+- `db.sqlite3` ;
+- `staticfiles/` ;
+- `media/` ;
+- fichiers temporaires de l'éditeur.
 
 Attention : si un fichier était déjà suivi par Git avant d'être ajouté au `.gitignore`, il peut rester suivi.
 
-Dans ce cas, il faut vérifier avec :
+Il faut alors vérifier avec :
 
 ```powershell
 git status
 ```
 
-La base TinyDB `data/nosql/project_notes_db.json` peut être conservée uniquement si elle contient des données de démonstration non sensibles.
-
-Elle ne doit jamais contenir de secret.
-
 ---
 
-# 24. Base de données SQLite
+# 26. Base SQLite
 
 La V1 utilise SQLite comme base principale.
 
 SQLite est adapté pour :
 
-* le développement local ;
-* les tests ;
-* une V1 simple ;
-* un projet de démonstration ;
-* une base backend légère.
+- le développement local ;
+- les tests ;
+- une V1 simple ;
+- un projet de démonstration ;
+- une base backend légère.
+
+Sur Render gratuit, SQLite ne doit pas être considéré comme une persistance durable avancée.
+
+Pour éviter une base vide après redéploiement, la commande `setup_render_data` recrée les données de démonstration.
 
 Pour une version plus avancée, PostgreSQL pourra être envisagé.
 
-Cela permettrait notamment :
-
-* une meilleure adaptation à une production durable ;
-* une meilleure gestion des accès concurrents ;
-* une meilleure séparation entre code applicatif et données ;
-* une base distante plus robuste.
-
-Dans la V1 actuelle, SQLite reste un choix volontaire afin de conserver un projet simple et maîtrisable.
-
 ---
 
-# 25. Base NoSQL TinyDB
+# 27. Base NoSQL TinyDB
 
 TinyDB est utilisé en complément de SQLite.
 
@@ -639,70 +639,58 @@ Cette séparation permet de démontrer une compétence NoSQL sans complexifier f
 
 TinyDB ne doit pas être utilisé pour :
 
-* gérer les comptes ;
-* gérer les mots de passe ;
-* gérer les permissions ;
-* stocker des secrets ;
-* stocker des informations sensibles ;
-* remplacer les modèles Django principaux.
-
-Le rôle de TinyDB est limité et assumé.
+- gérer les comptes ;
+- gérer les mots de passe ;
+- gérer les permissions ;
+- stocker des secrets ;
+- stocker des informations sensibles ;
+- remplacer les modèles Django principaux.
 
 ---
 
-# 26. Docker et sécurité
+# 28. Docker et sécurité
 
-Docker est utilisé pour fournir un environnement reproductible.
+Docker est utilisé pour fournir un environnement local reproductible.
 
-La configuration actuelle est volontairement simple :
+La configuration actuelle est volontairement simple.
 
-* Python ;
-* Django ;
-* SQLite ;
-* TinyDB ;
-* serveur de développement Django.
+Docker sert surtout à tester le projet dans un environnement isolé.
 
-Elle ne remplace pas une configuration Docker de production complète.
+Dans cette V1, le déploiement en ligne est réalisé avec Render.
 
-Pour une production Docker avancée, il faudrait ajouter :
+Pour une production Docker avancée, il faudrait prévoir :
 
-* variables d'environnement Docker ;
-* serveur applicatif comme Gunicorn ;
-* serveur frontal comme Nginx ;
-* configuration HTTPS ;
-* gestion sécurisée des fichiers statiques et médias ;
-* configuration stricte des hôtes autorisés ;
-* séparation claire entre développement et production ;
-* base PostgreSQL séparée ;
-* stratégie de sauvegarde.
-
-Dans la V1 actuelle, Docker sert surtout à tester le projet dans un environnement isolé.
-
-Le déploiement en ligne est réalisé avec Render.
+- variables d'environnement Docker ;
+- Gunicorn ;
+- serveur frontal comme Nginx ;
+- configuration HTTPS ;
+- gestion sécurisée des fichiers statiques et médias ;
+- base PostgreSQL séparée ;
+- stratégie de sauvegarde.
 
 ---
 
-# 27. Fichiers statiques et WhiteNoise
+# 29. Fichiers statiques et WhiteNoise
 
-Le projet utilise des fichiers statiques pour le CSS, le JavaScript et les images.
+Le projet utilise des fichiers statiques pour :
 
-En développement local, Django peut servir ces fichiers avec le serveur de développement.
+- le CSS ;
+- le JavaScript ;
+- les images.
 
-En production sur Render, WhiteNoise permet de servir les fichiers statiques collectés.
+En production sur Render, WhiteNoise sert les fichiers statiques collectés.
 
-La commande suivante est utilisée pendant le build :
+La commande utilisée pendant le build est :
 
 ```powershell
 python manage.py collectstatic --noinput
 ```
 
-Elle regroupe les fichiers statiques dans le dossier prévu pour la production.
-
-Le dossier `staticfiles/` ne doit pas être modifié manuellement et peut être ignoré par Git.
+Le dossier `staticfiles/` ne doit pas être modifié manuellement.
 
 ---
 
-# 28. JavaScript dynamique et sécurité
+# 30. JavaScript dynamique et sécurité
 
 Le projet contient un fichier JavaScript pour le menu mobile :
 
@@ -712,237 +700,203 @@ static/js/menu.js
 
 Ce fichier sert à :
 
-* ouvrir le menu mobile ;
-* fermer le menu mobile ;
-* mettre à jour `aria-expanded` ;
-* fermer le menu après un clic sur un lien.
+- ouvrir le menu mobile ;
+- fermer le menu mobile ;
+- mettre à jour `aria-expanded` ;
+- fermer le menu après un clic sur un lien.
 
-Ce JavaScript ne manipule pas de données sensibles.
+Ce JavaScript :
 
-Il ne communique pas avec une API.
-
-Il ne transmet pas de données utilisateur au serveur.
+- ne manipule pas de donnée sensible ;
+- ne communique pas avec une API ;
+- ne transmet pas de donnée utilisateur au serveur.
 
 Il reste limité à l'interface.
 
-La documentation associée se trouve dans :
-
-```text
-docs/frontend/javascript-menu-mobile.md
-```
-
 ---
 
-# 29. build.sh et sécurité du déploiement
+# 31. build.sh et sécurité du déploiement
 
 Le fichier `build.sh` est utilisé par Render pendant la phase de build.
 
-Il contient notamment :
+Il contient les actions de préparation :
 
 ```bash
-#!/usr/bin/env bash
-
-set -o errexit
-
 pip install -r requirements.txt
-
 python manage.py collectstatic --noinput
-python manage.py migrate
+python manage.py migrate --noinput
 python manage.py createsuperuser --noinput || true
 ```
 
 Ce script permet :
 
-* d'installer les dépendances ;
-* de collecter les fichiers statiques ;
-* d'appliquer les migrations ;
-* de créer un superutilisateur si les variables d'environnement sont présentes.
+- d'installer les dépendances ;
+- de collecter les fichiers statiques ;
+- d'appliquer les migrations ;
+- de créer le superutilisateur si les variables Render sont disponibles.
 
-La création du superutilisateur repose sur les variables d'environnement Render.
+Aucun secret ne doit être ajouté dans `build.sh`.
 
-Les identifiants ne sont donc pas écrits directement dans le script.
+Les identifiants doivent rester dans les variables d'environnement Render.
 
-TinyDB est installé via `requirements.txt`.
+La création du compte d'évaluation est gérée au démarrage par le Start Command Render avec :
 
-Aucun secret ne doit être ajouté dans le fichier `build.sh`.
+```bash
+python manage.py setup_render_data
+```
 
 ---
 
-# 30. Sécurité non implantée dans la V1
+# 32. Start Command Render sécurisé
+
+Le Start Command actuel applique les migrations, initialise les données nécessaires et lance l'application :
+
+```bash
+python manage.py migrate --noinput && python manage.py setup_render_data && gunicorn frostia_config.wsgi:application --bind 0.0.0.0:$PORT
+```
+
+Cette commande permet de sécuriser la disponibilité des données de démonstration sur Render.
+
+Elle évite que l'administration se retrouve vide après redémarrage.
+
+---
+
+# 33. Sécurité non implantée dans la V1
 
 La V1 ne contient pas encore :
 
-* authentification utilisateur publique ;
-* rôles publics avancés ;
-* API REST ;
-* vrai upload serveur ;
-* permissions personnalisées avancées ;
-* journalisation avancée ;
-* limitation de requêtes ;
-* PostgreSQL ;
-* tests automatisés de sécurité ;
-* administration personnalisée ;
-* système de sauvegarde automatique ;
-* scan antivirus pour fichiers uploadés ;
-* séparation complète des paramètres de développement et de production.
+- authentification utilisateur publique ;
+- rôles publics avancés ;
+- API REST ;
+- vrai upload serveur ;
+- permissions personnalisées avancées ;
+- journalisation avancée ;
+- limitation de requêtes ;
+- PostgreSQL ;
+- tests automatisés de sécurité ;
+- administration personnalisée ;
+- système de sauvegarde automatique ;
+- scan antivirus pour fichiers uploadés ;
+- séparation complète des paramètres de développement et de production.
 
 Ces éléments ne sont pas oubliés.
 
 Ils sont volontairement placés dans les évolutions futures afin de garder une V1 stable.
 
-Certains éléments initialement envisagés comme reportés ont finalement été intégrés de manière limitée :
-
-* compte temporaire de lecture seule ;
-* TinyDB ;
-* affichage des notes TinyDB ;
-* SQL natif documentaire.
-
 ---
 
-# 31. Bonnes pratiques appliquées
+# 34. Bonnes pratiques appliquées
 
 Les bonnes pratiques actuellement appliquées sont :
 
-* utilisation du framework Django ;
-* séparation entre modèles, vues et templates ;
-* utilisation de l'ORM ;
-* absence de SQL brut dans les vues ;
-* SQL natif limité à la documentation ;
-* administration protégée ;
-* compte temporaire limité en lecture seule ;
-* champs de visibilité ;
-* validation des champs par les modèles ;
-* configuration claire des fichiers statiques ;
-* utilisation de variables d'environnement sur Render ;
-* fichier `.env.example` sans valeur sensible ;
-* fichier `.gitignore` pour exclure les fichiers sensibles ;
-* documentation Docker ;
-* documentation du schéma SQL ;
-* documentation TinyDB ;
-* documentation des limites de la V1 ;
-* absence de fonctionnalité sensible non maîtrisée.
+- utilisation du framework Django ;
+- séparation entre modèles, vues et templates ;
+- utilisation de l'ORM ;
+- absence de SQL brut dans les vues ;
+- SQL natif limité à la documentation ;
+- administration protégée ;
+- compte d'évaluation limité en lecture seule ;
+- champs de visibilité ;
+- validation des champs par les modèles ;
+- configuration claire des fichiers statiques ;
+- utilisation de variables d'environnement sur Render ;
+- fichier `.env.example` sans valeur sensible ;
+- fichier `.gitignore` pour exclure les fichiers sensibles ;
+- documentation Docker ;
+- documentation SQL ;
+- documentation TinyDB ;
+- documentation des limites de la V1 ;
+- absence de fonctionnalité sensible non maîtrisée.
 
 ---
 
-# 32. Évolutions de sécurité prévues
+# 35. Évolutions de sécurité prévues
 
 Les évolutions possibles sont :
 
-1. Conserver `SECRET_KEY` uniquement dans les variables d'environnement.
+1. Maintenir `SECRET_KEY` uniquement dans les variables d'environnement.
 2. Maintenir `DEBUG=False` en production.
 3. Vérifier régulièrement `ALLOWED_HOSTS`.
 4. Sécuriser un futur système d'upload.
 5. Ajouter des permissions plus fines dans l'administration.
-6. Mettre en place une base PostgreSQL si le projet évolue.
+6. Mettre en place PostgreSQL si le projet évolue.
 7. Préparer une configuration de production plus avancée.
-8. Ajouter HTTPS via l'hébergeur.
-9. Ajouter une journalisation plus complète.
-10. Séparer clairement les paramètres de développement et de production.
-11. Ajouter des tests automatisés Django.
-12. Ajouter des tests automatisés de sécurité.
-13. Mettre en place un système de sauvegarde avant modification des contenus.
-14. Encadrer plus strictement les données NoSQL si elles deviennent modifiables depuis une interface.
+8. Ajouter une journalisation plus complète.
+9. Séparer plus clairement les paramètres de développement et de production.
+10. Ajouter des tests automatisés Django.
+11. Ajouter des tests automatisés de sécurité.
+12. Mettre en place un système de sauvegarde avant modification des contenus.
+13. Encadrer plus strictement les données NoSQL si elles deviennent modifiables depuis une interface.
 
 ---
 
-# 33. Lien avec les fichiers racine
-
-La sécurité est aussi documentée par plusieurs fichiers à la racine du projet.
-
-## `README.md`
-
-Le README explique comment lancer le projet, quelles technologies sont utilisées et quelles limites sont assumées dans la V1.
-
-## `CHOIX_TECHNIQUES.md`
-
-Le fichier `CHOIX_TECHNIQUES.md` explique les choix techniques, les technologies envisagées et les limites volontairement conservées.
-
-## `.env.example`
-
-Le fichier `.env.example` documente les variables d'environnement sans exposer les vraies valeurs.
-
-## `.gitignore`
-
-Le fichier `.gitignore` évite d'envoyer les fichiers sensibles ou inutiles dans GitHub.
-
-## `requirements.txt`
-
-Le fichier `requirements.txt` liste les dépendances nécessaires, dont Django, Gunicorn, WhiteNoise et TinyDB.
-
-Ces fichiers renforcent la lisibilité et la sécurité documentaire du projet.
-
----
-
-# 34. Captures et preuves à préparer
+# 36. Captures et preuves à préparer
 
 Pour le dossier projet, plusieurs preuves peuvent être préparées.
 
 ## Administration
 
-* capture de l'administration Django ;
-* capture du compte temporaire de lecture seule ;
-* capture montrant uniquement les modèles accessibles au compte limité.
+- capture de l'administration Django ;
+- capture du compte d'évaluation en lecture seule ;
+- capture montrant uniquement les modèles accessibles au compte limité.
 
 ## Sécurité des secrets
 
-* capture de `.env.example` sans vraie valeur ;
-* capture de `.gitignore` ;
-* capture de variables Render sans afficher les vraies valeurs.
+- capture de `.env.example` sans vraie valeur ;
+- capture de `.gitignore` ;
+- capture de variables Render avec valeurs masquées.
 
 ## ORM et base de données
 
-* extrait de code montrant l'utilisation de l'ORM ;
-* capture du modèle `Creation` ;
-* capture du modèle `PlayableProject` ;
-* capture du SQL documentaire.
+- extrait de code montrant l'utilisation de l'ORM ;
+- capture du modèle `Creation` ;
+- capture du modèle `PlayableProject` ;
+- capture du SQL documentaire.
 
 ## TinyDB
 
-* capture de `core/services/nosql_notes.py` ;
-* capture de `scripts/demo_tinydb_notes.py` ;
-* capture du terminal avec `python -m scripts.demo_tinydb_notes` ;
-* capture de l'affichage des notes TinyDB sur l'accueil.
+- capture de `core/services/nosql_notes.py` ;
+- capture de `scripts/demo_tinydb_notes.py` ;
+- capture du terminal avec `python -m scripts.demo_tinydb_notes` ;
+- capture de l'affichage des notes TinyDB sur l'accueil.
 
 ## Render
 
-* capture du site en ligne ;
-* capture de la configuration Render sans secret visible ;
-* capture du déploiement actif.
+- capture du site en ligne ;
+- capture de la configuration Render sans secret visible ;
+- capture du déploiement actif ;
+- capture des logs montrant `setup_render_data`.
 
 Aucune capture ne doit afficher :
 
-* mot de passe ;
-* clé secrète ;
-* jeton ;
-* identifiant sensible ;
-* variable contenant une vraie valeur privée.
+- mot de passe ;
+- clé secrète ;
+- jeton ;
+- identifiant sensible ;
+- variable contenant une vraie valeur privée.
 
 ---
 
-# 35. Conclusion
+# 37. Conclusion
 
 La V1 de Frostia Games utilise les protections de base de Django et limite volontairement les fonctionnalités sensibles.
 
 Le projet applique plusieurs règles importantes :
 
-* données manipulées via l'ORM ;
-* administration protégée ;
-* compte temporaire de lecture seule ;
-* pas de SQL brut dans les vues ;
-* SQL natif limité à la documentation ;
-* pas de vrai upload serveur ;
-* templates avec échappement automatique ;
-* secrets placés dans les variables d'environnement Render ;
-* fichier `.env.example` sans valeurs sensibles ;
-* fichier `.gitignore` pour éviter les envois accidentels ;
-* TinyDB limité à des notes non sensibles ;
-* déploiement Render avec `DEBUG=False`.
+- données manipulées via l'ORM ;
+- administration protégée ;
+- compte d'évaluation en lecture seule ;
+- pas de SQL brut dans les vues ;
+- SQL natif limité à la documentation ;
+- pas de vrai upload serveur ;
+- templates avec échappement automatique ;
+- secrets placés dans les variables d'environnement Render ;
+- fichier `.env.example` sans valeurs sensibles ;
+- fichier `.gitignore` pour éviter les envois accidentels ;
+- TinyDB limité à des notes non sensibles ;
+- Render configuré avec `DEBUG=False` ;
+- données initiales Render recréées automatiquement par `setup_render_data`.
 
 La V1 n'est pas une plateforme de production complète, mais elle est structurée, documentée, déployée et sécurisée de manière cohérente avec son périmètre.
 
 Les protections avancées seront ajoutées plus tard si le projet évolue vers une version plus complète.
-
-À ce stade, l'objectif principal n'est plus d'ajouter des fonctionnalités sensibles, mais de préparer les preuves, les captures et l'intégration propre dans le dossier projet final.
-
-
-

@@ -1,4 +1,4 @@
-# Pistes explorées et non retenues - Frostia Games
+# Pistes explorées et non retenues — Frostia Games
 
 ## Objectif du document
 
@@ -26,12 +26,14 @@ Certaines idées peuvent rester dans la roadmap, tandis que d'autres peuvent êt
 
 Ce document a été mis à jour après le renforcement du dossier projet afin de ne plus présenter comme absents certains éléments désormais ajoutés :
 
-* le compte temporaire de lecture seule ;
+* le compte d’évaluation en lecture seule ;
 * TinyDB ;
 * les fichiers SQL natifs documentaires ;
 * la documentation JavaScript ;
 * la documentation de conception ;
-* la documentation backend et frontend complémentaire.
+* la documentation backend et frontend complémentaire ;
+* la commande `setup_render_data` ;
+* la variable d’environnement `EVALUATION_USER_PASSWORD`.
 
 ---
 
@@ -217,8 +219,10 @@ Pour compenser la souplesse de Python, plusieurs garde-fous ont été mis en pla
 * séparation entre templates, vues et fichiers statiques ;
 * migrations Django ;
 * administration Django contrôlée ;
-* compte temporaire de lecture seule ;
+* compte d’évaluation en lecture seule ;
 * variables d'environnement pour les informations sensibles ;
+* variable `EVALUATION_USER_PASSWORD` pour le mot de passe du compte d’évaluation ;
+* commande `setup_render_data` pour recréer les données Render ;
 * déploiement Render documenté ;
 * tests manuels des pages ;
 * vérification de l'administration ;
@@ -264,11 +268,11 @@ La V1 conserve SQLite afin de rester simple et stable.
 
 ---
 
-# 6. Compte temporaire de lecture seule
+# 6. Compte d’évaluation de lecture seule
 
 ## Description
 
-Un compte temporaire pour le jury ou l'évaluateur avait été envisagé.
+Un compte d’évaluation pour le jury ou l'évaluateur avait été envisagé.
 
 Ce compte devait permettre de consulter l'administration Django sans utiliser le vrai compte administrateur.
 
@@ -278,7 +282,7 @@ Ce compte devait permettre de consulter l'administration Django sans utiliser le
 
 Cette piste n'est plus seulement reportée.
 
-Un compte temporaire de lecture seule a finalement été créé de manière limitée et contrôlée.
+Un compte d’évaluation en lecture seule a finalement été créé de manière limitée et contrôlée.
 
 Ce compte permet de consulter certaines parties de l'administration Django sans donner les droits complets d'un administrateur.
 
@@ -299,7 +303,7 @@ Il ne doit pas donner accès :
 
 ## Pourquoi cette intégration reste limitée
 
-Le compte temporaire reste une solution simple.
+Le compte d’évaluation reste une solution simple.
 
 Il ne s'agit pas :
 
@@ -315,9 +319,30 @@ Ils peuvent être transmis séparément uniquement si l'évaluateur les demande.
 
 ---
 
+## Initialisation automatique
+
+Sur Render, ce compte est recréé par la commande :
+
+```bash
+python manage.py setup_render_data
+```
+
+Cette commande crée ou met à jour :
+
+* le groupe `Evaluation lecture seule` ;
+* l’utilisateur `evaluation_temp` ;
+* les permissions de lecture seule ;
+* les données de démonstration nécessaires à la présentation.
+
+Le mot de passe du compte d’évaluation est fourni par la variable d’environnement :
+
+```text
+EVALUATION_USER_PASSWORD
+```
+
 ## Décision
 
-La piste du compte temporaire est retenue sous une forme limitée.
+La piste du compte d’évaluation est retenue sous une forme limitée.
 
 Le système de rôles avancé reste reporté.
 
@@ -614,7 +639,7 @@ Ils pourraient couvrir :
 * formulaires ;
 * sécurité ;
 * comportements attendus ;
-* accès du compte lecture seule ;
+* accès du compte d’évaluation en lecture seule ;
 * TinyDB.
 
 ---
@@ -950,7 +975,43 @@ L'objectif est de garder uniquement les choix qui renforcent :
 
 ---
 
-# 21. Tableau récapitulatif
+
+# 21. Initialisation automatique Render
+
+## Description
+
+Sur Render, la base SQLite ne doit pas être considérée comme une persistance durable avancée.
+
+Une piste de stabilisation a donc été nécessaire pour éviter que le site en ligne perde ses données de démonstration ou son accès d’évaluation après un redémarrage ou un redéploiement.
+
+## Ce qui a été intégré
+
+Une commande Django personnalisée a été ajoutée :
+
+```bash
+python manage.py setup_render_data
+```
+
+Elle est exécutée dans le Start Command Render actuel :
+
+```bash
+python manage.py migrate --noinput && python manage.py setup_render_data && gunicorn frostia_config.wsgi:application --bind 0.0.0.0:$PORT
+```
+
+Cette commande permet de recréer :
+
+* les données de démonstration ;
+* le groupe `Evaluation lecture seule` ;
+* le compte `evaluation_temp` ;
+* les permissions de lecture seule.
+
+## Décision
+
+Cette piste est retenue.
+
+Elle rend la démonstration Render plus stable pour la V1.
+
+# 22. Tableau récapitulatif
 
 | Piste explorée                 | Décision actuelle | Raison principale |
 | ------------------------------ | ----------------- | ----------------- |
@@ -958,7 +1019,7 @@ L'objectif est de garder uniquement les choix qui renforcent :
 | Django                         | Retenu | Adapté à une V1 stable et rapide |
 | SQLite                         | Retenu | Suffisant pour une V1 de portfolio |
 | PostgreSQL                     | Reporté | Trop tôt pour le périmètre actuel |
-| Compte temporaire lecture seule | Retenu de manière limitée | Utile pour consultation contrôlée |
+| Compte d’évaluation lecture seule | Retenu de manière limitée | Utile pour consultation contrôlée |
 | Système de rôles avancé        | Reporté | Trop large pour la V1 |
 | Admin personnalisée            | Reporté | Trop complexe pour une V1 |
 | Upload serveur réel            | Reporté | Fonction sensible |
@@ -976,11 +1037,13 @@ L'objectif est de garder uniquement les choix qui renforcent :
 | Framework frontend lourd       | Reporté | Complexité inutile pour la V1 |
 | JavaScript menu mobile         | Retenu | Utile et limité |
 | Documentation de conception    | Retenue | Renforce le dossier projet |
+| `setup_render_data` | Retenu | Stabilise Render et l’accès d’évaluation |
+| `EVALUATION_USER_PASSWORD` | Retenu | Évite d’écrire le mot de passe dans le code |
 | Certaines idées secondaires    | Abandon possible | Stabilisation de la V1 |
 
 ---
 
-# 22. Ce que montre cette démarche
+# 23. Ce que montre cette démarche
 
 Cette démarche montre que le projet a été pensé avec plusieurs directions possibles.
 
@@ -999,7 +1062,7 @@ Cette approche permet de préserver un projet clair, livrable et défendable.
 
 ---
 
-# 23. Bilan
+# 24. Bilan
 
 Les pistes explorées ne sont pas des oublis.
 
@@ -1012,10 +1075,12 @@ D'autres pourront être abandonnées si elles ne servent plus réellement le pro
 Certaines pistes ont été retenues de manière limitée, notamment :
 
 * TinyDB ;
-* compte temporaire de lecture seule ;
+* compte d’évaluation en lecture seule ;
 * SQL natif documentaire ;
 * JavaScript du menu mobile ;
-* documentation de conception.
+* documentation de conception ;
+* commande `setup_render_data` ;
+* variable `EVALUATION_USER_PASSWORD`.
 
 La V1 de Frostia Games reste centrée sur l'essentiel :
 
