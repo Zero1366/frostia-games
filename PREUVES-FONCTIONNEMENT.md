@@ -9,10 +9,10 @@ Il sert d'index afin de retrouver rapidement les captures et les fichiers permet
 Les preuves principales sont regroupées dans le dossier :
 
 ```text
-docs/preuves/
+Preuve De Fonctionnement/
 ```
 
-Les captures ne sont pas toutes intégrées directement dans le dossier projet afin de ne pas l'alourdir. Ce fichier permet donc de les référencer proprement.
+Ce répertoire constitue une banque de preuves complète. Toutes les captures ne sont pas intégrées directement dans le dossier projet afin de ne pas l’alourdir. Le dossier principal et les annexes utilisent seulement les éléments les plus lisibles, tandis que ce fichier permet de retrouver l’ensemble des preuves disponibles.
 
 ---
 
@@ -39,25 +39,51 @@ Ces preuves montrent que la V1 de Frostia Games ne se limite pas à du code. Ell
 
 # 2. Organisation du dossier de preuves
 
-Les captures sont classées par catégorie afin de faciliter la lecture et la vérification du projet.
+Les captures sont regroupées dans `Preuve De Fonctionnement/`. L’organisation actuelle conserve les dossiers créés au fil du projet afin de ne perdre aucune preuve.
 
-Structure utilisée :
+Structure principale :
 
 ```text
-docs/preuves/
+Preuve De Fonctionnement/
 ├── admin/
-├── docker/
-├── figma/
-├── github/
+│   └── nosql/
+├── architecture/
+├── Cas de test/
+├── Docker/
+├── Extrait de Code/
+├── Figma/
+├── Github/
 ├── js/
-├── nosql/
-├── render/
-├── site/
+├── Mcd/
+├── Modèle Django/
+├── Probleme et solution/
+├── Présentation des besoin/
+│   └── Preuve/
+├── Render/
+├── SiteWeb_FrostiaGame/
+│   ├── Admin/
+│   │   └── evaluateur/
+│   ├── Desktop/
+│   ├── Mobile/
+│   └── Tablette/
+├── Sql/
 ├── sql/
-└── test/
+├── Sécurité/
+├── test/
+└── viewpy/
 ```
 
-Selon les captures disponibles, certains dossiers peuvent contenir plus ou moins d'éléments.
+Certains noms de dossiers utilisent encore des majuscules, des espaces ou des variantes historiques. Cette organisation reste volontairement conservée pendant la finalisation afin d’éviter de casser les chemins ou de supprimer une preuve utile.
+
+Un grand nombre d’images a été ajouté. Certains fichiers peuvent donc sembler proches ou être présents en plusieurs exemplaires. Ces doublons sont conservés lorsqu’ils montrent :
+
+- une résolution différente : ordinateur, tablette ou smartphone ;
+- un environnement différent : local, Docker ou Render ;
+- une étape différente d’un test ou d’un déploiement ;
+- une ancienne et une nouvelle version utile à la comparaison ;
+- une preuve complémentaire destinée aux annexes ou au dossier professionnel.
+
+Le dossier projet principal utilise uniquement les captures les plus représentatives. Le répertoire complet reste une banque de preuves.
 
 ---
 
@@ -66,7 +92,7 @@ Selon les captures disponibles, certains dossiers peuvent contenir plus ou moins
 Dossier concerné :
 
 ```text
-docs/preuves/render/
+Preuve De Fonctionnement/Render/
 ```
 
 Les captures Render montrent :
@@ -125,7 +151,8 @@ Les captures Render ne doivent pas afficher la valeur de cette variable.
 Dossier concerné :
 
 ```text
-docs/preuves/admin/
+Preuve De Fonctionnement/admin/
+Preuve De Fonctionnement/SiteWeb_FrostiaGame/Admin/
 ```
 
 Les captures de l'administration montrent :
@@ -175,10 +202,10 @@ Can delete
 Captures conseillées :
 
 ```text
-docs/preuves/admin/capture-admin-evaluation-accueil-render.png
-docs/preuves/admin/capture-admin-evaluation-creations-render.png
-docs/preuves/admin/capture-admin-evaluation-projets-jouables-render.png
-docs/preuves/admin/capture-admin-evaluation-compte-render.png
+Preuve De Fonctionnement/admin/capture-admin-evaluation-lecture-seule-local.png
+Preuve De Fonctionnement/admin/capture-admin-deconnexion-local.png
+Preuve De Fonctionnement/SiteWeb_FrostiaGame/Admin/
+Preuve De Fonctionnement/SiteWeb_FrostiaGame/Admin/evaluateur/
 ```
 
 Ces captures permettent de montrer que l'évaluateur peut consulter les données sans pouvoir modifier le contenu du site.
@@ -190,7 +217,7 @@ Ces captures permettent de montrer que l'évaluateur peut consulter les données
 Dossier concerné :
 
 ```text
-docs/preuves/site/
+Preuve De Fonctionnement/SiteWeb_FrostiaGame/
 ```
 
 Les captures du site public montrent les pages principales accessibles en ligne :
@@ -201,11 +228,16 @@ Les captures du site public montrent les pages principales accessibles en ligne 
 
 Ces captures prouvent que les pages publiques principales sont accessibles depuis la version Render.
 
-Capture conseillée :
+Captures disponibles :
 
 ```text
-docs/preuves/site/capture-site-accueil-render.png
+Preuve De Fonctionnement/SiteWeb_FrostiaGame/Desktop/
+Preuve De Fonctionnement/SiteWeb_FrostiaGame/Tablette/
+Preuve De Fonctionnement/SiteWeb_FrostiaGame/Mobile/
 ```
+
+Ces dossiers contiennent les pages d’accueil, Mes créations et Projets jouables dans plusieurs formats.
+
 
 ---
 
@@ -221,6 +253,15 @@ Les captures mobile montrent :
 
 Ces preuves montrent que le site ne dépend pas uniquement d'un affichage desktop.
 
+Dossiers concernés :
+
+```text
+Preuve De Fonctionnement/SiteWeb_FrostiaGame/Desktop/
+Preuve De Fonctionnement/SiteWeb_FrostiaGame/Tablette/
+Preuve De Fonctionnement/SiteWeb_FrostiaGame/Mobile/
+Preuve De Fonctionnement/SiteWeb_FrostiaGame/Admin/evaluateur/
+```
+
 ---
 
 # 9. Preuves Docker
@@ -228,7 +269,7 @@ Ces preuves montrent que le site ne dépend pas uniquement d'un affichage deskto
 Dossier concerné :
 
 ```text
-docs/preuves/docker/
+Preuve De Fonctionnement/Docker/
 ```
 
 Les captures Docker montrent :
@@ -250,7 +291,7 @@ Le serveur utilisé dans Docker correspond à un environnement local de test. Le
 Dossier concerné :
 
 ```text
-docs/preuves/figma/
+Preuve De Fonctionnement/Figma/
 ```
 
 Les captures Figma montrent :
@@ -270,7 +311,7 @@ Les maquettes ne sont pas forcément identiques à 100 % au rendu final. Elles m
 Dossier concerné :
 
 ```text
-docs/preuves/github/
+Preuve De Fonctionnement/Github/
 ```
 
 Les captures GitHub montrent :
@@ -291,7 +332,8 @@ GitHub permet de conserver l'historique du projet et de sécuriser le travail r�
 Dossier concerné :
 
 ```text
-docs/preuves/sql/
+Preuve De Fonctionnement/Sql/
+Preuve De Fonctionnement/sql/
 ```
 
 Les fichiers SQL documentaires sont présents dans :
@@ -319,10 +361,11 @@ Ces fichiers montrent :
 Captures conseillées :
 
 ```text
-docs/preuves/sql/capture-sql-schema.png
-docs/preuves/sql/capture-sql-create-table-creations.png
-docs/preuves/sql/capture-sql-create-table-playable.png
-docs/preuves/sql/capture-sql-insert.png
+Preuve De Fonctionnement/Sql/Schema.png
+Preuve De Fonctionnement/sql/create_tables_creations.png
+Preuve De Fonctionnement/sql/create_tables_playable.png
+Preuve De Fonctionnement/sql/_exemples_insert.png
+Preuve De Fonctionnement/sql/_SQL natif.png
 ```
 
 Cette partie répond au besoin de valoriser les compétences SQL demandées dans le retour formateur.
@@ -334,7 +377,7 @@ Cette partie répond au besoin de valoriser les compétences SQL demandées dans
 Dossier concerné :
 
 ```text
-docs/preuves/nosql/
+Preuve De Fonctionnement/admin/nosql/
 ```
 
 La partie NoSQL est documentée dans :
@@ -369,9 +412,10 @@ Cette partie montre :
 Captures conseillées :
 
 ```text
-docs/preuves/nosql/capture-nosql-json.png
-docs/preuves/nosql/capture-nosql-script.png
-docs/preuves/nosql/capture-nosql-terminal.png
+Preuve De Fonctionnement/admin/nosql/capture-nosql-documentation.png
+Preuve De Fonctionnement/admin/nosql/capture-nosql-json.png
+Preuve De Fonctionnement/admin/nosql/capture-nosql-script.png
+Preuve De Fonctionnement/admin/nosql/capture-nosql-terminal.png
 ```
 
 Commande de test possible :
@@ -389,7 +433,7 @@ Cette preuve est importante car le NoSQL n'est plus seulement une évolution fut
 Dossier concerné :
 
 ```text
-docs/preuves/test/
+Preuve De Fonctionnement/test/
 ```
 
 Une capture de vérification Django est conseillée.
@@ -409,7 +453,7 @@ System check identified no issues
 Capture conseillée :
 
 ```text
-docs/preuves/test/capture-manage-check.png
+Preuve De Fonctionnement/test/capture-manage-check.png
 ```
 
 Cette preuve montre que le projet ne signale pas d'erreur de configuration Django au moment de la vérification.
@@ -447,19 +491,24 @@ Ces fichiers répondent aux trois piliers attendus :
 | ------ | ------ |
 | Code ou extrait technique | Fichiers Python, SQL, JavaScript et Markdown techniques |
 | Explication | Documentation dans `doc/` et `docs/` |
-| Rendu final ou résultat | Captures dans `docs/preuves/` |
+| Rendu final ou résultat | Captures centralisées dans `Preuve De Fonctionnement/` |
 
-Captures de code conseillées :
+Emplacements des principales captures de code :
 
 ```text
-docs/preuves/code/capture-model-creation.png
-docs/preuves/code/capture-model-playableproject.png
-docs/preuves/code/capture-view-home.png
-docs/preuves/code/capture-javascript-menu-mobile.png
-docs/preuves/code/capture-nosql-service.png
+Preuve De Fonctionnement/Extrait de Code/
+Preuve De Fonctionnement/js/
+Preuve De Fonctionnement/viewpy/
+Preuve De Fonctionnement/Modèle Django/
+Preuve De Fonctionnement/architecture/
+Preuve De Fonctionnement/Mcd/
+Preuve De Fonctionnement/Présentation des besoin/Preuve/
+Preuve De Fonctionnement/Sécurité/
+Preuve De Fonctionnement/Cas de test/
+Preuve De Fonctionnement/Probleme et solution/
 ```
 
-Ces captures ne sont pas toutes obligatoires, mais elles renforcent la lisibilité du dossier.
+Ces captures ne sont pas toutes intégrées dans le corps principal. Elles restent disponibles pour les annexes et les démonstrations complémentaires.
 
 ---
 
@@ -502,6 +551,8 @@ Les preuves réalisées permettent de confirmer que la V1 de Frostia Games compr
 - une base SQL documentée ;
 - des extraits SQL natifs ;
 - une démonstration NoSQL légère avec TinyDB ;
+- des jeux d’essai documentés ;
+- les difficultés rencontrées et les corrections appliquées ;
 - une base documentaire claire pour présenter le travail réalisé.
 
 ---
@@ -527,7 +578,9 @@ La partie NoSQL n'est pas reportée totalement. Une démonstration légère avec
 
 # 19. Conclusion
 
-Les captures regroupées dans le dossier `docs/preuves/` permettent de démontrer que la V1 de Frostia Games est stable, consultable, documentée et déployée.
+Les captures regroupées dans le dossier `Preuve De Fonctionnement/` permettent de démontrer que la V1 de Frostia Games est stable, consultable, documentée et déployée.
+
+Le volume important de fichiers est assumé : certains doublons ont été conservés parce qu’ils montrent plusieurs formats d’écran, plusieurs environnements ou différentes étapes de validation. Le dossier principal utilise une sélection courte, tandis que le répertoire complet conserve la traçabilité du travail.
 
 Le projet possède une base fonctionnelle claire :
 

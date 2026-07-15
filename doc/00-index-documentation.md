@@ -82,8 +82,10 @@ docs/
 ├── conception/
 ├── frontend/
 ├── nosql/
-├── preuves/
 └── sql/
+
+Preuve De Fonctionnement/
+└── captures et preuves visuelles du projet
 ```
 
 ---
@@ -206,7 +208,7 @@ Il traite notamment :
 
 - le mode `DEBUG` ;
 - la clé secrète Django ;
-- `ALLOWED_HOSTS`;
+- `ALLOWED_HOSTS` ;
 - l’utilisation de l’ORM Django ;
 - l’absence de SQL brut dans les vues ;
 - l’administration Django protégée ;
@@ -295,7 +297,8 @@ Il doit inclure les derniers éléments importants :
 - déploiement Render ;
 - `setup_render_data` ;
 - mise à jour des preuves ;
-- mise à jour de la documentation finale.
+- mise à jour de la documentation finale ;
+- centralisation des preuves visuelles et conservation des doublons utiles.
 
 ---
 
@@ -457,11 +460,17 @@ Il prévoit notamment :
 - captures Docker ;
 - captures de validation technique.
 
-Les preuves sont organisées principalement dans :
+Les preuves visuelles sont centralisées dans :
 
 ```text
-docs/preuves/
+Preuve De Fonctionnement/
 ```
+
+Ce dossier contient notamment les captures liées à la conception, aux maquettes, au responsive, au JavaScript, au backend, au SQL, à TinyDB, à la sécurité, aux tests, à GitHub, à Docker et à Render.
+
+Un grand nombre d’images a été conservé afin de ne perdre aucune preuve utile. Certaines captures peuvent donc sembler proches ou apparaître en plusieurs exemplaires lorsqu’elles montrent des résolutions, des environnements ou des étapes de vérification différents.
+
+Le dossier principal et les annexes utilisent uniquement les preuves les plus lisibles et les plus représentatives.
 
 Aucune capture ne doit afficher de mot de passe, de clé secrète ou de valeur sensible.
 
@@ -656,31 +665,34 @@ Ces documents présentent :
 
 ---
 
-## Preuves
+## Preuves visuelles
 
 ```text
-docs/preuves/
+Preuve De Fonctionnement/
 ```
 
-Ce dossier regroupe les captures de fonctionnement.
+Ce dossier regroupe les captures de fonctionnement et les preuves techniques du projet.
 
-Organisation recommandée :
+Il contient notamment :
 
-```text
-docs/preuves/
-├── admin/
-├── js/
-├── nosql/
-├── render/
-├── sql/
-└── test/
-```
+- les éléments de conception et les diagrammes ;
+- les maquettes Figma ;
+- les captures desktop, tablette et mobile ;
+- les preuves du menu JavaScript ;
+- les captures du backend et de l’administration Django ;
+- les preuves SQL et NoSQL ;
+- les paramètres de sécurité ;
+- les tests fonctionnels ;
+- les éléments liés à GitHub, Docker et Render ;
+- les difficultés rencontrées et les corrections appliquées.
 
 L’index principal des preuves est :
 
 ```text
 PREUVES-FONCTIONNEMENT.md
 ```
+
+Certains doublons sont volontairement conservés lorsqu’ils montrent un format d’écran, un environnement d’exécution ou une étape différente. Le répertoire complet sert de banque de preuves pour le dossier projet, les annexes et le futur dossier professionnel.
 
 ---
 
@@ -690,6 +702,7 @@ PREUVES-FONCTIONNEMENT.md
 README.md
 CHOIX_TECHNIQUES.md
 PREUVES-FONCTIONNEMENT.md
+Preuve De Fonctionnement/
 .env.example
 .gitignore
 .dockerignore
@@ -786,7 +799,8 @@ La V1 contient actuellement :
 - un bilan V1 ;
 - une documentation de déploiement ;
 - une documentation des tests ;
-- une documentation des limites et évolutions.
+- une documentation des limites et évolutions ;
+- une banque de preuves visuelles centralisée dans `Preuve De Fonctionnement/`.
 
 ---
 
@@ -919,7 +933,7 @@ Les prochaines actions prévues sont :
 
 1. relire les pages publiques du site ;
 2. vérifier le responsive mobile ;
-3. préparer les captures ;
+3. vérifier et classer les captures déjà préparées ;
 4. vérifier le README ;
 5. vérifier `CHOIX_TECHNIQUES.md` ;
 6. vérifier le site en local ;
@@ -927,8 +941,8 @@ Les prochaines actions prévues sont :
 8. vérifier l’administration Django ;
 9. vérifier le compte d’évaluation en lecture seule ;
 10. vérifier l’affichage des notes TinyDB ;
-11. vérifier les captures dans `docs/preuves/` ;
-12. mettre à jour le dossier final ;
+11. vérifier les captures centralisées dans `Preuve De Fonctionnement/` ;
+12. mettre à jour les derniers chemins documentaires ;
 13. intégrer les annexes réelles ;
 14. exporter le dossier en PDF si nécessaire ;
 15. faire le commit final ;
@@ -959,4 +973,4 @@ La V1 répond désormais aux principaux points de renforcement :
 - affichage NoSQL sur l'accueil ;
 - compte d’évaluation en lecture seule ;
 - initialisation Render avec `setup_render_data` ;
-- organisation des preuves dans `docs/preuves/`.
+- centralisation des preuves dans `Preuve De Fonctionnement/`, avec conservation de certains doublons utiles.

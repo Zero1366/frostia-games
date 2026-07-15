@@ -526,8 +526,10 @@ docs/
 ├── conception/
 ├── frontend/
 ├── nosql/
-├── preuves/
 └── sql/
+
+Preuve De Fonctionnement/
+└── captures et preuves visuelles du projet
 ```
 
 ## Documents ajoutés
@@ -799,33 +801,50 @@ Validé.
 
 ---
 
-# 23. Mise à jour des preuves
+# 23. Centralisation et mise à jour des preuves
 
 ## Résumé
 
-Réorganisation et mise à jour des preuves de fonctionnement.
+Centralisation des captures et preuves visuelles dans un emplacement unique afin de faciliter leur consultation et leur réutilisation dans le dossier projet et les annexes.
 
-## Fichiers concernés
+## Éléments concernés
 
 ```text
 PREUVES-FONCTIONNEMENT.md
 doc/14-Capture-et-Preuve.md
-docs/preuves/
+Preuve De Fonctionnement/
 ```
 
 ## Organisation retenue
 
-```text
-docs/preuves/
-├── admin/
-├── js/
-├── nosql/
-├── render/
-├── sql/
-└── test/
-```
+Le dossier `Preuve De Fonctionnement/` devient l’emplacement principal des captures du projet.
 
-## Règle
+Il regroupe notamment les preuves liées :
+
+- à la conception ;
+- aux maquettes ;
+- au site public ;
+- au responsive ;
+- à l’administration ;
+- au JavaScript ;
+- au SQL et au NoSQL ;
+- à la sécurité ;
+- aux tests ;
+- à GitHub ;
+- à Docker ;
+- à Render.
+
+Les dossiers `doc/` et `docs/` restent consacrés à la documentation écrite, aux documents de conception et aux scripts techniques.
+
+## Présence possible de doublons
+
+Un grand nombre d’images a été ajouté afin de conserver toutes les preuves utiles.
+
+Certains fichiers peuvent donc sembler proches ou apparaître en plusieurs exemplaires. Ces doublons sont conservés lorsqu’ils montrent un format d’écran, une étape de vérification ou un environnement différent, par exemple le fonctionnement local, Docker ou Render.
+
+Le dossier principal utilise uniquement les captures les plus lisibles. Le répertoire complet sert de banque de preuves pour le dossier projet, les annexes et le futur dossier professionnel.
+
+## Règle de sécurité
 
 Aucune capture ne doit afficher :
 
@@ -944,7 +963,7 @@ doc/00-index-documentation.md
 ## Modifications réalisées
 
 - correction des noms de fichiers ;
-- correction de l’organisation `docs/preuves/` ;
+- correction de l’organisation `Preuve De Fonctionnement/` ;
 - ajout de `setup_render_data` ;
 - ajout de `EVALUATION_USER_PASSWORD` ;
 - clarification du rôle de `doc/` et `docs/` ;
@@ -972,7 +991,7 @@ doc/10-bilan-v1-frostia-games.md
 
 - ajout de l’initialisation Render automatique ;
 - ajout de l’accès d’évaluation réellement fonctionnel ;
-- ajout de `docs/preuves/` ;
+- ajout de `Preuve De Fonctionnement/` ;
 - clarification des limites de SQLite sur Render gratuit ;
 - mise à jour des éléments terminés.
 
@@ -1096,7 +1115,7 @@ La V1 contient maintenant :
 - README racine ;
 - fichier de choix techniques ;
 - fichier `.env.example` ;
-- preuves organisées dans `docs/preuves/`.
+- preuves organisées dans `Preuve De Fonctionnement/`.
 
 ## Statut général
 
@@ -1176,7 +1195,34 @@ Aucune capture ne doit afficher de mot de passe, clé secrète ou variable sensi
 
 ---
 
-# 35. Conclusion
+# 35. Enrichissement final de la banque de preuves
+
+## Résumé
+
+Ajout d’un volume important de captures complémentaires après la préparation de la partie Frostia Games du dossier projet.
+
+## Modifications réalisées
+
+- regroupement des nouvelles images dans `Preuve De Fonctionnement/` ;
+- ajout des preuves utilisées dans les pages du dossier projet ;
+- conservation des versions desktop, tablette et mobile ;
+- ajout de captures liées à la sécurité, aux tests, au déploiement et aux difficultés rencontrées ;
+- préparation des images destinées aux annexes ;
+- conservation de certains doublons utiles afin de ne perdre aucune preuve.
+
+## Décision prise
+
+Les doublons ne sont pas considérés comme bloquants dans la banque de preuves. Ils peuvent correspondre à plusieurs résolutions, plusieurs environnements ou plusieurs étapes d’une même vérification.
+
+Une sélection plus courte et plus lisible est utilisée dans le dossier principal. Les autres fichiers restent disponibles comme preuves complémentaires.
+
+## Statut
+
+Validé.
+
+---
+
+# 36. Conclusion
 
 Frostia Games a évolué vers une V1 Django fonctionnelle, documentée, déployée et renforcée.
 

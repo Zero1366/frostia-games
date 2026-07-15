@@ -17,7 +17,7 @@ Cette version n'est pas une plateforme complète de gestion de jeux vidéo. Elle
 - Documentation principale : `doc/`
 - Documentation complémentaire : `docs/`
 - Index des preuves : `PREUVES-FONCTIONNEMENT.md`
-- Dossier des preuves : `docs/preuves/`
+- Dossier des preuves : `Preuve De Fonctionnement/`
 
 L'accès administrateur complet reste privé.
 
@@ -108,9 +108,9 @@ frostia-games/
 │   ├── conception/
 │   ├── frontend/
 │   ├── nosql/
-│   ├── preuves/
 │   └── sql/
 ├── doc/
+├── Preuve De Fonctionnement/
 ├── scripts/
 ├── static/
 ├── templates/
@@ -417,6 +417,8 @@ La documentation complémentaire de renforcement est rangée dans :
 docs/
 ```
 
+Les fichiers Markdown et les scripts techniques restent dans `doc/` et `docs/`. Les captures sont séparées de la documentation et regroupées dans `Preuve De Fonctionnement/`.
+
 Exemples de documents :
 
 ```text
@@ -440,28 +442,34 @@ Les preuves sont indexées dans :
 PREUVES-FONCTIONNEMENT.md
 ```
 
-Les captures sont rangées dans :
+Les captures et éléments visuels sont centralisés dans :
 
 ```text
-docs/preuves/
+Preuve De Fonctionnement/
 ```
 
-Catégories principales :
+Ce répertoire regroupe notamment les preuves liées :
 
-```text
-docs/preuves/admin/
-docs/preuves/js/
-docs/preuves/nosql/
-docs/preuves/render/
-docs/preuves/sql/
-docs/preuves/test/
-```
+- à la conception et aux diagrammes ;
+- aux maquettes Figma ;
+- au site public sur ordinateur, tablette et mobile ;
+- au JavaScript ;
+- au backend Django et à l’administration ;
+- au SQL et à TinyDB ;
+- à la sécurité ;
+- aux tests fonctionnels ;
+- à GitHub, Docker et Render ;
+- aux difficultés rencontrées et aux corrections appliquées.
+
+Un grand nombre d’images a été conservé afin de ne perdre aucune preuve utile. Certains fichiers peuvent donc sembler proches ou apparaître en plusieurs exemplaires. Ces doublons correspondent parfois à des résolutions, des environnements ou des étapes de vérification différents.
+
+Le dossier principal et les annexes utilisent uniquement les captures les plus lisibles et les plus représentatives. Le répertoire complet sert de banque de preuves pour le dossier projet et le futur dossier professionnel.
 
 Les captures ne doivent pas afficher :
 
 - mot de passe ;
 - clé secrète ;
-- valeur de variable d'environnement ;
+- valeur de variable d’environnement ;
 - jeton privé ;
 - information personnelle inutile.
 
@@ -500,7 +508,7 @@ Ces limites sont assumées afin de conserver une V1 stable, documentée et prés
 | Render | Fonctionnel |
 | Compte évaluation lecture seule | Fonctionnel en ligne |
 | Documentation | Avancée |
-| Preuves | Organisées dans `docs/preuves/` |
+| Preuves | Centralisées dans `Preuve De Fonctionnement/` |
 
 ---
 

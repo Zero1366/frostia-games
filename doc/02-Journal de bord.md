@@ -2125,6 +2125,52 @@ Le projet est maintenant dans une phase de finition, pas dans une phase d’exte
 
 ---
 
+---
+
+# Étape 41 — Centralisation et enrichissement des preuves visuelles
+
+**Date :** 15/07/2026  
+**Statut :** validé
+
+## Objectif
+
+Regrouper les captures et preuves techniques utilisées pour le dossier projet dans un emplacement unique, afin de faciliter leur consultation, leur classement et leur réutilisation dans les annexes.
+
+## Actions réalisées
+
+* Centralisation des captures dans le dossier `Preuve De Fonctionnement/`.
+* Ajout de nombreuses images liées à la conception, à l’architecture, aux maquettes, au responsive, au JavaScript, au backend, au SQL, à la sécurité, aux tests, à GitHub, à Docker et à Render.
+* Conservation de plusieurs formats d’écran afin de prouver le fonctionnement sur ordinateur, tablette et smartphone.
+* Conservation de certaines captures provenant d’environnements différents : local, Docker et Render.
+* Préparation d’une banque de preuves complète pour le dossier projet et le futur dossier professionnel.
+
+## Organisation retenue
+
+Le dossier `Preuve De Fonctionnement/` devient l’emplacement principal des preuves visuelles du projet.
+
+Les dossiers `doc/` et `docs/` restent consacrés à la documentation écrite, aux explications techniques, aux scripts SQL et aux documents de conception.
+
+## Présence possible de doublons
+
+Un grand nombre d’images a été ajouté afin de ne pas perdre de preuve utile.
+
+Certaines captures peuvent donc sembler proches ou apparaître en plusieurs exemplaires. Ces doublons sont conservés lorsque les fichiers montrent :
+
+* des formats d’écran différents ;
+* des étapes différentes d’une même vérification ;
+* un fonctionnement en local, dans Docker ou sur Render ;
+* une ancienne et une nouvelle version utile à la comparaison ;
+* une preuve complémentaire pouvant être utilisée dans les annexes.
+
+Le dossier principal utilise uniquement les captures les plus lisibles et les plus représentatives. Le répertoire complet sert de banque de preuves et peut contenir davantage d’éléments que ceux présentés dans le dossier final.
+
+## Validation
+
+Les preuves nécessaires à la partie Frostia Games du dossier projet ont été réunies.
+
+La prochaine étape consiste à mettre à jour les chemins documentaires, vérifier les noms des fichiers et sélectionner les preuves définitives pour les annexes.
+
+
 # Bilan final du journal
 
 Le projet Frostia Games dispose maintenant d’une V1 Django fonctionnelle, documentée, déployée et renforcée.

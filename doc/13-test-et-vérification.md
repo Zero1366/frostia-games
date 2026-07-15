@@ -737,6 +737,7 @@ Utilisateur : evaluation_temp
 Droits : lecture seule
 Staff : oui
 Superutilisateur : non
+Le site devient accessible en ligne.
 ```
 
 ---
