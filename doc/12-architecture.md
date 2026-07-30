@@ -125,6 +125,91 @@ frostia-games/
 └── requirements.txt
 ```
 
+## 2.1. Schéma Mermaid de l’architecture
+
+Le schéma suivant complète l’arborescence précédente. Il présente les principaux utilisateurs, le parcours d’une requête, les composants Django, les bases de données et le déploiement du projet.
+
+```mermaid
+flowchart LR
+    subgraph UTILISATEURS["Utilisateurs"]
+        VIS["Visiteur"]
+        EVA["Évaluateur - lecture seule"]
+        ADM["Administrateur"]
+    end
+
+    subgraph ACCES["Accès au site"]
+        NAV["Navigateur web"]
+        ADMIN["Administration Django /admin/"]
+    end
+
+    subgraph DJANGO["Application Django"]
+        URLS["frostia_config/urls.py"]
+        COREURLS["core/urls.py"]
+        VIEWS["core/views.py"]
+        CREATION["Modèle Creation"]
+        PLAYABLE["Modèle PlayableProject"]
+        NOSQL["Service nosql_notes.py"]
+        TEMPLATES["Templates Django"]
+        STATIC["CSS, JavaScript et images"]
+    end
+
+    subgraph DONNEES["Données"]
+        SQLITE[("SQLite")]
+        TINYDB[("TinyDB / JSON")]
+    end
+
+    subgraph DEPLOIEMENT["Déploiement et exécution"]
+        GITHUB["GitHub"]
+        RENDER["Render"]
+        BUILD["build.sh"]
+        GUNICORN["Gunicorn"]
+        WSGI["frostia_config.wsgi"]
+        DOCKER["Docker local"]
+    end
+
+    VIS --> NAV
+    EVA --> NAV
+    EVA --> ADMIN
+    ADM --> ADMIN
+
+    NAV --> URLS
+    URLS --> COREURLS
+    COREURLS --> VIEWS
+
+    VIEWS --> CREATION
+    VIEWS --> PLAYABLE
+    CREATION --> SQLITE
+    PLAYABLE --> SQLITE
+
+    VIEWS --> NOSQL
+    NOSQL --> TINYDB
+
+    VIEWS --> TEMPLATES
+    TEMPLATES --> NAV
+    NAV --> STATIC
+
+    ADMIN --> CREATION
+    ADMIN --> PLAYABLE
+
+    GITHUB --> RENDER
+    RENDER --> BUILD
+    BUILD --> GUNICORN
+    GUNICORN --> WSGI
+    WSGI --> URLS
+    DOCKER --> WSGI
+```
+
+Lecture du schéma :
+
+- le visiteur utilise les pages publiques depuis son navigateur ;
+- l’administrateur et l’évaluateur en lecture seule utilisent l’administration Django avec des droits différents ;
+- les routes dirigent les requêtes vers les vues de l’application `core` ;
+- les vues interrogent les modèles Django et SQLite pour les données principales ;
+- le service `nosql_notes.py` utilise TinyDB pour les notes de progression ;
+- les vues transmettent les données aux templates, puis le navigateur charge le HTML, le CSS, le JavaScript et les images ;
+- GitHub et Render assurent le déploiement en ligne avec `build.sh`, Gunicorn et WSGI ;
+- Docker fournit un environnement local reproductible.
+
 ---
 
 # 3. Rôle de `frostia_config`
@@ -1265,6 +1350,7 @@ Ces évolutions pourront être ajoutées progressivement.
 Pour justifier l'architecture dans le dossier projet, plusieurs preuves peuvent être préparées :
 
 - structure du projet dans VS Code ;
+- diagramme Mermaid de l’architecture exporté en PNG ;
 - fichier `settings.py` ;
 - fichier `urls.py` ;
 - fichier `core/views.py` ;
