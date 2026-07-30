@@ -14,8 +14,7 @@ Cette version n'est pas une plateforme complète de gestion de jeux vidéo. Elle
 
 - Site en ligne : https://frostia-games.onrender.com
 - Administration Django : https://frostia-games.onrender.com/admin/
-- Documentation principale : `doc/`
-- Documentation complémentaire : `docs/`
+- Documentation principale : `docs/`
 - Index des preuves : `PREUVES-FONCTIONNEMENT.md`
 - Dossier des preuves : `Preuve De Fonctionnement/`
 
@@ -109,7 +108,6 @@ frostia-games/
 │   ├── frontend/
 │   ├── nosql/
 │   └── sql/
-├── doc/
 ├── Preuve De Fonctionnement/
 ├── scripts/
 ├── static/
@@ -408,7 +406,7 @@ docs/frontend/javascript-menu-mobile.md
 La documentation principale est rangée dans :
 
 ```text
-doc/
+docs/
 ```
 
 La documentation complémentaire de renforcement est rangée dans :
@@ -417,14 +415,12 @@ La documentation complémentaire de renforcement est rangée dans :
 docs/
 ```
 
-Les fichiers Markdown et les scripts techniques restent dans `doc/` et `docs/`. Les captures sont séparées de la documentation et regroupées dans `Preuve De Fonctionnement/`.
+La documentation écrite, les scripts techniques et les captures sont désormais regroupés dans `docs/` selon leur catégorie.
 
 Exemples de documents :
 
 ```text
-doc/02-Journal de bord.md
-doc/09-deploiement-render.md
-doc/14-Capture-et-Preuve.md
+docs/archives/documentation-v1/02-Journal de bord.md
 docs/backend/modeles-django.md
 docs/conception/mcd.md
 docs/frontend/javascript-menu-mobile.md

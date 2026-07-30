@@ -490,7 +490,7 @@ Ces fichiers répondent aux trois piliers attendus :
 | Pilier | Preuve |
 | ------ | ------ |
 | Code ou extrait technique | Fichiers Python, SQL, JavaScript et Markdown techniques |
-| Explication | Documentation dans `doc/` et `docs/` |
+| Explication | Documentation regroupée dans `docs/` |
 | Rendu final ou résultat | Captures centralisées dans `Preuve De Fonctionnement/` |
 
 Emplacements des principales captures de code :
