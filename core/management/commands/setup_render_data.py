@@ -7,7 +7,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group, Permission
 from django.core.management.base import BaseCommand, CommandParser
 
-from creations.models import Creation
+from creations.models import Category, Creation, Tag
 from playable.models import PlayableProject
 
 
@@ -28,7 +28,15 @@ class Command(BaseCommand):
         self.create_evaluation_access(password)
 
     def create_initial_content(self: Command) -> None:
-        Creation.objects.update_or_create(
+        category, _ = Category.objects.update_or_create(
+            slug="portfolio-django",
+            defaults={"name": "Portfolio Django"},
+        )
+
+        tag_v1, _ = Tag.objects.get_or_create(name="V1")
+        tag_django, _ = Tag.objects.get_or_create(name="Django")
+
+        creation, _ = Creation.objects.update_or_create(
             slug="frostia-games",
             defaults={
                 "title": "Frostia Games",
@@ -41,8 +49,10 @@ class Command(BaseCommand):
                     "vidéoludiques en cours de création."
                 ),
                 "is_visible": True,
+                "category": category,
             },
         )
+        creation.tags.set([tag_v1, tag_django])
 
         PlayableProject.objects.update_or_create(
             slug="prototype-jouable-a-venir",
@@ -91,6 +101,16 @@ class Command(BaseCommand):
             codename="view_creation",
         )
 
+        view_category = Permission.objects.get(
+            content_type__app_label="creations",
+            codename="view_category",
+        )
+
+        view_tag = Permission.objects.get(
+            content_type__app_label="creations",
+            codename="view_tag",
+        )
+
         view_playable_project = Permission.objects.get(
             content_type__app_label="playable",
             codename="view_playableproject",
@@ -98,6 +118,8 @@ class Command(BaseCommand):
 
         group.permissions.add(
             view_creation,
+            view_category,
+            view_tag,
             view_playable_project,
         )
 
