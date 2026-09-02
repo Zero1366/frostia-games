@@ -8,9 +8,11 @@ L’objectif est de représenter les principales données utilisées par la V1 d
 
 Le projet repose principalement sur une base relationnelle **SQLite**, gérée avec **Django ORM**.
 
-Dans cette V1, deux entités relationnelles principales sont utilisées :
+Dans cette version, quatre entités relationnelles sont utilisées :
 
 * `Creation` : représente une création ou un projet présenté dans la page **Mes créations** ;
+* `Category` : représente une catégorie permettant de classer les créations (relation 1,n avec `Creation`) ;
+* `Tag` : représente une étiquette libre pouvant être associée à plusieurs créations (relation n,n avec `Creation`) ;
 * `PlayableProject` : représente un projet jouable ou une démonstration prévue.
 
 Le projet contient aussi une expérimentation NoSQL légère avec TinyDB pour les notes de progression. Cette partie est présentée séparément, car elle ne fait pas partie du modèle relationnel SQLite principal.
@@ -19,18 +21,16 @@ Le projet contient aussi une expérimentation NoSQL légère avec TinyDB pour le
 
 # 1. Vue d’ensemble du modèle
 
-La V1 utilise une structure volontairement simple.
-
-Le modèle relationnel principal repose sur deux entités indépendantes :
+Le modèle relationnel repose sur quatre entités :
 
 | Entité | Rôle |
 | ------ | ---- |
 | `Creation` | Stocker les créations ou projets présentés dans le portfolio. |
+| `Category` | Classer chaque création dans une catégorie (ex : Jeu vidéo, Site web, Application mobile). |
+| `Tag` | Ajouter des étiquettes libres et transverses à une création (ex : Solo, Prototype, Terminé). |
 | `PlayableProject` | Stocker les futurs projets jouables ou démonstrations prévues. |
 
-Dans la V1 actuelle, ces deux entités ne sont pas encore reliées entre elles.
-
-Ce choix permet de garder une base simple, stable et facile à expliquer.
+`Category` et `Tag` sont reliées à `Creation` par de vraies relations : une ForeignKey (1,n) pour `Category`, et une relation ManyToMany (n,n) pour `Tag`. `PlayableProject` reste une entité indépendante dans cette version.
 
 ---
 
@@ -76,6 +76,41 @@ Cela permet de séparer :
 
 * les données préparées côté administration ;
 * les données réellement visibles par le visiteur.
+
+---
+
+# 2 bis. Entités `Category` et `Tag`
+
+## Rôle
+
+L'entité `Category` permet de classer chaque création dans une catégorie unique (relation 1,n : une catégorie regroupe plusieurs créations, une création appartient à au plus une catégorie).
+
+L'entité `Tag` permet d'associer librement des étiquettes transverses à une création (relation n,n : une création peut avoir plusieurs tags, un tag peut être utilisé par plusieurs créations).
+
+## Attributs — `Category`
+
+| Attribut | Type logique | Rôle |
+| -------- | ------------ | ---- |
+| `id` | entier | Identifiant unique de la catégorie |
+| `name` | texte court unique | Nom affiché de la catégorie |
+| `slug` | texte court unique | Identifiant textuel utilisé pour les URLs ou filtres |
+
+## Attributs — `Tag`
+
+| Attribut | Type logique | Rôle |
+| -------- | ------------ | ---- |
+| `id` | entier | Identifiant unique du tag |
+| `name` | texte court unique | Nom affiché du tag |
+
+## Table associative générée par Django
+
+La relation n,n entre `Creation` et `Tag` est matérialisée en base par une table de jonction, générée automatiquement par Django ORM :
+
+```text
+creations_creation_tags (creation_id, tag_id)
+```
+
+C'est la traduction SQL classique d'une association Merise n,n : une table intermédiaire portant les deux clés étrangères, avec une contrainte d'unicité sur le couple `(creation_id, tag_id)`.
 
 ---
 
@@ -131,36 +166,27 @@ Le champ `is_available` permet de distinguer :
 
 # 4. Relations entre les entités
 
-Dans la V1 actuelle, les entités `Creation` et `PlayableProject` sont indépendantes.
+Le modèle contient désormais deux relations réelles :
 
-Il n’existe pas encore de relation directe entre elles.
+| Relation | Type | Cardinalités | Description |
+| -------- | ---- | ------------- | ------------ |
+| `Category` — `Creation` | ForeignKey | 1,n (Category) — 0,1 (Creation) | Une catégorie regroupe plusieurs créations ; une création appartient à au plus une catégorie. |
+| `Tag` — `Creation` | ManyToMany | n,n | Une création peut avoir plusieurs tags ; un tag peut être associé à plusieurs créations. |
 
-Cette absence de relation est volontaire.
-
-Elle permet de conserver une structure :
-
-* simple ;
-* lisible ;
-* stable ;
-* adaptée à une V1 ;
-* facile à maintenir.
-
----
+`PlayableProject` reste indépendant des trois autres entités dans cette version.
 
 ## Relations futures possibles
 
-Les futures évolutions pourront ajouter des relations, par exemple :
+Les futures évolutions pourront ajouter d'autres relations, par exemple :
 
 * associer un projet jouable à une création ;
-* ajouter des catégories ;
-* ajouter des tags ;
 * ajouter des médias ;
 * ajouter des versions de projet ;
 * ajouter une page détaillée par création ;
 * ajouter un journal de développement ;
 * ajouter des notes de progression reliées aux projets.
 
-Ces évolutions ne sont pas nécessaires pour la V1.
+Ces évolutions ne sont pas nécessaires pour cette version.
 
 ---
 
@@ -168,8 +194,23 @@ Ces évolutions ne sont pas nécessaires pour la V1.
 
 ```mermaid
 erDiagram
+    CATEGORY ||--o{ CREATION : classe
+    CREATION }o--o{ TAG : "est associee a"
+
+    CATEGORY {
+        int id PK
+        string name
+        string slug
+    }
+
+    TAG {
+        int id PK
+        string name
+    }
+
     CREATION {
         int id PK
+        int category_id FK
         string title
         string slug
         string alphabet_letter
@@ -215,7 +256,16 @@ Correspondance :
 | Entité du MCD | Modèle Django | Table SQL |
 | ------------- | ------------- | --------- |
 | `Creation` | `Creation` | `creations_creation` |
+| `Category` | `Category` | `creations_category` |
+| `Tag` | `Tag` | `creations_tag` |
+| Relation `Creation` ↔ `Tag` | `ManyToManyField` | `creations_creation_tags` (table associative) |
 | `PlayableProject` | `PlayableProject` | `playable_playableproject` |
+
+Pour la correspondance détaillée entre requêtes ORM et SQL généré (jointures 1,n et n,n, agrégation), voir le document dédié :
+
+```text
+Docs/sql/orm-vers-sql.md
+```
 
 Django ORM permet de manipuler ces données avec du code Python.
 
@@ -312,12 +362,8 @@ Elle laisse aussi la possibilité d’ajouter des relations plus tard si le proj
 
 # 10. Limites du MCD actuel
 
-Le MCD actuel est volontairement limité.
+Le MCD contient désormais deux relations réelles (`Category` en 1,n et `Tag` en n,n sur `Creation`). Il ne contient pas encore :
 
-Il ne contient pas encore :
-
-* table de catégories ;
-* table de tags ;
 * table de médias ;
 * table de versions ;
 * table de journal de développement ;
@@ -326,7 +372,7 @@ Il ne contient pas encore :
 * table de fichiers uploadés ;
 * relation entre `Creation` et `PlayableProject`.
 
-Ces éléments sont reportés afin de conserver une V1 stable.
+Ces éléments sont reportés afin de conserver une structure stable.
 
 ---
 
@@ -377,17 +423,15 @@ Pour cette partie, les preuves utiles sont :
 
 # 13. Conclusion
 
-Le MCD de Frostia Games montre une structure volontairement simple.
-
-La V1 repose principalement sur deux entités relationnelles :
+Le MCD de Frostia Games repose sur quatre entités relationnelles :
 
 * `Creation` ;
-* `PlayableProject`.
+* `Category`, reliée à `Creation` par une relation 1,n ;
+* `Tag`, relié à `Creation` par une relation n,n (via une table associative) ;
+* `PlayableProject`, indépendante.
 
-Ces entités suffisent pour présenter les créations et les futurs projets jouables du portfolio.
+Ces relations permettent de démontrer une vraie modélisation Merise (cardinalités 1,n et n,n) et sont directement exploitées par l'ORM Django, avec un exemple détaillé de traduction ORM → SQL dans `Docs/sql/orm-vers-sql.md`.
 
 TinyDB est traité séparément comme une expérimentation NoSQL légère.
 
-Cette organisation permet de garder un projet stable, lisible et évolutif, tout en montrant une vraie réflexion sur les données utilisées par l’application.
-
-
+Cette organisation permet de garder un projet stable, lisible et évolutif, tout en montrant une vraie réflexion sur les données utilisées par l'application.
