@@ -1,6 +1,17 @@
 from django.contrib import admin
 
-from .models import Creation
+from .models import Category, Creation, Tag
+
+
+@admin.register(Category)
+class CategoryAdmin(admin.ModelAdmin):  # type: ignore[type-arg]
+    list_display = ("name", "slug")
+    prepopulated_fields = {"slug": ("name",)}
+
+
+@admin.register(Tag)
+class TagAdmin(admin.ModelAdmin):  # type: ignore[type-arg]
+    list_display = ("name",)
 
 
 @admin.register(Creation)
@@ -8,6 +19,7 @@ class CreationAdmin(admin.ModelAdmin):  # type: ignore[type-arg]
     list_display = (
         "title",
         "alphabet_letter",
+        "category",
         "project_type",
         "status",
         "is_visible",
@@ -16,10 +28,13 @@ class CreationAdmin(admin.ModelAdmin):  # type: ignore[type-arg]
 
     list_filter = (
         "alphabet_letter",
+        "category",
         "project_type",
         "status",
         "is_visible",
     )
+
+    filter_horizontal = ("tags",)
 
     search_fields = (
         "title",

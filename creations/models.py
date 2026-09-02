@@ -1,7 +1,65 @@
 from django.db import models
 
 
+class Category(models.Model):
+    """Catégorie d'une création (ex : Jeu vidéo, Site web, Application mobile)."""
+
+    name = models.CharField(
+        max_length=80,
+        unique=True,
+        verbose_name="Nom",
+    )
+
+    slug = models.SlugField(
+        max_length=100,
+        unique=True,
+        verbose_name="Identifiant URL",
+    )
+
+    class Meta:
+        verbose_name = "Catégorie"
+        verbose_name_plural = "Catégories"
+        ordering = ["name"]
+
+    def __str__(self) -> str:
+        return self.name
+
+
+class Tag(models.Model):
+    """Étiquette libre pouvant être associée à plusieurs créations (relation N,N)."""
+
+    name = models.CharField(
+        max_length=50,
+        unique=True,
+        verbose_name="Nom",
+    )
+
+    class Meta:
+        verbose_name = "Tag"
+        verbose_name_plural = "Tags"
+        ordering = ["name"]
+
+    def __str__(self) -> str:
+        return self.name
+
+
 class Creation(models.Model):
+    category = models.ForeignKey(
+        Category,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="creations",
+        verbose_name="Catégorie",
+    )
+
+    tags = models.ManyToManyField(
+        Tag,
+        blank=True,
+        related_name="creations",
+        verbose_name="Tags",
+    )
+
     title = models.CharField(
         max_length=120,
         verbose_name="Titre",
