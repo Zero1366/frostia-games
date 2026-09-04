@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+
+{% block title %}{% if mode == "update" %}Modifier{% else %}Ajouter{% endif %} une catégorie — Frostia Games{% endblock %}
+
+{% block content %}
+<style>
+  .crud-title {
+    font-size: 1.6rem;
+    color: var(--color-text-dark);
+    margin-bottom: 1.5rem;
+  }
+
+  .crud-form {
+    max-width: 480px;
+    background: var(--color-card);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-card);
+    padding: 1.5rem;
+  }
+
+  .crud-field {
+    margin-bottom: 1.2rem;
+  }
+
+  .crud-field label {
+    display: block;
+    margin-bottom: 0.4rem;
+    font-weight: 600;
+    color: var(--color-text-dark);
+  }
+
+  .crud-field input {
+    width: 100%;
+    padding: 0.6rem 0.8rem;
+    border-radius: 0.5rem;
+    border: 1px solid var(--border-dark);
+    font-size: 1rem;
+  }
+
+  .crud-field .errorlist {
+    color: #dc2626;
+    font-size: 0.85rem;
+    margin-top: 0.3rem;
+    list-style: none;
+    padding: 0;
+  }
+
+  .crud-form-actions {
+    display: flex;
+    gap: 0.8rem;
+    margin-top: 1.5rem;
+  }
+
+  .crud-btn {
+    display: inline-block;
+    padding: 0.6rem 1.2rem;
+    border-radius: 0.6rem;
+    background: var(--color-primary);
+    color: var(--color-text-light);
+    text-decoration: none;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+  }
+
+  .crud-btn.is-secondary {
+    background: var(--color-card-soft);
+    color: var(--color-text-dark);
+    border: 1px solid var(--border-dark);
+  }
+</style>
+
+<h1 class="crud-title">
+  {% if mode == "update" %}Modifier la catégorie « {{ category.name }} »{% else %}Ajouter une catégorie{% endif %}
+</h1>
+
+<form class="crud-form" method="post">
+  {% csrf_token %}
+
+  {% for field in form %}
+    <div class="crud-field">
+      <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+      {{ field }}
+      {{ field.errors }}
+    </div>
+  {% endfor %}
+
+  <div class="crud-form-actions">
+    <button class="crud-btn" type="submit">Enregistrer</button>
+    <a class="crud-btn is-secondary" href="{% url 'creations:category_list' %}">Annuler</a>
+  </div>
+</form>
+{% endblock %}
