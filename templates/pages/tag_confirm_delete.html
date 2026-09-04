@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block title %}Supprimer un tag — Frostia Games{% endblock %}
+
+{% block content %}
+<style>
+  .crud-title {
+    font-size: 1.6rem;
+    color: var(--color-text-dark);
+    margin-bottom: 1rem;
+  }
+
+  .crud-confirm-box {
+    max-width: 480px;
+    background: var(--color-card);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-card);
+    padding: 1.5rem;
+  }
+
+  .crud-confirm-text {
+    color: var(--color-text-muted);
+    margin-bottom: 1.5rem;
+  }
+
+  .crud-form-actions {
+    display: flex;
+    gap: 0.8rem;
+  }
+
+  .crud-btn {
+    display: inline-block;
+    padding: 0.6rem 1.2rem;
+    border-radius: 0.6rem;
+    text-decoration: none;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+  }
+
+  .crud-btn.is-danger {
+    background: #dc2626;
+    color: var(--color-text-light);
+  }
+
+  .crud-btn.is-secondary {
+    background: var(--color-card-soft);
+    color: var(--color-text-dark);
+    border: 1px solid var(--border-dark);
+  }
+</style>
+
+<h1 class="crud-title">Supprimer un tag</h1>
+
+<div class="crud-confirm-box">
+  <p class="crud-confirm-text">
+    Es-tu sûr de vouloir supprimer le tag « <strong>{{ tag.name }}</strong> » ?
+    Cette action est irréversible.
+  </p>
+
+  <form method="post">
+    {% csrf_token %}
+    <div class="crud-form-actions">
+      <button class="crud-btn is-danger" type="submit">Oui, supprimer</button>
+      <a class="crud-btn is-secondary" href="{% url 'creations:tag_list' %}">Annuler</a>
+    </div>
+  </form>
+</div>
+{% endblock %}
